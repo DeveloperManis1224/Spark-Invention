@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,6 +8,85 @@
     tools:context=".PaymentStatus">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:id="@+id/header_tab"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/clr_white"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Payment"/>
+    </LinearLayout>
 
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_below="@id/header_tab"
+        android:layout_marginTop="-140dp"
+        android:elevation="2dp"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="left"
+            android:textColor="#303030"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Payment Confirmation"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_clr_drawble"
+                android:textColor="@color/clr_white"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="Online Payment"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:textColor="#414141"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="or"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_without_clr"
+                android:textColor="#000"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="CASH / EMI"/>
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
