@@ -183,6 +183,7 @@
                 android:drawableRight="@drawable/next_arrow"
                 android:textAllCaps="false"
                 android:textStyle="bold"
+                android:id="@+id/btn_next"
                 android:textColor="#fff"
                 android:fontFamily="@font/poppinsmedium"
                 android:background="@drawable/btn_clr_drawble"/>

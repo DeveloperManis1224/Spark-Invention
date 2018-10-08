@@ -19,8 +19,10 @@
         <activity
             android:name=".AdmissionForm"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PaymentStatus"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".PaymentStatus"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AlertActivity"></activity>
     </application>
 
 </manifest>
