@@ -64,6 +64,7 @@
             android:imeOptions="actionNext"
             android:padding="5dp"
             android:singleLine="true"
+            android:id="@+id/edt_name"
             android:gravity="center"
             android:background="@drawable/edt_border"
             android:fontFamily="@font/poppinsmedium"
@@ -75,6 +76,7 @@
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:padding="5dp"
+            android:id="@+id/edt_dob"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:background="@drawable/edt_border"
@@ -86,6 +88,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
             android:padding="5dp"
+            android:id="@+id/edt_college"
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:gravity="center"
@@ -98,6 +101,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:padding="5dp"
+            android:id="@+id/edt_phone"
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:gravity="center"
@@ -110,6 +114,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:padding="5dp"
+            android:id="@+id/edt_email"
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:gravity="center"
@@ -121,16 +126,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:id="@+id/edt_country"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
-            android:hint="Enter Coutry"/>
+            android:hint="Enter Country"/>
 
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:id="@+id/edt_state"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
@@ -140,15 +147,17 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/edt_city"
             android:padding="5dp"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
             android:hint="Enter City"/>
-        <AutoCompleteTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/edt_address"
             android:padding="5dp"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
@@ -159,6 +168,7 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/edt_course"
             android:padding="5dp"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
@@ -171,7 +181,6 @@
             android:layout_marginTop="10dp"
             android:padding="10dp"
             android:gravity="center">
-
             <Button
                 android:layout_width="120dp"
                 android:layout_height="45dp"

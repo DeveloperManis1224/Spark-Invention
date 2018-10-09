@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentStatus">
-
+    tools:context=".BillActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +22,7 @@
             android:textColor="@color/clr_white"
             android:textSize="20sp"
             android:fontFamily="@font/poppinsmedium"
-            android:text="Payment"/>
+            android:text="Bill"/>
     </LinearLayout>
 
 
@@ -48,39 +46,33 @@
             android:textColor="#303030"
             android:textSize="18sp"
             android:fontFamily="@font/poppinsmedium"
-            android:text="Payment Confirmation"/>
+            android:text="Bill Entry"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:orientation="vertical">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edt_border"
+                android:textColor="#797979"
+                android:padding="8dp"
+                android:fontFamily="@font/poppinsmedium"
+                android:hint="Enter Bill number"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_clr_drawble"
                 android:textColor="@color/clr_white"
+                android:clickable="true"
                 android:layout_marginTop="20dp"
+                android:id="@+id/btn_bill"
                 android:fontFamily="@font/poppinsmedium"
-                android:text="Online Payment"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:gravity="center"
-                android:textColor="#414141"
-                android:textSize="14sp"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="or"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_without_clr"
-                android:textColor="#000"
-                android:onClick="onClickCash"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="CASH / EMI"/>
+                android:text="Submit"/>
+
         </LinearLayout>
 
 

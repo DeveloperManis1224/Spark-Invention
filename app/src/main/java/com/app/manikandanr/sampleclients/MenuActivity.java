@@ -9,8 +9,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 
 public class MenuActivity extends AppCompatActivity {
@@ -25,9 +32,8 @@ public class MenuActivity extends AppCompatActivity {
         //https://android-arsenal.com/details/1/6109
         //https://android-arsenal.com/details/1/6929
     }
-    private void init()
-    {
-        bAdmission  = findViewById(R.id.btn_admission);
+    private void init() {
+        bAdmission = findViewById(R.id.btn_admission);
         bMarketing = findViewById(R.id.btn_marketing);
         bAttendance = findViewById(R.id.btn_attendance);
         bRevenue = findViewById(R.id.btn_revenue);
@@ -35,24 +41,24 @@ public class MenuActivity extends AppCompatActivity {
         bAdmission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AwesomeInfoDialog(getApplicationContext())
-                        .setTitle("Select")
-                        .setMessage(R.string.app_name)
-                        .setColoredCircle(R.color.colorPrimary)
-                        .setDialogIconAndColor(R.drawable.ic_dialog_info,
-                                R.color.white)
-                        .setCancelable(true)
-                        .show();
+//                new AwesomeInfoDialog(getApplicationContext())
+//                        .setTitle("Select")
+//                        .setMessage(R.string.app_name)
+//                        .setColoredCircle(R.color.colorPrimary)
+//                        .setDialogIconAndColor(R.drawable.ic_dialog_info,
+//                                R.color.white)
+//                        .setCancelable(true)
+//                        .show();
 
 
                 LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
                 final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
                 final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
                 deleteDialog.setView(deleteDialogView);
-                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes) ;
+                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
 
-                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no) ;
-                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none) ;
+                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
 
                 btnSchool.setText("School");
                 btnSchool.setAllCaps(false);
@@ -68,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this,AdmissionForm.class);
+                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
                         startActivity(in);
                     }
                 });
@@ -76,7 +82,7 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this,AdmissionForm.class);
+                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
                         startActivity(in);
                     }
                 });
@@ -84,27 +90,68 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this,AdmissionForm.class);
+                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
                         startActivity(in);
                     }
                 });
-
                 deleteDialog.show();
-
             }
         });
 
         bMarketing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuActivity.this,"Coming Soon...",Toast.LENGTH_LONG).show();
+                LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
+                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+                final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
+                deleteDialog.setView(deleteDialogView);
+                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+
+                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+
+                btnSchool.setText("School");
+                btnSchool.setAllCaps(false);
+
+                btnCollege.setText("College");
+                btnCollege.setAllCaps(false);
+
+
+                btnProject.setText("Project / Program");
+                btnProject.setVisibility(View.GONE);
+                btnProject.setAllCaps(false);
+
+                btnSchool.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        startActivity(in);
+                    }
+                });
+                btnCollege.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        startActivity(in);
+                    }
+                });
+                btnProject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        startActivity(in);
+                    }
+                });
+                deleteDialog.show();
             }
         });
         bAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuActivity.this,"Coming Soon...",Toast.LENGTH_LONG).show();
-
+                Toast.makeText(MenuActivity.this, "Coming Soon...", Toast.LENGTH_LONG).show();
             }
         });
     }
