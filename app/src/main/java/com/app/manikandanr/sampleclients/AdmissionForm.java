@@ -37,12 +37,11 @@ public class AdmissionForm extends AppCompatActivity {
 
     private Button nextButton;
     String sts_joinings="";
-
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
-
     private EditText edtName,edtDob,edtCollege,edtPhone,edtEmail,edtAddress;
     private AutoCompleteTextView aedtCountry,aedtState,aedtCity,aedtCourse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +64,15 @@ public class AdmissionForm extends AppCompatActivity {
         nextButton = findViewById(R.id.btn_next);
         getState();
 
+        getCourseDetails();
+
         aedtState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
 
-                Toast.makeText(AdmissionForm.this," selected  "+parent.getItemAtPosition(pos), Toast.LENGTH_LONG).show();
+               // Toast.makeText(AdmissionForm.this," selected  "+parent.getItemAtPosition(pos), Toast.LENGTH_LONG).show();
 
            getCity(getCategoryPos(String.valueOf(parent.getItemAtPosition(pos))));
 
@@ -149,14 +150,10 @@ public class AdmissionForm extends AppCompatActivity {
        {
            if(sts_joinings.equalsIgnoreCase("now"))
            {
-//               Intent in = new Intent(AdmissionForm.this,PaymentStatus.class);
-//               startActivity(in);
                if(isValid())
                {
                    uploadStudentInfo();
                }
-
-
            }
            else
            {
@@ -352,6 +349,41 @@ public class AdmissionForm extends AppCompatActivity {
                 return params;
             }
         };
+        queue.add(stringRequest);
+    }
+
+    private void getCourseDetails()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://spark.candyrestaurant.com/api/student";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("courses");
+                            for(int i = 1 ; i <= jary.length(); i++)
+                            {
+                                JSONObject jobj1 =jary.getJSONObject(i);
+                                stateList.add(jobj1.getString("course"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (AdmissionForm.this,android.R.layout.select_dialog_item, stateList);
+                        aedtState.setThreshold(1);
+                        aedtState.setAdapter(adapter);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdmissionForm.this, ""+error, Toast.LENGTH_SHORT).show();
+            }
+        });
         queue.add(stringRequest);
     }
 
