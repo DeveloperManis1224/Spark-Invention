@@ -71,12 +71,7 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-
-               // Toast.makeText(AdmissionForm.this," selected  "+parent.getItemAtPosition(pos), Toast.LENGTH_LONG).show();
-
            getCity(getCategoryPos(String.valueOf(parent.getItemAtPosition(pos))));
-
-
             }
         });
     }
