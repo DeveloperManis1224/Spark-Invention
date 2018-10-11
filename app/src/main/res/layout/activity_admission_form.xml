@@ -137,6 +137,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:singleLine="true"
             android:id="@+id/edt_state"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
@@ -149,32 +150,46 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_city"
             android:padding="5dp"
+            android:singleLine="true"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
             android:hint="Enter City"/>
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/edt_address"
             android:padding="5dp"
+            android:singleLine="true"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
             android:hint="Enter Address"/>
 
-        <AutoCompleteTextView
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/edt_course"
-            android:padding="5dp"
+            android:singleLine="true"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
             android:hint="Enter Course"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="right"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:id="@+id/txt_course_cost"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

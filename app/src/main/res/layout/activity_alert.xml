@@ -122,7 +122,7 @@
             android:textColor="#fff"
             android:fontFamily="@font/poppinsmedium"
             android:background="@drawable/btn_clr_drawble"
-            android:text="<-"/>
+            android:text="Back"/>
         </LinearLayout>
 
     </LinearLayout>

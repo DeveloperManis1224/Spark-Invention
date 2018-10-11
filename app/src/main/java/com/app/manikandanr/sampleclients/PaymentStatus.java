@@ -19,4 +19,10 @@ public class PaymentStatus extends AppCompatActivity {
         startActivity(in);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(PaymentStatus.this, MenuActivity.class));
+        finish();
+    }
 }
