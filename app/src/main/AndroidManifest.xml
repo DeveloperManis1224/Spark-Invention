@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.manikandanr.sampleclients">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,16 +24,16 @@
         <activity
             android:name=".PaymentStatus"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".AlertActivity"
+        <activity
+            android:name=".AlertActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".CashActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".BillActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".CashActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BillActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MarketingAdmission"></activity>
     </application>
 
 </manifest>

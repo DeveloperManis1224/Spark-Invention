@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,16 +41,20 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AdmissionForm extends AppCompatActivity {
-
+    private Spinner aedtCourse;
+    private String alertDate = "";
+    private String sts_joinings="";
     private Button nextButton;
-    String sts_joinings="";
-    final ArrayList<String> courseList = new ArrayList<String>();
     private TextView tCouseCost;
-    final ArrayList<String> stateList = new ArrayList<String>();
-    final ArrayList<String> cityList = new ArrayList<String>();
+    private String userRole = "";
+    private String userRollNo = "";
     private EditText edtName,edtDob,edtCollege,edtPhone,edtEmail,edtAddress;
     private AutoCompleteTextView aedtCountry,aedtState,aedtCity;
-    private Spinner aedtCourse;
+    final ArrayList<String> costList = new ArrayList<String>();
+    final ArrayList<String> courseList = new ArrayList<String>();
+    final ArrayList<String> countryList = new ArrayList<String>();
+    final ArrayList<String> stateList = new ArrayList<String>();
+    final ArrayList<String> cityList = new ArrayList<String>();
     Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -72,11 +77,17 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCourse = findViewById(R.id.edt_course);
         tCouseCost = findViewById(R.id.txt_course_cost);
         edtAddress=  findViewById(R.id.edt_address);
-
         nextButton = findViewById(R.id.btn_next);
 
-        getState();
+        userRole = getIntent().getStringExtra("role");
+        userRollNo = getIntent().getStringExtra("role_id");
 
+        countryList.add("India");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (AdmissionForm.this,android.R.layout.select_dialog_item, countryList);
+        aedtCountry.setThreshold(1);
+        aedtCountry.setAdapter(adapter);
+        getState();
         getCourseDetails();
 
         edtDob.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +96,13 @@ public class AdmissionForm extends AppCompatActivity {
                 new DatePickerDialog(AdmissionForm.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        aedtCourse.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                tCouseCost.setText(""+costList.get(i));
             }
         });
         aedtState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -165,12 +183,15 @@ public class AdmissionForm extends AppCompatActivity {
                                                      int monthOfYear, int dayOfMonth) {
                                    Toast.makeText(AdmissionForm.this, ""+dayOfMonth + "-" +
                                            (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
+                                   alertDate = ""+dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                                    nextButton.setText("Submit");
                                }
                            }, mYear, mMonth, mDay);
                    datePickerDialog.show();
                    Toast.makeText(AdmissionForm.this, "You are selecting Later", Toast.LENGTH_SHORT).show();
                    sts_joinings = "later";
+                   nextButton.setText("Set Alert");
+
                }
            });
            btnProject.setOnClickListener(new View.OnClickListener() {
@@ -182,19 +203,20 @@ public class AdmissionForm extends AppCompatActivity {
            });
            deleteDialog.show();
        }
-       else
-       {
+       else if (nextButton.getText().toString().trim().equalsIgnoreCase("Set Alert")) {
+           if(isValid())
+           {
+               setStudentAlert();
+           }
+
+       }
+       else{
            if(sts_joinings.equalsIgnoreCase("now"))
            {
                if(isValid())
                {
                    uploadStudentInfo();
                }
-           }
-           else
-           {
-               Intent in = new Intent(AdmissionForm.this,AlertActivity.class);
-               startActivity(in);
            }
        }
     }
@@ -344,11 +366,10 @@ public class AdmissionForm extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
     private void uploadStudentInfo()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://spark.candyrestaurant.com/api/student";
+        String url = Constants.BASE_URL+"api/student";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -363,6 +384,7 @@ public class AdmissionForm extends AppCompatActivity {
                             {
                                 Toast.makeText(AdmissionForm.this, ""+msg, Toast.LENGTH_SHORT).show();
                                 Intent in = new Intent(AdmissionForm.this,PaymentStatus.class);
+                                in.putExtra("cost",tCouseCost.getText().toString().trim());
                                 startActivity(in);
                                 finish();
                             }
@@ -394,8 +416,67 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("state_id",aedtState.getText().toString().trim());
                 params.put("city_id",aedtCity.getText().toString().trim());
                 params.put("course_id","1");
-                params.put("student_role","");
-                params.put("status","");
+                params.put("student_role",userRollNo);
+                params.put("status",sts_joinings);
+                params.put("address",edtAddress.getText().toString().trim());
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+    private void setStudentAlert()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Constants.BASE_URL+"api/student";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.e("RESPONSE111",""+response);
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            String sts = jsonObject.getString("status");
+                            String msg = jsonObject.getString("message");
+                            if(sts.equalsIgnoreCase("1"))
+                            {
+                                Toast.makeText(AdmissionForm.this, ""+msg, Toast.LENGTH_SHORT).show();
+                                Intent in = new Intent(AdmissionForm.this,AlertActivity.class);
+                                startActivity(in);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(AdmissionForm.this, "Submition failed", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdmissionForm.this, ""+error, Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", edtName.getText().toString().trim());
+                params.put("dob",edtDob.getText().toString().trim());
+                params.put("college",edtCollege.getText().toString().trim());
+                params.put("phone",edtPhone.getText().toString().trim());
+                params.put("email",edtEmail.getText().toString().trim());
+                params.put("country_id",aedtCountry.getText().toString().trim());
+                params.put("state_id",aedtState.getText().toString().trim());
+                params.put("city_id",aedtCity.getText().toString().trim());
+                params.put("course_id","1");
+                params.put("student_role",userRollNo);
+                params.put("status",sts_joinings);
+                params.put("alert_date",alertDate);
                 params.put("address",edtAddress.getText().toString().trim());
                 return params;
             }
@@ -418,6 +499,7 @@ public class AdmissionForm extends AppCompatActivity {
                             {
                                 JSONObject jobj1 =jary.getJSONObject(i);
                                 courseList.add(jobj1.getString("course")+" (Rs "+jobj1.getString("amount")+")");
+                                costList.add(jobj1.getString("amount"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -435,12 +517,9 @@ public class AdmissionForm extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
-
     private int getCategoryPos(String category) {
         return stateList.indexOf(category);
     }
-
 
     @Override
     public void onBackPressed() {

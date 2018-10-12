@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
             android:padding="5dp"
             android:singleLine="true"
             android:id="@+id/edt_name"
@@ -75,7 +76,9 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
             android:singleLine="true"
+            android:inputType="textCapSentences"
             android:padding="5dp"
+            android:clickable="true"
             android:id="@+id/edt_dob"
             android:layout_marginTop="10dp"
             android:gravity="center"
@@ -87,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
             android:padding="5dp"
             android:id="@+id/edt_college"
             android:singleLine="true"
@@ -101,6 +105,8 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:padding="5dp"
+            android:maxLength="10"
+            android:inputType="phone"
             android:id="@+id/edt_phone"
             android:singleLine="true"
             android:layout_marginTop="10dp"
@@ -113,6 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
             android:padding="5dp"
             android:id="@+id/edt_email"
             android:singleLine="true"
@@ -126,6 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:inputType="textCapSentences"
             android:id="@+id/edt_country"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
@@ -137,6 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:inputType="textCapSentences"
             android:singleLine="true"
             android:id="@+id/edt_state"
             android:gravity="center"
@@ -150,6 +159,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_city"
             android:padding="5dp"
+            android:inputType="textCapSentences"
             android:singleLine="true"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
@@ -161,7 +171,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_address"
             android:padding="5dp"
-            android:singleLine="true"
+            android:inputType="textCapSentences"
+            android:maxLines="3"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
@@ -214,10 +225,8 @@
 
         </LinearLayout>
     </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

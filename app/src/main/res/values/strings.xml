@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">SampleClientS</string>
-    <string name = "error_msg">Invalid</string>
+    <string name="error_msg">Invalid</string>
 </resources>
