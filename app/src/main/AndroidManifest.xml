@@ -33,7 +33,7 @@
         <activity
             android:name=".BillActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MarketingAdmission"></activity>
+        <activity android:name=".MarketingAdmission"/>
     </application>
 
 </manifest>

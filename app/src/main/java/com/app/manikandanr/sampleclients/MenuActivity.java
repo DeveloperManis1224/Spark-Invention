@@ -76,6 +76,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        in.putExtra("role","school");
+                        in.putExtra("role_id","1");
                         startActivity(in);
                     }
                 });
@@ -84,6 +86,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        in.putExtra("role","college");
+                        in.putExtra("role_id","2");
                         startActivity(in);
                     }
                 });
@@ -92,6 +96,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        in.putExtra("role","project");
+                        in.putExtra("role_id","3");
                         startActivity(in);
                     }
                 });
