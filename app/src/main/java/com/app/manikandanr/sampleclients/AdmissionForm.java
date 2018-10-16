@@ -364,8 +364,14 @@ public class AdmissionForm extends AppCompatActivity {
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
                                 Toast.makeText(AdmissionForm.this, "" + msg, Toast.LENGTH_SHORT).show();
+
+                                JSONObject jobj =jsonObject.getJSONObject("student");
+
+                                String studentId = jobj.getString("serial_no");
+
                                 Intent in = new Intent(AdmissionForm.this, PaymentStatus.class);
                                 in.putExtra("cost", tCouseCost.getText().toString().trim());
+                                in.putExtra("stud_id",studentId);
                                 startActivity(in);
                                 finish();
                             } else {
@@ -398,6 +404,7 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("student_role", userRollNo);
                 params.put("status", sts_joinings);
                 params.put("join_status", "1");
+                params.put("role", userRollNo);
                 params.put("address", edtAddress.getText().toString().trim());
                 return params;
             }
@@ -421,13 +428,12 @@ public class AdmissionForm extends AppCompatActivity {
                             if (sts.equalsIgnoreCase("1")) {
                                 Toast.makeText(AdmissionForm.this, "" + msg, Toast.LENGTH_SHORT).show();
                                 Intent in = new Intent(AdmissionForm.this, AlertActivity.class);
+
                                 startActivity(in);
                                 finish();
                             } else {
                                 Toast.makeText(AdmissionForm.this, "Submition failed", Toast.LENGTH_SHORT).show();
                             }
-
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

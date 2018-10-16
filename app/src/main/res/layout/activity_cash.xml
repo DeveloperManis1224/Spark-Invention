@@ -31,6 +31,7 @@
         android:elevation="3dp"
         android:layout_below="@+id/header_tab"
         android:paddingLeft="15dp"
+        android:paddingBottom="10dp"
         android:paddingRight="15dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
@@ -45,10 +46,22 @@
             android:textSize="18sp"
             android:textColor="@color/colorPrimary"
             android:text="Payment by"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:id="@+id/txt_cost"
+            android:textStyle="bold"
+            android:textColor="#1b1b1b"
+            android:text="Cost"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="1"
+            android:id="@+id/rdo_payment"
             android:gravity="center"
             android:padding="10dp"
             android:orientation="horizontal">
@@ -56,9 +69,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:checked="true"
                 android:id="@+id/radio_cash"
                 android:layout_marginRight="20dp"
-                android:text="CASH"/>
+                android:text="FULL CASH"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,6 +95,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:inputType="number"
+                android:visibility="gone"
                 android:padding="8dp"
                 android:imeOptions="actionDone"
                 android:background="@drawable/edt_border"
@@ -89,6 +104,42 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:padding="10dp"
+            android:id="@+id/div_calculate"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textStyle="bold"
+                android:textColor="#393939"
+                android:padding="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edt_border"
+                android:gravity="center"
+                android:hint="Enter Amount" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_weight="0.5"
+                android:onClick="onCalculateEmi"
+                android:background="@drawable/btn_clr_drawble"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:text="Calculate EMI"/>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,12 +187,68 @@
                 android:weightSum="2"
                 android:orientation="horizontal">
 
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:id="@+id/emi_months">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:id="@+id/month3"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6"
+                        android:id="@+id/month6"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9"
+                        android:id="@+id/month9"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/txt_month3"
+                        android:text="amount1"/>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:gravity="center"
+                        android:id="@+id/txt_month6"
+                        android:text="amount1"/>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/txt_month9"
+                        android:layout_marginTop="18dp"
+                        android:text="amount1"/>
+
+                </LinearLayout>
+
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:id="@+id/emi_plans"/>
 
             </LinearLayout>
+
+
+
 
 
 
@@ -152,8 +259,12 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:id="@+id/btn_final_submit"
+            android:layout_marginTop="20dp"
             android:background="@drawable/btn_clr_drawble"
             android:textColor="@color/white"
             android:text="Submit"/>
     </LinearLayout>
+
+
+
 </RelativeLayout>
