@@ -131,7 +131,7 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        Intent in = new Intent(MenuActivity.this, MarketingAdmission.class);
                         in.putExtra("role","school");
                         in.putExtra("role_id","1");
                         startActivity(in);
@@ -141,7 +141,7 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        Intent in = new Intent(MenuActivity.this, MarketingAdmission.class);
                         in.putExtra("role","college");
                         in.putExtra("role_id","2");
                         startActivity(in);
@@ -151,7 +151,7 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
+                        Intent in = new Intent(MenuActivity.this, MarketingAdmission.class);
                         in.putExtra("role","project");
                         in.putExtra("role_id","3");
                         startActivity(in);
@@ -171,11 +171,9 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent launchNextActivity;
-        launchNextActivity = new Intent(Intent.ACTION_MAIN);
-        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(launchNextActivity);
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

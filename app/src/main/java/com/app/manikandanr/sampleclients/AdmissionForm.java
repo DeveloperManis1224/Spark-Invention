@@ -1,6 +1,7 @@
 package com.app.manikandanr.sampleclients;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +45,7 @@ import java.util.Map;
 
 public class AdmissionForm extends AppCompatActivity {
     private Spinner aedtCourse;
+    String coursePosition = "";
     private String alertDate = "";
     private String sts_joinings = "";
     private Button nextButton;
@@ -56,6 +60,7 @@ public class AdmissionForm extends AppCompatActivity {
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
     Calendar myCalendar = Calendar.getInstance();
+    ProgressDialog pd = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,8 @@ public class AdmissionForm extends AppCompatActivity {
         nextButton = findViewById(R.id.btn_next);
         userRole = getIntent().getStringExtra("role");
         userRollNo = getIntent().getStringExtra("role_id");
+        pd = new ProgressDialog(AdmissionForm.this);
+        pd.setMessage("Loading");
 
         countryList.add("India");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
@@ -108,6 +115,27 @@ public class AdmissionForm extends AppCompatActivity {
 
             }
         });
+        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e("SASASASA", "" + i);
+                coursePosition = ""+i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+//        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+//                                    long id) {
+//
+//                Log.e("SASASASA", "" + pos);
+//            }
+//        });
 
 
         aedtState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,7 +144,8 @@ public class AdmissionForm extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
                 getCity();
-                Log.e("SASASASA", "" + getCategoryPos(String.valueOf(parent.getItemAtPosition(pos))));
+                Log.e("SASASASA", "" + getCategoryPos(
+                        String.valueOf(parent.getItemAtPosition(pos))));
             }
         });
     }
@@ -146,7 +175,8 @@ public class AdmissionForm extends AppCompatActivity {
         if (nextButton.getText().toString().trim().equalsIgnoreCase("Next")) {
             LayoutInflater factory = LayoutInflater.from(AdmissionForm.this);
             final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
-            final AlertDialog deleteDialog = new AlertDialog.Builder(AdmissionForm.this).create();
+            final AlertDialog deleteDialog = new AlertDialog.Builder(
+                    AdmissionForm.this).create();
             deleteDialog.setView(deleteDialogView);
 
             Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
@@ -167,7 +197,8 @@ public class AdmissionForm extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     deleteDialog.dismiss();
-                    Toast.makeText(AdmissionForm.this, "You are selecting Join now", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdmissionForm.this, "You are selecting Join now",
+                            Toast.LENGTH_SHORT).show();
                     nextButton.setText("Submit");
                     sts_joinings = "now";
                 }
@@ -181,19 +212,24 @@ public class AdmissionForm extends AppCompatActivity {
                     mYear = c.get(Calendar.YEAR);
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(AdmissionForm.this,
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(
+                            AdmissionForm.this,
                             new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker view, int year,
                                                       int monthOfYear, int dayOfMonth) {
-                                    Toast.makeText(AdmissionForm.this, "" + dayOfMonth + "-" +
-                                            (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
-                                    alertDate = "" + dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                                    nextButton.setText("Submit");
+                                    Toast.makeText(AdmissionForm.this,
+                                            "" + dayOfMonth + "-" +
+                                            (monthOfYear + 1) + "-" + year,
+                                            Toast.LENGTH_SHORT).show();
+                                    alertDate = "" + dayOfMonth + "-" +
+                                            (monthOfYear + 1) + "-" + year;
+                                    nextButton.setText("Set Alert");
                                 }
                             }, mYear, mMonth, mDay);
                     datePickerDialog.show();
-                    Toast.makeText(AdmissionForm.this, "You are selecting Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdmissionForm.this, "You are selecting Later",
+                            Toast.LENGTH_SHORT).show();
                     sts_joinings = "later";
                     nextButton.setText("Set Alert");
 
@@ -207,11 +243,11 @@ public class AdmissionForm extends AppCompatActivity {
                 }
             });
             deleteDialog.show();
-        } else if (nextButton.getText().toString().trim().equalsIgnoreCase("Set Alert")) {
+        } else if (nextButton.getText().toString().trim().
+                equalsIgnoreCase("Set Alert")) {
             if (isValid()) {
                 setStudentAlert();
             }
-
         } else {
             if (sts_joinings.equalsIgnoreCase("now")) {
                 if (isValid()) {
@@ -348,8 +384,9 @@ public class AdmissionForm extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
-
+    //Join Now
     private void uploadStudentInfo() {
+        pd.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL + "api/student";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -357,25 +394,27 @@ public class AdmissionForm extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            pd.dismiss();
                             Log.e("RESPONSE111", "" + response);
-
                             JSONObject jsonObject = new JSONObject(response);
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
-                                Toast.makeText(AdmissionForm.this, "" + msg, Toast.LENGTH_SHORT).show();
 
+                                Toast.makeText(AdmissionForm.this, "" + msg,
+                                        Toast.LENGTH_SHORT).show();
                                 JSONObject jobj =jsonObject.getJSONObject("student");
-
                                 String studentId = jobj.getString("serial_no");
-
-                                Intent in = new Intent(AdmissionForm.this, PaymentStatus.class);
+                                Intent in = new Intent(AdmissionForm.this,
+                                        PaymentStatus.class);
                                 in.putExtra("cost", tCouseCost.getText().toString().trim());
                                 in.putExtra("stud_id",studentId);
                                 startActivity(in);
                                 finish();
+
                             } else {
-                                Toast.makeText(AdmissionForm.this, "Submition failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AdmissionForm.this, "Submition failed",
+                                        Toast.LENGTH_SHORT).show();
                             }
 
 
@@ -386,7 +425,9 @@ public class AdmissionForm extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+                Toast.makeText(AdmissionForm.this, "" + error,
+                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -400,7 +441,7 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("country_id", aedtCountry.getText().toString().trim());
                 params.put("state_id", aedtState.getText().toString().trim());
                 params.put("city_id", aedtCity.getText().toString().trim());
-                params.put("course_id", "1");
+                params.put("course_id", coursePosition);
                 params.put("student_role", userRollNo);
                 params.put("status", sts_joinings);
                 params.put("join_status", "1");
@@ -412,7 +453,9 @@ public class AdmissionForm extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    // Join Later
     private void setStudentAlert() {
+        pd.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL + "api/student";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -420,17 +463,36 @@ public class AdmissionForm extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            pd.dismiss();
                             Log.e("RESPONSE111", "" + response);
 
                             JSONObject jsonObject = new JSONObject(response);
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
-                                Toast.makeText(AdmissionForm.this, "" + msg, Toast.LENGTH_SHORT).show();
-                                Intent in = new Intent(AdmissionForm.this, AlertActivity.class);
-
-                                startActivity(in);
-                                finish();
+                                new AwesomeNoticeDialog(AdmissionForm.this)
+                                        .setTitle("Success")
+                                        .setMessage("Alert Saved Successfully")
+                                        .setColoredCircle(R.color.colorPrimaryDark)
+                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                        .setCancelable(true)
+                                        .setButtonText("Ok")
+                                        .setButtonBackgroundColor(R.color.black)
+                                        .setButtonText("Ok")
+                                        .setNoticeButtonClick(new Closure() {
+                                            @Override
+                                            public void exec() {
+                                                Intent in =new Intent( AdmissionForm.this, MenuActivity.class);
+                                                startActivity(in);
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+//                                Toast.makeText(AdmissionForm.this, "" + msg, Toast.LENGTH_SHORT).show();
+//                                Intent in = new Intent(AdmissionForm.this, AlertActivity.class);
+//
+//                                startActivity(in);
+//                                finish();
                             } else {
                                 Toast.makeText(AdmissionForm.this, "Submition failed", Toast.LENGTH_SHORT).show();
                             }
@@ -441,6 +503,7 @@ public class AdmissionForm extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                pd.dismiss();
                 Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -455,7 +518,7 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("country_id", aedtCountry.getText().toString().trim());
                 params.put("state_id", aedtState.getText().toString().trim());
                 params.put("city_id", aedtCity.getText().toString().trim());
-                params.put("course_id", "1");
+                params.put("course_id", coursePosition);
                 params.put("student_role", userRollNo);
                 params.put("status", sts_joinings);
                 params.put("alert_date", alertDate);
@@ -478,7 +541,7 @@ public class AdmissionForm extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("courses");
-                            for (int i = 1; i <= jary.length(); i++) {
+                            for (int i = 0; i <= jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
                                 costList.add(jobj1.getString("amount"));

@@ -109,6 +109,7 @@
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:padding="10dp"
+            android:visibility="visible"
             android:id="@+id/div_calculate"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -125,7 +126,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/edt_border"
                 android:gravity="center"
-                android:hint="Enter Amount" />
+                android:hint="Initial Amount" />
 
             <Button
                 android:layout_width="wrap_content"

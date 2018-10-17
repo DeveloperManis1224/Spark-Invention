@@ -6,24 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MarketingAdmission">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:id="@+id/header_tab"
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,68 +62,64 @@
                     android:imeOptions="actionNext"
                     android:padding="5dp"
                     android:singleLine="true"
-                    android:id="@+id/edt_name"
+                    android:inputType="textCapSentences"
+                    android:id="@+id/edt_ins_name"
                     android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-                    android:hint="Enter Name"/>
+                    android:hint="Enter Institution "/>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:padding="5dp"
-                    android:id="@+id/edt_dob"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/edt_border"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:hint="Enter Date of Birth"/>
+
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:padding="5dp"
-                    android:id="@+id/edt_college"
+                    android:inputType="textCapSentences"
+                    android:id="@+id/edt_staff_name"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-                    android:hint="Enter College"/>
+                    android:hint="Enter Staff Name"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
                     android:padding="5dp"
-                    android:id="@+id/edt_phone"
+                    android:inputType="phone"
+                    android:id="@+id/edt_staff_phone"
+                    android:maxLength="10"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-                    android:hint="Enter Phone"/>
+                    android:hint="Enter Staff Phone"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
                     android:padding="5dp"
-                    android:id="@+id/edt_email"
+
+                    android:id="@+id/edt_ins_mail"
+                    android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-                    android:hint="Enter Email"/>
+                    android:hint="Enter Institution Email"/>
 
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:inputType="textCapSentences"
                     android:id="@+id/edt_country"
                     android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
@@ -140,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:singleLine="true"
+                    android:inputType="textCapSentences"
                     android:id="@+id/edt_state"
                     android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
@@ -153,6 +146,7 @@
                     android:id="@+id/edt_city"
                     android:padding="5dp"
                     android:singleLine="true"
+                    android:inputType="textCapSentences"
                     android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
                     android:layout_marginTop="10dp"
@@ -161,7 +155,8 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/edt_address"
+                    android:id="@+id/edt_ins_address"
+                    android:inputType="textCapSentences"
                     android:padding="5dp"
                     android:singleLine="true"
                     android:gravity="center"
@@ -170,21 +165,35 @@
                     android:background="@drawable/edt_border"
                     android:hint="Enter Address"/>
 
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:padding="5dp"
+                    android:id="@+id/edt_landline"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:singleLine="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/edt_border"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:hint="Enter Lanline Number"/>
+
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/edt_course"
-                    android:singleLine="true"
+                    android:id="@+id/spi_event"
                     android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Course"/>
+                    android:background="@drawable/edt_border" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:visibility="gone"
                     android:gravity="right"
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
@@ -204,12 +213,12 @@
                         android:text="Next"
                         android:textSize="16dp"
                         android:elevation="2dp"
-
+                        android:onClick="onMarketingSubmit"
                         android:padding="10dp"
                         android:drawableRight="@drawable/next_arrow"
                         android:textAllCaps="false"
                         android:textStyle="bold"
-                        android:id="@+id/btn_next"
+                        android:id="@+id/btn_next_marketing"
                         android:textColor="#fff"
                         android:fontFamily="@font/poppinsmedium"
                         android:background="@drawable/btn_clr_drawble"/>

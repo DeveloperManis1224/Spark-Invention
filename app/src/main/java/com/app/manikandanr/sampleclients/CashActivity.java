@@ -49,31 +49,33 @@ public class CashActivity extends AppCompatActivity {
         lytCash = findViewById(R.id.div_fullcash);
         lytEmi = findViewById(R.id.div_calculate);
         txt_Cost = findViewById(R.id.txt_cost);
-
         monthEmi3 = findViewById(R.id.txt_month3);
         monthEmi6 = findViewById(R.id.txt_month6);
         monthEmi9 = findViewById(R.id.txt_month9);
 
-
-
         txtCost = Double.parseDouble(getIntent().getStringExtra("cost"));
         txtId= getIntent().getStringExtra("stud_id");
 
-        setCalulation();
+       // setCalulation();
 
         txt_Cost .setText("Rs "+txtCost);
 
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 if(rb.getText().toString().equalsIgnoreCase("FULL CASH"))
                 {
                     Intent in = new Intent(CashActivity.this,BillActivity.class);
+                    in.putExtra("cash_method","1");
                     startActivity(in);
                 }
                 else if(rb.getText().toString().equalsIgnoreCase("EMI"))
                 {
-
+                    Intent in = new Intent(CashActivity.this,BillActivity.class);
+                    in.putExtra("cash_method","1");
+                    startActivity(in);
                 }
             }
         });
@@ -113,17 +115,20 @@ public class CashActivity extends AppCompatActivity {
     }
 
 
-    private void setCalulation()
+//    private void setCalulation()
+//    {
+//        double total_amount = (int)txtCost;
+//        monthEmi3 .setText( "Rs "+total_amount/3);
+//        monthEmi6.setText("Rs "+total_amount/6);
+//        monthEmi9.setText("Rs "+total_amount/9);
+//    }
+
+    public void onCalculateEmi(View v)
     {
         double total_amount = (int)txtCost;
         monthEmi3 .setText( "Rs "+total_amount/3);
         monthEmi6.setText("Rs "+total_amount/6);
         monthEmi9.setText("Rs "+total_amount/9);
-    }
-
-    public void onCalculateEmi(View v)
-    {
-
     }
 
     private void completeCashMethod() {
