@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +27,7 @@ import com.app.manikandanr.sampleclients.Utils.Constants;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +37,16 @@ public class CashActivity extends AppCompatActivity {
     RadioButton rb;
     RadioGroup rdoGrp ;
     private RadioButton rCash,rEmi;
-    private LinearLayout lytCash,lytEmi;
+    private LinearLayout lytCash,lytEmi,lytEmiPlans;
     private String txtId;
     private double txtCost;
+    private Spinner emiPlans;
     private TextView txt_Cost;
+    String radioStatus;
+    private EditText eCaltxt;
+    final ArrayList<String> emiList = new ArrayList<String>();
+    private String emiSelection;
+    int tenureAmount = 0;
     TextView monthEmi3,monthEmi6,monthEmi9;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,131 +57,135 @@ public class CashActivity extends AppCompatActivity {
         rCash = findViewById(R.id.radio_cash);
         rdoGrp = findViewById(R.id.rdo_payment);
         rEmi = findViewById(R.id.radio_emi);
+        lytEmiPlans = findViewById(R.id.div_emi);
         lytCash = findViewById(R.id.div_fullcash);
         lytEmi = findViewById(R.id.div_calculate);
         txt_Cost = findViewById(R.id.txt_cost);
         monthEmi3 = findViewById(R.id.txt_month3);
         monthEmi6 = findViewById(R.id.txt_month6);
         monthEmi9 = findViewById(R.id.txt_month9);
-
+        emiPlans = findViewById(R.id.spi_plans);
+        eCaltxt = findViewById(R.id.edt_cal);
         txtCost = Double.parseDouble(getIntent().getStringExtra("cost"));
-        txtId= getIntent().getStringExtra("stud_id");
+        txtId = getIntent().getStringExtra("stud_id");
 
-       // setCalulation();
 
-        txt_Cost .setText("Rs "+txtCost);
+        txt_Cost.setText("Rs " + txtCost);
 
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (radioStatus.equalsIgnoreCase("FULL CASH")) {
+                    Intent in = new Intent(CashActivity.this, BillActivity.class);
+                    in.putExtra("stud_id",""+txtId);
+                    in.putExtra("payment_mode","1");
+                    in.putExtra("initial_amount","00");
+                    in.putExtra("total_amount",""+txtCost);
+                    in.putExtra("tenure",""+emiSelection);
+                    in.putExtra("due_date","10-12-2018");
+                    in.putExtra("payment_status","2");
+                    in.putExtra("tenure_amount",""+tenureAmount);
+                    in.putExtra("balance_amount",""+getBalanceAmount());
 
-
-                if(rb.getText().toString().equalsIgnoreCase("FULL CASH"))
-                {
-                    Intent in = new Intent(CashActivity.this,BillActivity.class);
-                    in.putExtra("cash_method","1");
                     startActivity(in);
-                }
-                else if(rb.getText().toString().equalsIgnoreCase("EMI"))
-                {
-                    Intent in = new Intent(CashActivity.this,BillActivity.class);
-                    in.putExtra("cash_method","1");
+                } else if (radioStatus.equalsIgnoreCase("EMI")) {
+                    Intent in = new Intent(CashActivity.this, BillActivity.class);
+                    in.putExtra("stud_id",""+txtId);
+                    in.putExtra("payment_mode","2");
+                    in.putExtra("initial_amount",""+eCaltxt.getText().toString());
+                    in.putExtra("total_amount",""+txtCost);
+                    in.putExtra("tenure",""+emiSelection);
+                    in.putExtra("due_date","10-12-2018");
+                    in.putExtra("payment_status","3");
+                    in.putExtra("tenure_amount",""+tenureAmount);
+                    in.putExtra("balance_amount",""+getBalanceAmount());
                     startActivity(in);
                 }
             }
         });
-        rdoGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        rdoGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-              rb =(RadioButton)findViewById(checkedId);
-                if(rb.getText().toString().equalsIgnoreCase("FULL CASH"))
-                {
+                rb = (RadioButton) findViewById(checkedId);
+                if (rb.getText().toString().equalsIgnoreCase("FULL CASH")) {
                     lytCash.setVisibility(View.GONE);
                     lytEmi.setVisibility(View.GONE);
+                    lytEmiPlans.setVisibility(View.GONE);
+                    radioStatus = "FULL CASH";
                     bSubmit.setText("Amount Paid and Submit");
-                }
-                else if (rb.getText().toString().equalsIgnoreCase("EMI"))
-                {
-                    Toast.makeText(CashActivity.this, "Please select plan", Toast.LENGTH_SHORT).show();
+                } else if (rb.getText().toString().equalsIgnoreCase("EMI")) {
                     lytCash.setVisibility(View.GONE);
+                    lytEmiPlans.setVisibility(View.GONE);
                     lytEmi.setVisibility(View.VISIBLE);
+                    radioStatus = "EMI";
+                    bSubmit.setText("Submit");
                 }
             }
         });
 
-//        rCash.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                lytCash.setVisibility(View.VISIBLE);
-//                lytEmi.setVisibility(View.GONE);
-//            }
-//        });
-//        rEmi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                lytEmi.setVisibility(View.VISIBLE);
-//                lytCash.setVisibility(View.GONE);
-//            }
-//        });
     }
-
-
-//    private void setCalulation()
-//    {
-//        double total_amount = (int)txtCost;
-//        monthEmi3 .setText( "Rs "+total_amount/3);
-//        monthEmi6.setText("Rs "+total_amount/6);
-//        monthEmi9.setText("Rs "+total_amount/9);
-//    }
-
+    // setCalulation();
     public void onCalculateEmi(View v)
     {
-        double total_amount = (int)txtCost;
-        monthEmi3 .setText( "Rs "+total_amount/3);
-        monthEmi6.setText("Rs "+total_amount/6);
-        monthEmi9.setText("Rs "+total_amount/9);
+        emiList.clear();
+        double total_amount = (int) txtCost;
+        double balanceAmount = total_amount - Integer.parseInt(eCaltxt.getText().toString());
+
+        final int month3= (int) Math.round(balanceAmount)/3;
+        final int month6 = (int) Math.round(balanceAmount)/6;
+        final int month9 = (int) Math.round(balanceAmount)/9;
+
+        monthEmi3 .setText("1. 3 months * Rs "+month3);
+        monthEmi6.setText("2. 6 months * Rs "+month6);
+        monthEmi9.setText("3. 9 months * Rs "+month9);
+
+        emiList.add("Select One");
+        emiList.add("3 months * Rs "+month3);
+        emiList.add("6 months * Rs "+month6);
+        emiList.add("9 months * Rs "+month9);
+
+        lytEmiPlans.setVisibility(View.VISIBLE);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (CashActivity.this, android.R.layout.simple_spinner_dropdown_item,emiList);
+        emiPlans.setAdapter(adapter);
+        emiPlans.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int pos = i ;
+                if(pos == 1)
+                {
+                    Toast.makeText(CashActivity.this, "3 Months"+month3, Toast.LENGTH_SHORT).show();
+                    emiSelection = ""+pos;
+                    tenureAmount = month3;
+                }
+                else if(pos == 2)
+                {
+                    Toast.makeText(CashActivity.this, "6 Months"+month6, Toast.LENGTH_SHORT).show();
+                    emiSelection = ""+pos;
+                    tenureAmount = month6;
+                }
+                else if (pos == 3)
+                {
+                    Toast.makeText(CashActivity.this, "9 Months"+month9, Toast.LENGTH_SHORT).show();
+                    emiSelection = ""+pos;
+                    tenureAmount = month9;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+            }
+        });
     }
 
-    private void completeCashMethod() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL + "api/student";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.e("RESPONSE111", "" + response);
-
-                            JSONObject jsonObject = new JSONObject(response);
-                            String sts = jsonObject.getString("status");
-                            String msg = jsonObject.getString("message");
-                            if (sts.equalsIgnoreCase("1")) {
-                                Toast.makeText(CashActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
-                                Intent in = new Intent(CashActivity.this, AlertActivity.class);
-
-                                startActivity(in);
-                                finish();
-                            } else {
-                                Toast.makeText(CashActivity.this, "Submition failed", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(CashActivity.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-
-                return params;
-            }
-        };
-        queue.add(stringRequest);
+    private int getBalanceAmount()
+    {
+        int balance_amouunt = 0;
+        int total = (int) txtCost;
+        int tenure_amount = Integer.parseInt(eCaltxt.getText().toString());
+        balance_amouunt = total - tenure_amount;
+        return  balance_amouunt;
     }
+
 
 }

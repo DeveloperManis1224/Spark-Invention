@@ -104,12 +104,13 @@
 
         </LinearLayout>
 
+        // emi calculate
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:padding="10dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/div_calculate"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -122,6 +123,8 @@
                 android:layout_weight="1.5"
                 android:textStyle="bold"
                 android:textColor="#393939"
+                android:inputType="number"
+                android:id="@+id/edt_cal"
                 android:padding="5dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/edt_border"
@@ -141,6 +144,8 @@
                 android:text="Calculate EMI"/>
 
         </LinearLayout>
+
+        //emi table
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -159,100 +164,43 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="#393939"
                     android:gravity="center"
-                    android:text="Months" />
-
+                    android:textStyle="bold"
+                    android:textColor="#232323"
+                    android:id="@+id/txt_month3"
+                    android:text="amount1"/>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginTop="18dp"
+                    android:gravity="center"
                     android:textStyle="bold"
-                    android:textColor="#393939"
+                    android:textColor="#232323"
+                    android:id="@+id/txt_month6"
+                    android:text="amount2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Amount (Rupees)"/>
+                    android:textStyle="bold"
+                    android:textColor="#232323"
+                    android:id="@+id/txt_month9"
+                    android:layout_marginTop="18dp"
+                    android:text="amount3"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:id="@+id/spi_plans"
+                    android:layout_marginTop="18dp"
+                    android:text="amount3"/>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal">
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:id="@+id/emi_months">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3"
-                        android:id="@+id/month3"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="6"
-                        android:id="@+id/month6"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="9"
-                        android:id="@+id/month9"/>
-                </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/txt_month3"
-                        android:text="amount1"/>
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:gravity="center"
-                        android:id="@+id/txt_month6"
-                        android:text="amount1"/>
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/txt_month9"
-                        android:layout_marginTop="18dp"
-                        android:text="amount1"/>
-
-                </LinearLayout>
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:id="@+id/emi_plans"/>
-
-            </LinearLayout>
-
-
-
-
-
-
         </LinearLayout>
 
         <Button

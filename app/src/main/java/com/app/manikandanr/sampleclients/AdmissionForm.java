@@ -108,16 +108,6 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tCouseCost.setText("" + costList.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.e("SASASASA", "" + i);
                 coursePosition = ""+i;
             }
@@ -127,6 +117,18 @@ public class AdmissionForm extends AppCompatActivity {
 
             }
         });
+//        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Log.e("SASASASA", "" + i);
+//                coursePosition = ""+i;
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 //        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemClickListener() {
 //
 //            @Override
@@ -409,6 +411,8 @@ public class AdmissionForm extends AppCompatActivity {
                                         PaymentStatus.class);
                                 in.putExtra("cost", tCouseCost.getText().toString().trim());
                                 in.putExtra("stud_id",studentId);
+
+                                Log.e("RESPONSE111", studentId+"" +  tCouseCost.getText().toString().trim());
                                 startActivity(in);
                                 finish();
 

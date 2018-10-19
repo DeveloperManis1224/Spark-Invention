@@ -59,6 +59,9 @@
                 android:background="@drawable/edt_border"
                 android:textColor="#797979"
                 android:padding="8dp"
+                android:id="@+id/edt_bill"
+                android:imeOptions="actionDone"
+                android:inputType="number|textCapCharacters"
                 android:fontFamily="@font/poppinsmedium"
                 android:hint="Enter Bill number"/>
 
