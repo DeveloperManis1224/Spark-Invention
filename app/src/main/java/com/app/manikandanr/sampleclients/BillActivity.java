@@ -67,29 +67,10 @@ public class BillActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(eBillNumber.getText().toString().isEmpty())
+                if(!eBillNumber.getText().toString().isEmpty())
                 {
-                    new AwesomeSuccessDialog(BillActivity.this)
-                            .setTitle("Admission Status")
-                            .setMessage("Admission Successfully!")
-                            .setColoredCircle(R.color.colorPrimary)
-                            .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
-                            .setCancelable(true)
-                            .setPositiveButtonText("Ok")
-                            .setPositiveButtonbackgroundColor(R.color.colorPrimary)
-                            .setPositiveButtonTextColor(R.color.white)
-                            .setPositiveButtonClick(new Closure() {
-                                @Override
-                                public void exec() {
 
-                                }
-                            })
-                            .show();
-                    Log.e("RESPONSE111","bill number"+eBillNumber.getText().toString().trim()+
-                    "  studentId = "+studId+"  payment Mode = "+paymentMode+"  initial Amount ="+
-                            initialAmount+"  toal amount = "+totalAmount+" tenureMonth = "+ tenureMonth
-                    +" dueDate ="+dueDate+" paymentStatus = "+paymentStatus+" tenureAmount = "+tenureAmount+
-                    "balanceAmount = "+balanceAmount);
+                    completeCashMethod();
                 }
                 else
                 {
@@ -103,7 +84,7 @@ public class BillActivity extends AppCompatActivity {
 
     private void completeCashMethod() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL + "api/student";
+        String url = Constants.BASE_URL + "api/payment";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -115,11 +96,35 @@ public class BillActivity extends AppCompatActivity {
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
-                                Toast.makeText(BillActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
-                                Intent in = new Intent(BillActivity.this, AlertActivity.class);
+                               // Toast.makeText(BillActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
+                                new AwesomeSuccessDialog(BillActivity.this)
+                                        .setTitle("Admission Status")
+                                        .setMessage(""+"bill number"+eBillNumber.getText().toString().trim()+
+                                                "\n  studentId = "+studId+"\n  payment Mode = "+paymentMode+"\n  initial Amount ="+
+                                                initialAmount+"\n  toal amount = "+totalAmount+"\n tenureMonth = "+ tenureMonth
+                                                +"\n dueDate ="+dueDate+"\n paymentStatus = "+paymentStatus+"\n tenureAmount = "+tenureAmount+
+                                                "\n balanceAmount = "+balanceAmount)
+                                        .setColoredCircle(R.color.colorPrimary)
+                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                        .setCancelable(true)
+                                        .setPositiveButtonText("Ok")
+                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                        .setPositiveButtonTextColor(R.color.white)
+                                        .setPositiveButtonClick(new Closure() {
+                                            @Override
+                                            public void exec() {
+                                                Intent in = new Intent(BillActivity.this, AlertActivity.class);
+                                                startActivity(in);
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+                                Log.e("RESPONSE111","bill number"+eBillNumber.getText().toString().trim()+
+                                        "  studentId = "+studId+"  payment Mode = "+paymentMode+"  initial Amount ="+
+                                        initialAmount+"  toal amount = "+totalAmount+" tenureMonth = "+ tenureMonth
+                                        +" dueDate ="+dueDate+" paymentStatus = "+paymentStatus+" tenureAmount = "+tenureAmount+
+                                        "balanceAmount = "+balanceAmount);
 
-                                startActivity(in);
-                                finish();
                             } else {
                                 Toast.makeText(BillActivity.this, "Submition failed", Toast.LENGTH_SHORT).show();
                             }
@@ -136,7 +141,15 @@ public class BillActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-
+                params.put("stud_id",""+studId);
+                params.put("payment_mode","2");
+                params.put("initial_amount",""+initialAmount);
+                params.put("total_amount",""+totalAmount);
+                params.put("tenure",""+tenureMonth);
+                params.put("payment_status","3");
+                params.put("tenure_amount",""+tenureAmount);
+                params.put("balance_amount",""+balanceAmount);
+                params.put("quatation_id",eBillNumber.getText().toString().trim());
                 return params;
             }
         };
