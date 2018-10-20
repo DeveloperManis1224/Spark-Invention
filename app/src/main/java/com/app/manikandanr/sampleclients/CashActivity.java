@@ -69,12 +69,14 @@ public class CashActivity extends AppCompatActivity {
         txtCost = Double.parseDouble(getIntent().getStringExtra("cost"));
         txtId = getIntent().getStringExtra("stud_id");
 
+        radioStatus = "FULL CASH";
 
         txt_Cost.setText("Rs " + txtCost);
 
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (radioStatus.equalsIgnoreCase("FULL CASH")) {
                     Intent in = new Intent(CashActivity.this, BillActivity.class);
                     in.putExtra("stud_id",""+txtId);
@@ -85,7 +87,7 @@ public class CashActivity extends AppCompatActivity {
                     in.putExtra("due_date","10-12-2018");
                     in.putExtra("payment_status","2");
                     in.putExtra("tenure_amount",""+tenureAmount);
-                    in.putExtra("balance_amount",""+getBalanceAmount());
+                    in.putExtra("balance_amount","0");
 
                     startActivity(in);
                 } else if (radioStatus.equalsIgnoreCase("EMI")) {

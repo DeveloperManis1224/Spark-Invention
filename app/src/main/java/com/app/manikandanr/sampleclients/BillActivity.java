@@ -1,6 +1,7 @@
 package com.app.manikandanr.sampleclients;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,14 +21,25 @@ import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.WHITE;
+
 public class BillActivity extends AppCompatActivity {
 
+    public static int white = 0xFFFFFFFF;
+    public static int black = 0xFF000000;
+    public final static int WIDTH=500;
+    String value = "";
     private Button btnSubmit;
     private EditText eBillNumber;
     private String studId,paymentMode,initialAmount,totalAmount,tenureMonth,dueDate,paymentStatus,tenureAmount,balanceAmount;
@@ -83,6 +95,11 @@ public class BillActivity extends AppCompatActivity {
     }
 
     private void completeCashMethod() {
+        value = "Bill number : "+eBillNumber.getText().toString().trim()+
+                "\n  Student Roll Number : "+studId+"\n  Payment Mode : "+paymentMode+"\n  Initial Amount : "+
+                initialAmount+"\n  Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
+                +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
+                "\n Balance Amount : "+balanceAmount;
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL + "api/payment";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -91,7 +108,6 @@ public class BillActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             Log.e("RESPONSE111", "" + response);
-
                             JSONObject jsonObject = new JSONObject(response);
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
@@ -113,7 +129,8 @@ public class BillActivity extends AppCompatActivity {
                                         .setPositiveButtonClick(new Closure() {
                                             @Override
                                             public void exec() {
-                                                Intent in = new Intent(BillActivity.this, AlertActivity.class);
+                                                Intent in = new Intent(BillActivity.this, ViewBill.class);
+                                                in.putExtra("detail",""+ value);
                                                 startActivity(in);
                                                 finish();
                                             }
@@ -141,7 +158,7 @@ public class BillActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("stud_id",""+studId);
+                params.put("student_id","1");
                 params.put("payment_mode","2");
                 params.put("initial_amount",""+initialAmount);
                 params.put("total_amount",""+totalAmount);
@@ -149,11 +166,37 @@ public class BillActivity extends AppCompatActivity {
                 params.put("payment_status","3");
                 params.put("tenure_amount",""+tenureAmount);
                 params.put("balance_amount",""+balanceAmount);
-                params.put("quatation_id",eBillNumber.getText().toString().trim());
+                params.put("quotation_id",eBillNumber.getText().toString().trim());
                 return params;
             }
         };
         queue.add(stringRequest);
     }
 
+
+    Bitmap encodeAsBitmap(String str) throws WriterException {
+        BitMatrix result;
+        Bitmap bitmap=null;
+        try
+        {
+            result = new MultiFormatWriter().encode(str,
+                    BarcodeFormat.QR_CODE, WIDTH, WIDTH, null);
+
+            int w = result.getWidth();
+            int h = result.getHeight();
+            int[] pixels = new int[w * h];
+            for (int y = 0; y < h; y++) {
+                int offset = y * w;
+                for (int x = 0; x < w; x++) {
+                    pixels[offset + x] = result.get(x, y) ? black:white;
+                }
+            }
+            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, 500, 0, 0, w, h);
+        } catch (Exception iae) {
+            iae.printStackTrace();
+            return null;
+        }
+        return bitmap;
+    }
 }

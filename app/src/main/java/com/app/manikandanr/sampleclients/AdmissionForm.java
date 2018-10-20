@@ -44,12 +44,15 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AdmissionForm extends AppCompatActivity {
+    int mday = 24;
+    int mmonth=10;
+    int myear=1995;
     private Spinner aedtCourse;
     String coursePosition = "";
     private String alertDate = "";
     private String sts_joinings = "";
     private Button nextButton;
-    private TextView tCouseCost;
+    private TextView tCouseCost,tJoinStatus;
     private String userRole = "";
     private String userRollNo = "";
     private EditText edtName, edtDob, edtCollege, edtPhone, edtEmail, edtAddress;
@@ -80,6 +83,7 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCity = findViewById(R.id.edt_city);
         aedtCourse = findViewById(R.id.edt_course);
         tCouseCost = findViewById(R.id.txt_course_cost);
+        tJoinStatus = findViewById(R.id.txt_join_status);
         edtAddress = findViewById(R.id.edt_address);
         nextButton = findViewById(R.id.btn_next);
         userRole = getIntent().getStringExtra("role");
@@ -95,12 +99,13 @@ public class AdmissionForm extends AppCompatActivity {
         getState();
         getCourseDetails();
 
+
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(AdmissionForm.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(AdmissionForm.this, date, myear, mmonth,
+                       mday).show();
+
             }
         });
 
@@ -174,86 +179,88 @@ public class AdmissionForm extends AppCompatActivity {
     }
 
     public void onNextClick(View view) {
-        if (nextButton.getText().toString().trim().equalsIgnoreCase("Next")) {
-            LayoutInflater factory = LayoutInflater.from(AdmissionForm.this);
-            final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
-            final AlertDialog deleteDialog = new AlertDialog.Builder(
-                    AdmissionForm.this).create();
-            deleteDialog.setView(deleteDialogView);
+        if(isValid()) {
+            if (nextButton.getText().toString().trim().equalsIgnoreCase("Next")) {
+                LayoutInflater factory = LayoutInflater.from(AdmissionForm.this);
+                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+                final AlertDialog deleteDialog = new AlertDialog.Builder(
+                        AdmissionForm.this).create();
+                deleteDialog.setView(deleteDialogView);
 
-            Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
-            Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
-            Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
 
-            btnSchool.setText("Join Now");
-            btnSchool.setAllCaps(false);
+                btnSchool.setText("Join Now");
+                btnSchool.setAllCaps(false);
 
-            btnCollege.setText("Later");
-            btnCollege.setAllCaps(false);
+                btnCollege.setText("Later");
+                btnCollege.setAllCaps(false);
 
-            btnProject.setText("Project / Program");
-            btnProject.setVisibility(View.GONE);
+                btnProject.setText("Project / Program");
+                btnProject.setVisibility(View.GONE);
 
 
-            btnSchool.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
-                    Toast.makeText(AdmissionForm.this, "You are selecting Join now",
-                            Toast.LENGTH_SHORT).show();
-                    nextButton.setText("Submit");
-                    sts_joinings = "now";
-                }
-            });
-            btnCollege.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
-                    int mYear, mMonth, mDay;
-                    final Calendar c = Calendar.getInstance();
-                    mYear = c.get(Calendar.YEAR);
-                    mMonth = c.get(Calendar.MONTH);
-                    mDay = c.get(Calendar.DAY_OF_MONTH);
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(
-                            AdmissionForm.this,
-                            new DatePickerDialog.OnDateSetListener() {
-                                @Override
-                                public void onDateSet(DatePicker view, int year,
-                                                      int monthOfYear, int dayOfMonth) {
-                                    Toast.makeText(AdmissionForm.this,
-                                            "" + dayOfMonth + "-" +
-                                            (monthOfYear + 1) + "-" + year,
-                                            Toast.LENGTH_SHORT).show();
-                                    alertDate = "" + dayOfMonth + "-" +
-                                            (monthOfYear + 1) + "-" + year;
-                                    nextButton.setText("Set Alert");
-                                }
-                            }, mYear, mMonth, mDay);
-                    datePickerDialog.show();
-                    Toast.makeText(AdmissionForm.this, "You are selecting Later",
-                            Toast.LENGTH_SHORT).show();
-                    sts_joinings = "later";
-                    nextButton.setText("Set Alert");
+                btnSchool.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Toast.makeText(AdmissionForm.this, "You are selecting Join now",
+                                Toast.LENGTH_SHORT).show();
+                        nextButton.setText("Submit");
+                        sts_joinings = "now";
+                    }
+                });
+                btnCollege.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        int mYear, mMonth, mDay;
+                        final Calendar c = Calendar.getInstance();
+                        mYear = c.get(Calendar.YEAR);
+                        mMonth = c.get(Calendar.MONTH);
+                        mDay = c.get(Calendar.DAY_OF_MONTH);
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                                AdmissionForm.this,
+                                new DatePickerDialog.OnDateSetListener() {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year,
+                                                          int monthOfYear, int dayOfMonth) {
+                                        Toast.makeText(AdmissionForm.this,
+                                                "" + dayOfMonth + "-" +
+                                                        (monthOfYear + 1) + "-" + year,
+                                                Toast.LENGTH_SHORT).show();
+                                        alertDate = "" + dayOfMonth + "-" +
+                                                (monthOfYear + 1) + "-" + year;
+                                        nextButton.setText("Set Alert");
+                                    }
+                                }, mYear, mMonth, mDay);
+                        datePickerDialog.show();
+                        Toast.makeText(AdmissionForm.this, "You are selecting Later",
+                                Toast.LENGTH_SHORT).show();
+                        sts_joinings = "later";
+                        nextButton.setText("Set Alert");
 
-                }
-            });
-            btnProject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
+                    }
+                });
+                btnProject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
 
-                }
-            });
-            deleteDialog.show();
-        } else if (nextButton.getText().toString().trim().
-                equalsIgnoreCase("Set Alert")) {
-            if (isValid()) {
-                setStudentAlert();
-            }
-        } else {
-            if (sts_joinings.equalsIgnoreCase("now")) {
+                    }
+                });
+                deleteDialog.show();
+            } else if (nextButton.getText().toString().trim().
+                    equalsIgnoreCase("Set Alert")) {
                 if (isValid()) {
-                    uploadStudentInfo();
+                    setStudentAlert();
+                }
+            } else {
+                if (sts_joinings.equalsIgnoreCase("now")) {
+                    if (isValid()) {
+                        uploadStudentInfo();
+                    }
                 }
             }
         }
