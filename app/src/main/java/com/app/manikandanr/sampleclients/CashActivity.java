@@ -81,27 +81,32 @@ public class CashActivity extends AppCompatActivity {
                     Intent in = new Intent(CashActivity.this, BillActivity.class);
                     in.putExtra("stud_id",""+txtId);
                     in.putExtra("payment_mode","1");
-                    in.putExtra("initial_amount","00");
+                    in.putExtra("initial_amount","0");
                     in.putExtra("total_amount",""+txtCost);
-                    in.putExtra("tenure",""+emiSelection);
-                    in.putExtra("due_date","10-12-2018");
+                    in.putExtra("tenure",""+"0");
                     in.putExtra("payment_status","2");
-                    in.putExtra("tenure_amount",""+tenureAmount);
+                    in.putExtra("tenure_amount","0");
                     in.putExtra("balance_amount","0");
 
                     startActivity(in);
                 } else if (radioStatus.equalsIgnoreCase("EMI")) {
-                    Intent in = new Intent(CashActivity.this, BillActivity.class);
-                    in.putExtra("stud_id",""+txtId);
-                    in.putExtra("payment_mode","2");
-                    in.putExtra("initial_amount",""+eCaltxt.getText().toString());
-                    in.putExtra("total_amount",""+txtCost);
-                    in.putExtra("tenure",""+emiSelection);
-                    in.putExtra("due_date","10-12-2018");
-                    in.putExtra("payment_status","3");
-                    in.putExtra("tenure_amount",""+tenureAmount);
-                    in.putExtra("balance_amount",""+getBalanceAmount());
-                    startActivity(in);
+                    if(!eCaltxt.getText().toString().trim().isEmpty()&&!emiPlans.getSelectedItem().toString().isEmpty()&&
+                            !emiPlans.getSelectedItem().toString().equalsIgnoreCase("Select One")) {
+                        Intent in = new Intent(CashActivity.this, BillActivity.class);
+                        in.putExtra("stud_id", "" + txtId);
+                        in.putExtra("payment_mode", "2");
+                        in.putExtra("initial_amount", "" + eCaltxt.getText().toString());
+                        in.putExtra("total_amount", "" + txtCost);
+                        in.putExtra("tenure", "" + emiSelection);
+                        in.putExtra("payment_status", "3");
+                        in.putExtra("tenure_amount", "" + tenureAmount);
+                        in.putExtra("balance_amount", "" + getBalanceAmount());
+                        startActivity(in);
+                    }
+                    else
+                    {
+                        eCaltxt.setError("Enter Initial Amount");
+                    }
                 }
             }
         });
@@ -113,22 +118,26 @@ public class CashActivity extends AppCompatActivity {
                     lytEmi.setVisibility(View.GONE);
                     lytEmiPlans.setVisibility(View.GONE);
                     radioStatus = "FULL CASH";
+                    bSubmit.setVisibility(View.VISIBLE);
                     bSubmit.setText("Amount Paid and Submit");
+
                 } else if (rb.getText().toString().equalsIgnoreCase("EMI")) {
                     lytCash.setVisibility(View.GONE);
                     lytEmiPlans.setVisibility(View.GONE);
                     lytEmi.setVisibility(View.VISIBLE);
                     radioStatus = "EMI";
+                    bSubmit.setVisibility(View.GONE);
                     bSubmit.setText("Submit");
                 }
             }
         });
 
     }
-    // setCalulation();
+    //setCalulation();
     public void onCalculateEmi(View v)
     {
         emiList.clear();
+        bSubmit.setVisibility(View.VISIBLE);
         double total_amount = (int) txtCost;
         double balanceAmount = total_amount - Integer.parseInt(eCaltxt.getText().toString());
 

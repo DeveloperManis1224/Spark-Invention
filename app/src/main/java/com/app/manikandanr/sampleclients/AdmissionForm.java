@@ -413,7 +413,7 @@ public class AdmissionForm extends AppCompatActivity {
                                 Toast.makeText(AdmissionForm.this, "" + msg,
                                         Toast.LENGTH_SHORT).show();
                                 JSONObject jobj =jsonObject.getJSONObject("student");
-                                String studentId = jobj.getString("serial_no");
+                                String studentId = jobj.getString("id");
                                 Intent in = new Intent(AdmissionForm.this,
                                         PaymentStatus.class);
                                 in.putExtra("cost", tCouseCost.getText().toString().trim());

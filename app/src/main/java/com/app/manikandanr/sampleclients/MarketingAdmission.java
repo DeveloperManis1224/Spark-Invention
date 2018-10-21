@@ -157,15 +157,6 @@ public class MarketingAdmission extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     deleteDialog.dismiss();
-                    Toast.makeText(MarketingAdmission.this, "Event Confirmed.", Toast.LENGTH_SHORT).show();
-                    btnNext.setText("Submit");
-                    sts_joinings = "now";
-                }
-            });
-            btnCollege.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
                     int mYear, mMonth, mDay;
                     final Calendar c = Calendar.getInstance();
                     mYear = c.get(Calendar.YEAR);
@@ -179,11 +170,21 @@ public class MarketingAdmission extends AppCompatActivity {
                                     Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
                                             (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
                                     alertDate = "" + dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                                    btnNext.setText("Save");
+
                                 }
                             }, mYear, mMonth, mDay);
                     datePickerDialog.show();
-                    Toast.makeText(MarketingAdmission.this, "You are selecting Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MarketingAdmission.this, "Event Confirmed.", Toast.LENGTH_SHORT).show();
+                    btnNext.setText("Submit");
+                    sts_joinings = "now";
+                }
+            });
+            btnCollege.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteDialog.dismiss();
+
+                    Toast.makeText(MarketingAdmission.this, "Not Confirmed", Toast.LENGTH_SHORT).show();
                     sts_joinings = "later";
                     btnNext.setText("Save");
 

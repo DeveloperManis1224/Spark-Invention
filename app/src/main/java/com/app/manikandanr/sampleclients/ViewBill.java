@@ -52,7 +52,6 @@ public class ViewBill extends AppCompatActivity {
         {
             result = new MultiFormatWriter().encode(str,
                     BarcodeFormat.QR_CODE, WIDTH, WIDTH, null);
-
             int w = result.getWidth();
             int h = result.getHeight();
             int[] pixels = new int[w * h];
