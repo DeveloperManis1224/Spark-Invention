@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 
 public class MenuActivity extends AppCompatActivity {
@@ -42,16 +44,6 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                new AwesomeInfoDialog(getApplicationContext())
-//                        .setTitle("Select")
-//                        .setMessage(R.string.app_name)
-//                        .setColoredCircle(R.color.colorPrimary)
-//                        .setDialogIconAndColor(R.drawable.ic_dialog_info,
-//                                R.color.white)
-//                        .setCancelable(true)
-//                        .show();
-
-
                 LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
                 final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
                 final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
@@ -76,8 +68,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
-                        in.putExtra("role","school");
-                        in.putExtra("role_id","1");
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
+                        in.putExtra(Constants.USER_ROLE_ID,"1");
                         startActivity(in);
                     }
                 });
@@ -86,8 +78,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
-                        in.putExtra("role","college");
-                        in.putExtra("role_id","2");
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
+                        in.putExtra(Constants.USER_ROLE_ID,"2");
                         startActivity(in);
                     }
                 });
@@ -96,8 +88,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
-                        in.putExtra("role","project");
-                        in.putExtra("role_id","3");
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_PROJECT);
+                        in.putExtra(Constants.USER_ROLE_ID,"3");
                         startActivity(in);
                     }
                 });
@@ -113,7 +105,6 @@ public class MenuActivity extends AppCompatActivity {
                 final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
                 deleteDialog.setView(deleteDialogView);
                 Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
-
                 Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
                 Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
 
@@ -132,8 +123,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, MarketingAdmission.class);
-                        in.putExtra("role","school");
-                        in.putExtra("role_id","1");
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
+                        in.putExtra(Constants.USER_ROLE_ID,"1");
                         startActivity(in);
                     }
                 });
@@ -142,8 +133,8 @@ public class MenuActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, MarketingAdmission.class);
-                        in.putExtra("role","college");
-                        in.putExtra("role_id","2");
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
+                        in.putExtra(Constants.USER_ROLE_ID,"2");
                         startActivity(in);
                     }
                 });
@@ -151,10 +142,6 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, MarketingAdmission.class);
-                        in.putExtra("role","project");
-                        in.putExtra("role_id","3");
-                        startActivity(in);
                     }
                 });
                 deleteDialog.show();
@@ -163,7 +150,8 @@ public class MenuActivity extends AppCompatActivity {
         bAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuActivity.this, "Coming Soon...", Toast.LENGTH_LONG).show();
+               Intent in = new Intent(MenuActivity.this,AttendanceActivity.class);
+               startActivity(in);
             }
         });
     }

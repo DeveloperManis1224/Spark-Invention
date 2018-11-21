@@ -39,8 +39,10 @@
             android:name=".MarketingAdmission"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SampleTestActivity" />
-        <activity android:name=".ViewBill"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ViewBill"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AttendanceActivity"></activity>
     </application>
 
 </manifest>

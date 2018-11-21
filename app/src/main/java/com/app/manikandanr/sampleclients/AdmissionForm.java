@@ -86,7 +86,7 @@ public class AdmissionForm extends AppCompatActivity {
         tJoinStatus = findViewById(R.id.txt_join_status);
         edtAddress = findViewById(R.id.edt_address);
         nextButton = findViewById(R.id.btn_next);
-        userRole = getIntent().getStringExtra("role");
+        userRole = getIntent().getStringExtra(Constants.USER_ROLE);
         userRollNo = getIntent().getStringExtra("role_id");
         pd = new ProgressDialog(AdmissionForm.this);
         pd.setMessage("Loading");
@@ -98,7 +98,6 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCountry.setAdapter(adapter);
         getState();
         getCourseDetails();
-
 
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,28 +121,6 @@ public class AdmissionForm extends AppCompatActivity {
 
             }
         });
-//        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                Log.e("SASASASA", "" + i);
-//                coursePosition = ""+i;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//        aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
-//                                    long id) {
-//
-//                Log.e("SASASASA", "" + pos);
-//            }
-//        });
-
 
         aedtState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -172,9 +149,8 @@ public class AdmissionForm extends AppCompatActivity {
     };
 
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         edtDob.setText(sdf.format(myCalendar.getTime()));
     }
 
