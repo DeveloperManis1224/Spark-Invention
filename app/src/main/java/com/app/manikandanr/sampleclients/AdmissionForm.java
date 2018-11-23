@@ -90,7 +90,6 @@ public class AdmissionForm extends AppCompatActivity {
         userRollNo = getIntent().getStringExtra("role_id");
         pd = new ProgressDialog(AdmissionForm.this);
         pd.setMessage("Loading");
-
         countryList.add("India");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (AdmissionForm.this, android.R.layout.select_dialog_item, countryList);

@@ -19,7 +19,6 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:elevation="2dp"
-
         android:paddingBottom="20dp"
         android:background="#fff"
         android:orientation="vertical">
@@ -115,10 +114,9 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginRight="2dp"
                 android:id="@+id/btn_store"
-
                 android:background="@drawable/menu_button_border"
                 android:fontFamily="@font/poppinsmedium"
-                android:text="Store" />
+                android:text="More" />
         </LinearLayout>
 
     </LinearLayout>

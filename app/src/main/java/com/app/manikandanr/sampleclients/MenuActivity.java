@@ -24,7 +24,7 @@ import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button bAdmission,bMarketing,bAttendance,bRevenue,bStore;
+    private Button bAdmission,bMarketing,bAttendance,bRevenue,bMore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class MenuActivity extends AppCompatActivity {
         bMarketing = findViewById(R.id.btn_marketing);
         bAttendance = findViewById(R.id.btn_attendance);
         bRevenue = findViewById(R.id.btn_revenue);
-        bStore = findViewById(R.id.btn_store);
+        bMore = findViewById(R.id.btn_store);
         bAdmission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,6 +152,15 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                Intent in = new Intent(MenuActivity.this,AttendanceActivity.class);
                startActivity(in);
+            }
+        });
+
+        bMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(MenuActivity.this,AddLocation.class);
+                startActivity(in);
+                finish();
             }
         });
     }

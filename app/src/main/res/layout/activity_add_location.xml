@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AttendanceActivity">
+    tools:context=".AddLocation">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +32,7 @@
                     android:textColor="@color/clr_white"
                     android:textSize="20sp"
                     android:fontFamily="@font/poppinsmedium"
-                    android:text="Attendance"/>
+                    android:text="Add Location"/>
             </LinearLayout>
 
             <LinearLayout
@@ -56,93 +57,20 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/poppinsmedium"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="Student Information"/>
-
-
+                    android:text="Add Country"/>
 
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:inputType="textCapSentences"
-                    android:id="@+id/edt_country"
+                    android:id="@+id/edt_add_country"
                     android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:hint="Enter Country"/>
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:inputType="textCapSentences"
-                    android:singleLine="true"
-                    android:id="@+id/edt_state"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter State"/>
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edt_city"
-                    android:padding="5dp"
-                    android:inputType="textCapSentences"
-                    android:singleLine="true"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter City"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edt_address"
-                    android:padding="5dp"
-                    android:inputType="textCapSentences"
-                    android:maxLines="3"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Address"/>
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edt_course"
-                    android:singleLine="true"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Course"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="right"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp"
-                    android:id="@+id/txt_course_cost"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="right"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp"
-                    android:id="@+id/txt_join_status"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -152,18 +80,94 @@
                     <Button
                         android:layout_width="120dp"
                         android:layout_height="45dp"
-                        android:text="Next"
+                        android:text="Add"
                         android:textSize="16dp"
                         android:elevation="2dp"
                         android:padding="10dp"
-                        android:drawableRight="@drawable/next_arrow"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:id="@+id/btn_add_country"
+                        android:textColor="#fff"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:background="@drawable/btn_clr_drawble"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#737272"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textSize="18dp"
+                    android:layout_marginBottom="15dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Add State and City"/>
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/apin_add_country"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:hint="Select Country"/>
+
+
+                <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:id="@+id/edt_add_state"
+                android:gravity="center"
+                android:fontFamily="@font/poppinsmedium"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edt_border"
+                android:hint="Enter State"/>
+
+                <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_add_city"
+                android:padding="5dp"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:gravity="center"
+                android:fontFamily="@font/poppinsmedium"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edt_border"
+                android:hint="Enter City"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:gravity="center">
+                    <Button
+                        android:layout_width="120dp"
+                        android:layout_height="45dp"
+                        android:text="Add"
+                        android:textSize="16dp"
+                        android:elevation="2dp"
+                        android:padding="10dp"
                         android:textAllCaps="false"
                         android:textStyle="bold"
                         android:id="@+id/btn_next"
                         android:textColor="#fff"
                         android:fontFamily="@font/poppinsmedium"
                         android:background="@drawable/btn_clr_drawble"/>
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

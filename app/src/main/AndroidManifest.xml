@@ -42,7 +42,8 @@
         <activity
             android:name=".ViewBill"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AttendanceActivity"></activity>
+        <activity android:name=".AttendanceActivity" />
+        <activity android:name=".AddLocation"></activity>
     </application>
 
 </manifest>
