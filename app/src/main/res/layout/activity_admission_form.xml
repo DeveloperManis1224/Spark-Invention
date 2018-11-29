@@ -130,10 +130,9 @@
             android:fontFamily="@font/poppinsmedium"
             android:hint="Enter Email"/>
 
-        <AutoCompleteTextView
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:inputType="textCapSentences"
             android:id="@+id/edt_country"
             android:gravity="center"
@@ -142,10 +141,9 @@
             android:background="@drawable/edt_border"
             android:hint="Enter Country"/>
 
-        <AutoCompleteTextView
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:inputType="textCapSentences"
             android:singleLine="true"
             android:id="@+id/edt_state"
@@ -155,11 +153,10 @@
             android:background="@drawable/edt_border"
             android:hint="Enter State"/>
 
-        <AutoCompleteTextView
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/edt_city"
-            android:padding="5dp"
             android:inputType="textCapSentences"
             android:singleLine="true"
             android:gravity="center"

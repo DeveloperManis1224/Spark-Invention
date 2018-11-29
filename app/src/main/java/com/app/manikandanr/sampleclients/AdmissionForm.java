@@ -56,12 +56,16 @@ public class AdmissionForm extends AppCompatActivity {
     private String userRole = "";
     private String userRollNo = "";
     private EditText edtName, edtDob, edtCollege, edtPhone, edtEmail, edtAddress;
-    private AutoCompleteTextView aedtCountry, aedtState, aedtCity;
+    private Spinner aedtCountry, aedtState, aedtCity;
     final ArrayList<String> costList = new ArrayList<String>();
     final ArrayList<String> courseList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
+
+
+    final ArrayList<String> countryIdList = new ArrayList<String>();
+    final ArrayList<String> stateIdList = new ArrayList<String>();
     Calendar myCalendar = Calendar.getInstance();
     ProgressDialog pd = null;
 
@@ -90,13 +94,10 @@ public class AdmissionForm extends AppCompatActivity {
         userRollNo = getIntent().getStringExtra("role_id");
         pd = new ProgressDialog(AdmissionForm.this);
         pd.setMessage("Loading");
-        countryList.add("India");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (AdmissionForm.this, android.R.layout.select_dialog_item, countryList);
-        aedtCountry.setThreshold(1);
-        aedtCountry.setAdapter(adapter);
-        getState();
+        getCountryAndgetCourse();
         getCourseDetails();
+//        countryList.add("Select Country");
+//        courseList.add("Select");
 
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +111,7 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                tCouseCost.setText("" + costList.get(i));
+               // tCouseCost.setText("" + costList.get(i));
                 Log.e("SASASASA", "" + i);
                 coursePosition = ""+i;
             }
@@ -121,15 +122,45 @@ public class AdmissionForm extends AppCompatActivity {
             }
         });
 
-        aedtState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        aedtState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
-                                    long id) {
-                getCity();
-                Log.e("SASASASA", "" + getCategoryPos(
-                        String.valueOf(parent.getItemAtPosition(pos))));
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getCity(stateIdList.get(i));
+                Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
+        });
+        aedtCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        aedtCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getState(countryIdList.get(i));
+                Log.e("SASASASA", "Country ID  :::::" +countryIdList.get(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
         });
     }
 
@@ -270,16 +301,16 @@ public class AdmissionForm extends AppCompatActivity {
             val = false;
         }
 
-        if (aedtCountry.getText().toString().trim().isEmpty()) {
-            aedtCountry.setError(getResources().getString(R.string.error_msg));
+        if (aedtCountry.getSelectedItem().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Select Country", Toast.LENGTH_SHORT).show();
             val = false;
         }
-        if (aedtState.getText().toString().trim().isEmpty()) {
-            aedtState.setError(getResources().getString(R.string.error_msg));
+        if (aedtState.getSelectedItem().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Select State", Toast.LENGTH_SHORT).show();
             val = false;
         }
-        if (aedtCity.getText().toString().trim().isEmpty()) {
-            aedtCity.setError(getResources().getString(R.string.error_msg));
+        if (aedtCity.getSelectedItem().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Select City", Toast.LENGTH_SHORT).show();
             val = false;
         }
 
@@ -290,7 +321,8 @@ public class AdmissionForm extends AppCompatActivity {
         return val;
     }
 
-    private void getCity() {
+    private void getCity(final String stateId) {
+        cityList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -309,8 +341,7 @@ public class AdmissionForm extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AdmissionForm.this, android.R.layout.select_dialog_item, cityList);
-                        aedtCity.setThreshold(1);
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, cityList);
                         aedtCity.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
@@ -322,14 +353,16 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("state_id", "22");
+                params.put("state_id", stateId);
                 return params;
             }
         };
         queue.add(stringRequest);
     }
 
-    private void getState() {
+    private void getState(final String country_id) {
+        stateIdList.clear();
+        stateList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/state";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -342,14 +375,15 @@ public class AdmissionForm extends AppCompatActivity {
                             for (int i = 1; i <= jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 stateList.add(jobj1.getString("state"));
+                                stateIdList.add(jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
                         }
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AdmissionForm.this, android.R.layout.select_dialog_item, stateList);
-                        aedtState.setThreshold(1);
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, stateList);
                         aedtState.setAdapter(adapter);
 
                     }
@@ -362,10 +396,54 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("country_id", "1");
+                params.put("country_id", country_id);
                 return params;
             }
         };
+        queue.add(stringRequest);
+    }
+
+    private void getCountryAndgetCourse() {
+        //categories   countries
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/student";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("countries");
+
+                            for (int i = 0; i <= jary.length(); i++) {
+                                JSONObject jobj11 = jary.getJSONObject(i);
+                                String cuntry = jobj11.getString("country");
+                                String id = jobj11.getString("id");
+
+                                Log.v("TTTTTTTTTTT",""+ cuntry +"   "+id);
+                                countryList.add(cuntry);
+                                countryIdList.add(id);
+                            }
+
+                        } catch (JSONException e) {
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
+                            e.printStackTrace();
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseList);
+                        aedtCourse.setAdapter(adapter);
+
+                        ArrayAdapter<String> countryAdapt = new ArrayAdapter<String>
+                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, countryList);
+        aedtCountry.setAdapter(countryAdapt);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
         queue.add(stringRequest);
     }
 
@@ -425,9 +503,9 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("college", edtCollege.getText().toString().trim());
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
-                params.put("country_id", aedtCountry.getText().toString().trim());
-                params.put("state_id", aedtState.getText().toString().trim());
-                params.put("city_id", aedtCity.getText().toString().trim());
+                params.put("country_id", aedtCountry.getSelectedItem().toString().trim());
+                params.put("state_id", aedtState.getSelectedItem().toString().trim());
+                params.put("city_id", aedtCity.getSelectedItem().toString().trim());
                 params.put("course_id", coursePosition);
                 params.put("student_role", userRollNo);
                 params.put("status", sts_joinings);
@@ -435,6 +513,8 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("role", userRollNo);
                 params.put("address", edtAddress.getText().toString().trim());
                 return params;
+                //1 - percentage...
+                //2 - ruppess...
             }
         };
         queue.add(stringRequest);
@@ -502,9 +582,9 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("college", edtCollege.getText().toString().trim());
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
-                params.put("country_id", aedtCountry.getText().toString().trim());
-                params.put("state_id", aedtState.getText().toString().trim());
-                params.put("city_id", aedtCity.getText().toString().trim());
+                params.put("country_id", aedtCountry.getSelectedItem().toString().trim());
+                params.put("state_id", aedtState.getSelectedItem().toString().trim());
+                params.put("city_id", aedtCity.getSelectedItem().toString().trim());
                 params.put("course_id", coursePosition);
                 params.put("student_role", userRollNo);
                 params.put("status", sts_joinings);
@@ -527,11 +607,12 @@ public class AdmissionForm extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject jobj = new JSONObject(response);
-                            JSONArray jary = jobj.getJSONArray("courses");
+                            JSONArray jary = jobj.getJSONArray("categories");
                             for (int i = 0; i <= jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
-                                courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
-                                costList.add(jobj1.getString("amount"));
+                               // courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
+                                //costList.add(jobj1.getString("amount"));
+                                courseList.add(jobj1.getString("category"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -551,6 +632,10 @@ public class AdmissionForm extends AppCompatActivity {
 
     private int getCategoryPos(String category) {
         return stateList.indexOf(category);
+    }
+
+    private int getCountryPos(String category) {
+        return countryIdList.indexOf(category);
     }
 
     @Override
