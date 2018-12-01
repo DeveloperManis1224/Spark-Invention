@@ -26,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
@@ -47,7 +48,6 @@ public class AdmissionForm extends AppCompatActivity {
     int mday = 24;
     int mmonth=10;
     int myear=1995;
-    private Spinner aedtCourse;
     String coursePosition = "";
     private String alertDate = "";
     private String sts_joinings = "";
@@ -55,17 +55,21 @@ public class AdmissionForm extends AppCompatActivity {
     private TextView tCouseCost,tJoinStatus;
     private String userRole = "";
     private String userRollNo = "";
-    private EditText edtName, edtDob, edtCollege, edtPhone, edtEmail, edtAddress;
-    private Spinner aedtCountry, aedtState, aedtCity;
+    private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
+    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse ,category_course;
     final ArrayList<String> costList = new ArrayList<String>();
     final ArrayList<String> courseList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
+    final ArrayList<String> courseCatList = new ArrayList<String>();
 
 
     final ArrayList<String> countryIdList = new ArrayList<String>();
     final ArrayList<String> stateIdList = new ArrayList<String>();
+    final ArrayList<String> cityIdList = new ArrayList<String>();
+    final ArrayList<String> courseIdList = new ArrayList<String>();
+    final ArrayList<String> courseCatIdList = new ArrayList<String>();
     Calendar myCalendar = Calendar.getInstance();
     ProgressDialog pd = null;
 
@@ -90,6 +94,7 @@ public class AdmissionForm extends AppCompatActivity {
         tJoinStatus = findViewById(R.id.txt_join_status);
         edtAddress = findViewById(R.id.edt_address);
         nextButton = findViewById(R.id.btn_next);
+        category_course = findViewById(R.id.edt_cat_course);
         userRole = getIntent().getStringExtra(Constants.USER_ROLE);
         userRollNo = getIntent().getStringExtra("role_id");
         pd = new ProgressDialog(AdmissionForm.this);
@@ -111,9 +116,9 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               // tCouseCost.setText("" + costList.get(i));
-                Log.e("SASASASA", "" + i);
+                Log.e("SASTTTTT", courseIdList.get(i)+" ////" + i);
                 coursePosition = ""+i;
+                getCategoryCourse(courseIdList.get(i));
             }
 
             @Override
@@ -139,9 +144,9 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                getOrganization(cityIdList.get(i));
+                Log.e("SSSSSSSSSS",""+cityIdList.get(i));
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -283,8 +288,8 @@ public class AdmissionForm extends AppCompatActivity {
             edtEmail.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
-        if (edtCollege.getText().toString().trim().isEmpty()) {
-            edtCollege.setError(getResources().getString(R.string.error_msg));
+        if (edtCollege.getSelectedItem().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Select College", Toast.LENGTH_SHORT).show();
             val = false;
         }
         if (edtDob.getText().toString().trim().isEmpty()) {
@@ -321,6 +326,34 @@ public class AdmissionForm extends AppCompatActivity {
         return val;
     }
 
+    private void getOrganization(final String cityId) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/role-organization-lists";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.e("SSSSS",""+response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("EEEEEEE",""+error.getMessage());
+                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("city_id", cityId);
+                params.put("role", userRollNo);
+                return  params;
+            }
+        };
+        queue.add(stringRequest);
+    }
     private void getCity(final String stateId) {
         cityList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -333,9 +366,11 @@ public class AdmissionForm extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("cities");
-                            for (int i = 1; i <= jary.length(); i++) {
+                            for (int i = 1; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 cityList.add(jobj1.getString("city"));
+                                cityIdList.add(jobj1.getString("id"));
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -372,7 +407,7 @@ public class AdmissionForm extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("states");
-                            for (int i = 1; i <= jary.length(); i++) {
+                            for (int i = 1; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 stateList.add(jobj1.getString("state"));
                                 stateIdList.add(jobj1.getString("id"));
@@ -430,9 +465,9 @@ public class AdmissionForm extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseList);
-                        aedtCourse.setAdapter(adapter);
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseList);
+//                        aedtCourse.setAdapter(adapter);
 
                         ArrayAdapter<String> countryAdapt = new ArrayAdapter<String>
                 (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, countryList);
@@ -500,7 +535,7 @@ public class AdmissionForm extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", edtName.getText().toString().trim());
                 params.put("dob", edtDob.getText().toString().trim());
-                params.put("college", edtCollege.getText().toString().trim());
+                params.put("college", edtCollege.getSelectedItem().toString().trim());
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
                 params.put("country_id", aedtCountry.getSelectedItem().toString().trim());
@@ -579,7 +614,7 @@ public class AdmissionForm extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", edtName.getText().toString().trim());
                 params.put("dob", edtDob.getText().toString().trim());
-                params.put("college", edtCollege.getText().toString().trim());
+                params.put("college", edtCollege.getSelectedItem().toString().trim());
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
                 params.put("country_id", aedtCountry.getSelectedItem().toString().trim());
@@ -592,6 +627,12 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("join_status", "2");
                 params.put("role", userRollNo);
                 params.put("address", edtAddress.getText().toString().trim());
+                params.put("category_id","");
+                params.put("org_dicount_type","");
+                params.put("org_dicount","");
+                params.put("course_discount_type","");
+                params.put("course_discount","");
+                params.put("overall_dicount","");
                 return params;
             }
         };
@@ -613,6 +654,7 @@ public class AdmissionForm extends AppCompatActivity {
                                // courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
                                 //costList.add(jobj1.getString("amount"));
                                 courseList.add(jobj1.getString("category"));
+                                courseIdList.add(jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -629,6 +671,48 @@ public class AdmissionForm extends AppCompatActivity {
         });
         queue.add(stringRequest);
     }
+
+    private void getCategoryCourse(final String categoryId) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/category-course";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("categories");
+                            for (int i = 0; i <= jary.length(); i++) {
+                                JSONObject jobj1 = jary.getJSONObject(i);
+                                // courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
+                                //costList.add(jobj1.getString("amount"));
+                                courseCatList.add(jobj1.getString("category"));
+                                courseCatIdList.add(jobj1.getString("id"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseCatList);
+                        category_course.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("category_id", categoryId);
+                return  params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+
 
     private int getCategoryPos(String category) {
         return stateList.indexOf(category);

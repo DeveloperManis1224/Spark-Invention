@@ -69,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
                         in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
-                        in.putExtra(Constants.USER_ROLE_ID,"1");
+                        in.putExtra(Constants.USER_ROLE_ID,Constants.ROLE_SCHOOL);
                         startActivity(in);
                     }
                 });
@@ -79,7 +79,7 @@ public class MenuActivity extends AppCompatActivity {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
                         in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
-                        in.putExtra(Constants.USER_ROLE_ID,"2");
+                        in.putExtra(Constants.USER_ROLE_ID,Constants.ROLE_COLLEGE);
                         startActivity(in);
                     }
                 });
@@ -89,7 +89,7 @@ public class MenuActivity extends AppCompatActivity {
                         deleteDialog.dismiss();
                         Intent in = new Intent(MenuActivity.this, AdmissionForm.class);
                         in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_PROJECT);
-                        in.putExtra(Constants.USER_ROLE_ID,"3");
+                        in.putExtra(Constants.USER_ROLE_ID,Constants.ROLE_PROJECT);
                         startActivity(in);
                     }
                 });

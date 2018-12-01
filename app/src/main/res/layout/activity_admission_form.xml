@@ -87,19 +87,7 @@
             android:fontFamily="@font/poppinsmedium"
             android:hint="Enter Date of Birth"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:padding="5dp"
-            android:id="@+id/edt_college"
-            android:singleLine="true"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:background="@drawable/edt_border"
-            android:fontFamily="@font/poppinsmedium"
-            android:hint="Enter College"/>
+
 
         <EditText
             android:layout_width="match_parent"
@@ -164,6 +152,20 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
             android:hint="Enter City"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:padding="5dp"
+            android:id="@+id/edt_college"
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:background="@drawable/edt_border"
+            android:fontFamily="@font/poppinsmedium"
+            android:hint="Enter College"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -181,6 +183,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/edt_course"
+            android:singleLine="true"
+            android:gravity="center"
+            android:fontFamily="@font/poppinsmedium"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edt_border"
+            android:hint="Enter Course"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edt_cat_course"
             android:singleLine="true"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"

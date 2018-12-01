@@ -11,4 +11,8 @@ public class Constants {
     public static final String USER_TYPE_COLLEGE = "college";
     public static final String USER_TYPE_PROJECT = "project";
 
+    public static final String ROLE_SCHOOL = "1";
+    public static final String ROLE_COLLEGE = "2";
+    public static final String ROLE_PROJECT = "3";
+
 }
