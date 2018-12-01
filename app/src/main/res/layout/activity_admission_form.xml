@@ -123,6 +123,7 @@
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
             android:id="@+id/edt_country"
+
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
@@ -185,6 +186,7 @@
             android:id="@+id/edt_course"
             android:singleLine="true"
             android:gravity="center"
+            android:padding="5dp"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
@@ -194,11 +196,33 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_cat_course"
             android:singleLine="true"
+            android:padding="5dp"
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
-            android:background="@drawable/edt_border"
-            android:hint="Enter Course"/>
+            android:background="@drawable/edt_border" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get Offer"
+            android:gravity="right"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:id="@+id/txt_get_offer"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edt_offer_avail"
+            android:singleLine="true"
+            android:padding="5dp"
+            android:gravity="center"
+            android:fontFamily="@font/poppinsmedium"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edt_border" />
 
         <TextView
             android:layout_width="match_parent"

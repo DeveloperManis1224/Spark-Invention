@@ -52,11 +52,11 @@ public class AdmissionForm extends AppCompatActivity {
     private String alertDate = "";
     private String sts_joinings = "";
     private Button nextButton;
-    private TextView tCouseCost,tJoinStatus;
+    private TextView tCouseCost,tJoinStatus,tGetOffer;
     private String userRole = "";
     private String userRollNo = "";
     private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
-    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse ,category_course;
+    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse ,category_course, aedOfferAvail;
     final ArrayList<String> costList = new ArrayList<String>();
     final ArrayList<String> courseList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
@@ -64,12 +64,18 @@ public class AdmissionForm extends AppCompatActivity {
     final ArrayList<String> cityList = new ArrayList<String>();
     final ArrayList<String> courseCatList = new ArrayList<String>();
 
+    final ArrayList<String> collegeList = new ArrayList<>();
+    final ArrayList<String> collegeIdList = new ArrayList<>();
+    final ArrayList<String> offerTypeList = new ArrayList<>();
+    final ArrayList<String> offerQuantityList = new ArrayList<>();
+
 
     final ArrayList<String> countryIdList = new ArrayList<String>();
     final ArrayList<String> stateIdList = new ArrayList<String>();
     final ArrayList<String> cityIdList = new ArrayList<String>();
     final ArrayList<String> courseIdList = new ArrayList<String>();
     final ArrayList<String> courseCatIdList = new ArrayList<String>();
+
     Calendar myCalendar = Calendar.getInstance();
     ProgressDialog pd = null;
 
@@ -93,23 +99,36 @@ public class AdmissionForm extends AppCompatActivity {
         tCouseCost = findViewById(R.id.txt_course_cost);
         tJoinStatus = findViewById(R.id.txt_join_status);
         edtAddress = findViewById(R.id.edt_address);
+        aedOfferAvail = findViewById(R.id.edt_offer_avail);
         nextButton = findViewById(R.id.btn_next);
+        tGetOffer = findViewById(R.id.txt_get_offer);
         category_course = findViewById(R.id.edt_cat_course);
         userRole = getIntent().getStringExtra(Constants.USER_ROLE);
         userRollNo = getIntent().getStringExtra("role_id");
         pd = new ProgressDialog(AdmissionForm.this);
         pd.setMessage("Loading");
+        aedOfferAvail.setVisibility(View.GONE);
         getCountryAndgetCourse();
         getCourseDetails();
 //        countryList.add("Select Country");
 //        courseList.add("Select");
-
+        aedtCountry.setPrompt("Select Country");
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatePickerDialog(AdmissionForm.this, date, myear, mmonth,
                        mday).show();
 
+            }
+        });
+
+        tGetOffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                        (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, offerQuantityList);
+                aedOfferAvail.setAdapter(adapter1);
+                aedOfferAvail.setVisibility(View.VISIBLE);
             }
         });
 
@@ -128,44 +147,35 @@ public class AdmissionForm extends AppCompatActivity {
         });
 
         aedtState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 getCity(stateIdList.get(i));
                 Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
-
         });
+
         aedtCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getOrganization(cityIdList.get(i));
-                Log.e("SSSSSSSSSS",""+cityIdList.get(i));
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        getOrganization(cityIdList.get(i));
+                        Log.e("SSSSSSSSSS",""+cityIdList.get(i));
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
         aedtCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 getState(countryIdList.get(i));
                 Log.e("SASASASA", "Country ID  :::::" +countryIdList.get(i));
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
-
         });
     }
 
@@ -210,7 +220,6 @@ public class AdmissionForm extends AppCompatActivity {
 
                 btnProject.setText("Project / Program");
                 btnProject.setVisibility(View.GONE);
-
 
                 btnSchool.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -327,16 +336,42 @@ public class AdmissionForm extends AppCompatActivity {
     }
 
     private void getOrganization(final String cityId) {
+        collegeIdList.clear();
+        collegeList.clear();
+        offerTypeList.clear();
+        offerQuantityList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/role-organization-lists";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         Log.e("SSSSS",""+response);
+
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("organization");
+                            for (int i = 0; i < jary.length(); i++) {
+                                JSONObject jobj1 = jary.getJSONObject(i);
+                                collegeList.add(jobj1.getString("name"));
+                                collegeIdList.add(jobj1.getString("id"));
+                                offerTypeList.add(jobj1.getString("offer_type"));
+                                offerQuantityList.add(jobj1.getString("offer")+" (Organization)");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, collegeList);
+                        edtCollege.setAdapter(adapter);
+
                     }
+
+
                 }, new Response.ErrorListener() {
+
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("EEEEEEE",""+error.getMessage());
@@ -347,15 +382,17 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("city_id", cityId);
+                params.put("city_id",cityId);
                 params.put("role", userRollNo);
                 return  params;
             }
         };
         queue.add(stringRequest);
     }
+
     private void getCity(final String stateId) {
         cityList.clear();
+        cityIdList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -366,7 +403,7 @@ public class AdmissionForm extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("cities");
-                            for (int i = 1; i < jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 cityList.add(jobj1.getString("city"));
                                 cityIdList.add(jobj1.getString("id"));
@@ -407,7 +444,7 @@ public class AdmissionForm extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("states");
-                            for (int i = 1; i < jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 stateList.add(jobj1.getString("state"));
                                 stateIdList.add(jobj1.getString("id"));
@@ -673,9 +710,14 @@ public class AdmissionForm extends AppCompatActivity {
     }
 
     private void getCategoryCourse(final String categoryId) {
+        courseCatIdList.clear();
+        courseCatList.clear();
+        offerTypeList.clear();
+        offerQuantityList.clear();
+        costList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/category-course";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -685,9 +727,11 @@ public class AdmissionForm extends AppCompatActivity {
                             for (int i = 0; i <= jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 // courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
-                                //costList.add(jobj1.getString("amount"));
-                                courseCatList.add(jobj1.getString("category"));
+                                costList.add(jobj1.getString("amount"));
+                                courseCatList.add(jobj1.getString("course"));
                                 courseCatIdList.add(jobj1.getString("id"));
+                                offerTypeList.add(jobj1.getString("offer_type"));
+                                offerQuantityList.add(jobj1.getString("offer")+" (Course)");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -695,6 +739,7 @@ public class AdmissionForm extends AppCompatActivity {
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                                 (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseCatList);
                         category_course.setAdapter(adapter);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -713,14 +758,6 @@ public class AdmissionForm extends AppCompatActivity {
     }
 
 
-
-    private int getCategoryPos(String category) {
-        return stateList.indexOf(category);
-    }
-
-    private int getCountryPos(String category) {
-        return countryIdList.indexOf(category);
-    }
 
     @Override
     public void onBackPressed() {
