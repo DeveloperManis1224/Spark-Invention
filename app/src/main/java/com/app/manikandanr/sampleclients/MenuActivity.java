@@ -155,10 +155,17 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        bRevenue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         bMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(MenuActivity.this,AddLocation.class);
+                Intent in = new Intent(MenuActivity.this,MoreMenu.class);
                 startActivity(in);
                 finish();
             }

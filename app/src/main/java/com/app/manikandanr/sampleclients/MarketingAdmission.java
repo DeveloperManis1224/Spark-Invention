@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ import java.util.Map;
 
 public class MarketingAdmission extends AppCompatActivity {
 
-    private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eInsLandline,eInsAddress;
+    private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eInsLandline,eInsAddress, eWebsite;
     private AutoCompleteTextView aeCountry,aeState,aeCity;
     private Spinner sEvent;
     final ArrayList<String> countryList = new ArrayList<String>();
@@ -57,19 +58,26 @@ public class MarketingAdmission extends AppCompatActivity {
     private String insDescrption = "";
     ProgressDialog pd = null;
 
+    GpsTracker gpsTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marketing_admission);
+       // getDistance();
         initD();
     }
 
     private void initD()
     {
+        gpsTracker = new GpsTracker(MarketingAdmission.this);
+
+        gpsTracker.getLocation();
         eInsName = findViewById(R.id.edt_ins_name);
         eStaffName = findViewById(R.id.edt_staff_name);
         eStaffPhone = findViewById(R.id.edt_staff_phone);
         eInsMail = findViewById(R.id.edt_ins_mail);
+        eWebsite = findViewById(R.id.edt_ins_website);
         eInsLandline = findViewById(R.id.edt_landline);
         eInsAddress = findViewById(R.id.edt_ins_address);
         aeCountry = findViewById(R.id.edt_country);
@@ -91,6 +99,7 @@ public class MarketingAdmission extends AppCompatActivity {
         getCity();
         getState();
         getEventDetails();
+       // distance(10.789816,78.695683,10.779545,78.222329);
 
     }
     private void getEventDetails() {
@@ -309,6 +318,47 @@ public class MarketingAdmission extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    private double getDistance()
+    {
+//        LatLng latLngA = new LatLng(12.3456789,98.7654321);
+//        LatLng latLngB = new LatLng(98.7654321,12.3456789);
+
+        Location locationA = new Location("point A");
+        locationA.setLatitude(10.789816);
+        locationA.setLongitude(78.695683);
+        Location locationB = new Location("point B");
+        locationB.setLatitude(10.779545);
+        locationB.setLongitude(78.222329);
+
+
+        Log.v("Distance123",""+locationA.distanceTo(locationB));
+
+        return locationA.distanceTo(locationB);
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+
+        Log.v("Distance123",""+(dist));
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
 
 //Not event Confirm
     private void setInstituationDetails() {
@@ -379,6 +429,10 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
                 params.put("email", eInsMail.getText().toString().trim());
+                params.put("website",eWebsite.getText().toString().trim());
+                params.put("distance",""+getDistance());
+                params.put("latitude",""+gpsTracker.latitude);
+                params.put("longitude",""+gpsTracker.longitude);
                 params.put("state", aeState.getText().toString().trim());
                 params.put("city", aeCity.getText().toString().trim());
                 params.put("country", aeCountry.getText().toString().trim());
@@ -470,6 +524,10 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
                 params.put("email", eInsMail.getText().toString().trim());
+                params.put("website",eWebsite.getText().toString().trim());
+                params.put("distance",""+getDistance());
+                params.put("latitude",""+gpsTracker.latitude);
+                params.put("longitude",""+gpsTracker.longitude);
                 params.put("state", aeState.getText().toString().trim());
                 params.put("city", aeCity.getText().toString().trim());
                 params.put("country", aeCountry.getText().toString().trim());
@@ -501,6 +559,10 @@ public class MarketingAdmission extends AppCompatActivity {
         }
         if (eInsMail.getText().toString().trim().isEmpty()) {
             eInsMail.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
+        if (eWebsite.getText().toString().trim().isEmpty()) {
+            eWebsite.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
         if (eInsAddress.getText().toString().trim().isEmpty()) {

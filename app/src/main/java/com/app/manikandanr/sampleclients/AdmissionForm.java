@@ -69,15 +69,23 @@ public class AdmissionForm extends AppCompatActivity {
     final ArrayList<String> offerTypeList = new ArrayList<>();
     final ArrayList<String> offerQuantityList = new ArrayList<>();
 
+    final ArrayList<String> offerQuanOrgList = new ArrayList<>();
 
+
+
+    final ArrayList<String> offerAvailList = new ArrayList<>();
     final ArrayList<String> countryIdList = new ArrayList<String>();
     final ArrayList<String> stateIdList = new ArrayList<String>();
     final ArrayList<String> cityIdList = new ArrayList<String>();
     final ArrayList<String> courseIdList = new ArrayList<String>();
     final ArrayList<String> courseCatIdList = new ArrayList<String>();
 
+    int coursPosition= 0;
+    int orgPosition = 0;
+
     Calendar myCalendar = Calendar.getInstance();
     ProgressDialog pd = null;
+    int check= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,31 +112,32 @@ public class AdmissionForm extends AppCompatActivity {
         tGetOffer = findViewById(R.id.txt_get_offer);
         category_course = findViewById(R.id.edt_cat_course);
         userRole = getIntent().getStringExtra(Constants.USER_ROLE);
-        userRollNo = getIntent().getStringExtra("role_id");
+        userRollNo = getIntent().getStringExtra(Constants.USER_ROLE_ID);
         pd = new ProgressDialog(AdmissionForm.this);
         pd.setMessage("Loading");
         aedOfferAvail.setVisibility(View.GONE);
         getCountryAndgetCourse();
         getCourseDetails();
-//        countryList.add("Select Country");
-//        courseList.add("Select");
-        aedtCountry.setPrompt("Select Country");
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatePickerDialog(AdmissionForm.this, date, myear, mmonth,
                        mday).show();
-
             }
         });
-
         tGetOffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
-                        (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, offerQuantityList);
-                aedOfferAvail.setAdapter(adapter1);
-                aedOfferAvail.setVisibility(View.VISIBLE);
+//
+//                    offerAvailList.add(""+offerQuantityList.get(orgPosition));
+//                    offerAvailList.add(""+offerQuanOrgList.get(coursPosition));
+//
+//                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+//                        (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item,
+//                                offerAvailList);
+//                aedOfferAvail.setAdapter(adapter1);
+//                aedOfferAvail.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -137,6 +146,7 @@ public class AdmissionForm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.e("SASTTTTT", courseIdList.get(i)+" ////" + i);
                 coursePosition = ""+i;
+               orgPosition = i;
                 getCategoryCourse(courseIdList.get(i));
             }
 
@@ -170,11 +180,28 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getState(countryIdList.get(i));
+
+                   // countryId = Integer.parseInt(countryIdList.get(i))+1;
+                    getState(countryIdList.get(i));
+
+
+
                 Log.e("SASASASA", "Country ID  :::::" +countryIdList.get(i));
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        category_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                coursPosition = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
@@ -356,7 +383,7 @@ public class AdmissionForm extends AppCompatActivity {
                                 collegeList.add(jobj1.getString("name"));
                                 collegeIdList.add(jobj1.getString("id"));
                                 offerTypeList.add(jobj1.getString("offer_type"));
-                                offerQuantityList.add(jobj1.getString("offer")+" (Organization)");
+                                offerQuanOrgList.add(jobj1.getString("offer"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -731,7 +758,7 @@ public class AdmissionForm extends AppCompatActivity {
                                 courseCatList.add(jobj1.getString("course"));
                                 courseCatIdList.add(jobj1.getString("id"));
                                 offerTypeList.add(jobj1.getString("offer_type"));
-                                offerQuantityList.add(jobj1.getString("offer")+" (Course)");
+                                offerQuantityList.add(jobj1.getString("offer"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

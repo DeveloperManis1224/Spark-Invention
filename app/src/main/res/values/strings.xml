@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Spark - Invention</string>
     <string name="error_msg">Invalid</string>
+    <string name="hint_more_add_items">Hint : add country, add state, add City, add College, add School,
+    add department, add subcategory</string>
+    <string name="hint_more_student_info">Hint : view Student details and their payment details</string>
 </resources>
