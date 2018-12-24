@@ -524,19 +524,24 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
                 params.put("email", eInsMail.getText().toString().trim());
-                params.put("website",eWebsite.getText().toString().trim());
-                params.put("distance",""+getDistance());
-                params.put("latitude",""+gpsTracker.latitude);
-                params.put("longitude",""+gpsTracker.longitude);
                 params.put("state", aeState.getText().toString().trim());
                 params.put("city", aeCity.getText().toString().trim());
                 params.put("country", aeCountry.getText().toString().trim());
+                params.put("year", aeState.getText().toString().trim());
+                params.put("strength", aeCity.getText().toString().trim());
                 params.put("address", eInsAddress.getText().toString().trim());
                 params.put("landline", eInsLandline.getText().toString().trim());
                 params.put("event", sEvent.getSelectedItem().toString().trim());
                 params.put("status", userRollNo);
                 params.put("set_date",alertDate);
+                params.put("next_date",alertDate);
                 params.put("description","Nothing");
+                params.put("website",eWebsite.getText().toString().trim());
+                params.put("distance",""+getDistance());
+                params.put("latitude",""+gpsTracker.latitude);
+                params.put("longitude",""+gpsTracker.longitude);
+
+
                 return params;
             }
         };
