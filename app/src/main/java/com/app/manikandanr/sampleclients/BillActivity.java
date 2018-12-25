@@ -121,19 +121,15 @@ public class BillActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.e("RESPONSE111", "" + response);
+                            Log.e("RESPONSE1Bill", "" + response);
                             JSONObject jsonObject = new JSONObject(response);
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
                                 JSONObject jobj = jsonObject.getJSONObject("payment");
                                 JSONObject jobj1 = jobj.getJSONObject("payment_plan");
-
                                 dueDate = jobj1.getString("due_date");
-
                                 JSONObject studentObject = jobj.getJSONObject("student");
-
-
                                 billStudentName = studentObject.getString("name");
                                 billStudentRoll = studentObject.getString("serial_no");
                                 billQuationId = jobj.getString("quotation_id");
@@ -179,7 +175,7 @@ public class BillActivity extends AppCompatActivity {
                                 }
 
 
-                               // Toast.makeText(BillActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
+
                                 new AwesomeSuccessDialog(BillActivity.this)
                                         .setTitle("Admission Status")
                                         .setMessage("Admission Successfull.")
@@ -192,13 +188,19 @@ public class BillActivity extends AppCompatActivity {
                                         .setPositiveButtonClick(new Closure() {
                                             @Override
                                             public void exec() {
-                                                Intent in = new Intent(BillActivity.this, ViewBill.class);
-                                                in.putExtra("detail",""+ value);
-                                                startActivity(in);
-                                                finish();
+                                Intent in = new Intent(BillActivity.this, ViewBill.class);
+                                in.putExtra("detail",""+ value);
+                                startActivity(in);
+                                finish();
                                             }
                                         })
                                         .show();
+
+//                                Toast.makeText(BillActivity.this, "Payment registered successfully", Toast.LENGTH_SHORT).show();
+//                                Intent in = new Intent(BillActivity.this, ViewBill.class);
+//                                in.putExtra("detail",""+ value);
+//                                startActivity(in);
+//                                finish();
                                 Log.e("RESPONSE111","bill number"+eBillNumber.getText().toString().trim()+
                                         "  studentId = "+studId+"  payment Mode = "+paymentMode+"  initial Amount ="+
                                         initialAmount+"  toal amount = "+totalAmount+" tenureMonth = "+ tenureMonth

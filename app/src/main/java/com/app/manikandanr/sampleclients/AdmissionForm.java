@@ -6,14 +6,11 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -27,7 +24,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
@@ -48,27 +44,30 @@ import java.util.Map;
 public class AdmissionForm extends AppCompatActivity {
     int mday = 24;
     int mmonth=10;
-    int myear=1995;
+    int myear=1990;
     int institution_pos = 0;
     int country_pos= 0;
     int state_pos = 0;
     int city_pos = 0;
     int course_pos = 0;
     int category_pos = 0;
+    int cost_pos = 0;
+    String BalanceAmount ="";
     String org_dis_type ="";
     String org_dis = "";
     String course_dis_type = "";
     String course_dis = "";
-
+    int cat_pos = 0;
+    StringBuilder offerDetails_join = new StringBuilder();
     String coursePosition = "";
     private String alertDate = "";
     private String sts_joinings = "";
     private Button nextButton;
-    private TextView tCouseCost,tJoinStatus,tGetOffer;
+    private TextView tCouseCost,tJoinStatus,tGetOffer, offerAvailable;
     private String userRole = "";
     private String userRollNo = "";
     private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
-    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse ,category_course, aedOfferAvail;
+    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse ,category_course;
     final ArrayList<String> costList = new ArrayList<String>();
     final ArrayList<String> courseList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
@@ -84,6 +83,7 @@ public class AdmissionForm extends AppCompatActivity {
 
     final ArrayList<String> offerAvailList = new ArrayList<>();
     final ArrayList<String> countryIdList = new ArrayList<String>();
+    final ArrayList<String> categoryList = new ArrayList<String>();
     final ArrayList<String> categoryIdList = new ArrayList<String>();
     final ArrayList<String> stateIdList = new ArrayList<String>();
     final ArrayList<String> cityIdList = new ArrayList<String>();
@@ -117,18 +117,22 @@ public class AdmissionForm extends AppCompatActivity {
         tCouseCost = findViewById(R.id.txt_course_cost);
         tJoinStatus = findViewById(R.id.txt_join_status);
         edtAddress = findViewById(R.id.edt_address);
-        aedOfferAvail = findViewById(R.id.edt_offer_avail);
+        offerAvailable = findViewById(R.id.edt_offer_avail);
         nextButton = findViewById(R.id.btn_next);
         tGetOffer = findViewById(R.id.txt_get_offer);
         category_course = findViewById(R.id.edt_cat_course);
         userRole = getIntent().getStringExtra(Constants.USER_ROLE);
         userRollNo = getIntent().getStringExtra(Constants.USER_ROLE_ID);
         pd = new ProgressDialog(AdmissionForm.this);
+
+        offerDetails_join.append("Applied Offer! \n");
         pd.setMessage("Loading");
-        aedOfferAvail.setVisibility(View.GONE);
-        //getCountry();
-        getState("1");
-        getCourseDetails();
+        getCountry();
+
+
+       // aedtCountry.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,countryList));
+       // getState("1");
+        getCatgories();
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,8 +143,7 @@ public class AdmissionForm extends AppCompatActivity {
         tGetOffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                getOffers();
             }
         });
 
@@ -189,11 +192,27 @@ public class AdmissionForm extends AppCompatActivity {
             }
         });
 
+        edtCollege.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                orgPosition = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         aedtCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.e("SASTTTTT", courseIdList.get(i)+" ////" + i);
-
+                if(!aedtCourse.getSelectedItem().toString().equalsIgnoreCase("Select Category"))
+                {
+                    getCategoryCourse(categoryIdList.get(i));
+                    cat_pos = i;
+                }
+                //Log.e("SASTTTTT", courseIdList.get(i)+" ////" + i);
             }
 
             @Override
@@ -203,12 +222,11 @@ public class AdmissionForm extends AppCompatActivity {
         });
 
 
-
-
         category_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+course_pos = i;
+                cost_pos = i;
             }
 
             @Override
@@ -417,6 +435,10 @@ public class AdmissionForm extends AppCompatActivity {
                 return  params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -460,6 +482,10 @@ public class AdmissionForm extends AppCompatActivity {
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -505,6 +531,10 @@ public class AdmissionForm extends AppCompatActivity {
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -580,7 +610,7 @@ public class AdmissionForm extends AppCompatActivity {
                                 String studentId = jobj.getString("id");
                                 Intent in = new Intent(AdmissionForm.this,
                                         PaymentStatus.class);
-                                in.putExtra("cost", tCouseCost.getText().toString().trim());
+                                in.putExtra("cost", BalanceAmount);
                                 in.putExtra("stud_id",studentId);
 
                                 Log.e("RESPONSE111", studentId+"" +  tCouseCost.getText().toString().trim());
@@ -618,22 +648,26 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("state_id", stateIdList.get(state_pos));
                 params.put("city_id", cityIdList.get(city_pos));
                 params.put("address", edtAddress.getText().toString().trim());
-                params.put("course_id", courseIdList.get(course_pos));
+                params.put("course_id", courseCatIdList.get(course_pos));
                 params.put("status", sts_joinings);
                 params.put("alert_date", alertDate);
-                params.put("join_status", "2");
+                params.put("join_status", "1");
                 params.put("role", userRollNo);
                 params.put("category_id",categoryIdList.get(category_pos));
-                params.put("org_dicount_type",""+org_dis_type);
-                params.put("org_dicount",""+org_dis);
+                params.put("org_discount_type",""+org_dis_type);
+                params.put("org_discount",""+org_dis);
                 params.put("course_discount_type",""+course_dis_type);
                 params.put("course_discount",""+ course_dis);
-                params.put("calc_dicount","");
+                params.put("calc_amount",BalanceAmount);
                 return params;
                 //1 - percentage...
                 //2 - ruppess...
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -704,26 +738,36 @@ public class AdmissionForm extends AppCompatActivity {
                 params.put("state_id", stateIdList.get(state_pos));
                 params.put("city_id", cityIdList.get(city_pos));
                 params.put("address", edtAddress.getText().toString().trim());
-                params.put("course_id", courseIdList.get(course_pos));
+                params.put("course_id", courseCatIdList.get(course_pos));
                 params.put("status", sts_joinings);
                 params.put("alert_date", alertDate);
                 params.put("join_status", "2");
                 params.put("role", userRollNo);
                 params.put("category_id",categoryIdList.get(category_pos));
-                params.put("org_dicount_type",""+org_dis_type);
-                params.put("org_dicount",""+org_dis);
+                params.put("org_discount_type",""+org_dis_type);
+                params.put("org_discount",""+org_dis);
                 params.put("course_discount_type",""+course_dis_type);
                 params.put("course_discount",""+ course_dis);
-                params.put("calc_dicount","");
+                params.put("calc_amount","0.0");
                 return params;
             }
         };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
-    private void getCourseDetails() {
+
+    private void getCatgories() {
+        categoryIdList.clear();
+        categoryList.clear();
+        categoryList.add("Select Category");
+        categoryIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/category";
+        String url = "http://spark.candyrestaurant.com/api/categroy";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -733,16 +777,14 @@ public class AdmissionForm extends AppCompatActivity {
                             JSONArray jary = jobj.getJSONArray("categories");
                             for (int i = 0; i <= jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
-                               // courseList.add(jobj1.getString("course") + " (Rs " + jobj1.getString("amount") + ")");
-                                //costList.add(jobj1.getString("amount"));
-                                courseList.add(jobj1.getString("category"));
-                                courseIdList.add(jobj1.getString("id"));
+                                categoryList.add(jobj1.getString("category"));
+                                categoryIdList.add(jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseList);
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, categoryList);
                         aedtCourse.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
@@ -757,8 +799,9 @@ public class AdmissionForm extends AppCompatActivity {
     private void getCategoryCourse(final String categoryId) {
         courseCatIdList.clear();
         courseCatList.clear();
-
         costList.clear();
+        courseCatList.add("Select Course");
+        courseCatIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/category-course";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -771,7 +814,7 @@ public class AdmissionForm extends AppCompatActivity {
                             for (int i = 0; i <= jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 costList.add(jobj1.getString("amount"));
-                                courseCatList.add(jobj1.getString("course"));
+                                courseCatList.add(jobj1.getString("course")+" ( Rs."+jobj1.getString("amount")+")");
                                 courseCatIdList.add(jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
@@ -798,6 +841,109 @@ public class AdmissionForm extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+
+    private void getOffers() {
+        final int calcAmount = 0;
+        offerDetails_join.delete(0,offerDetails_join.length());
+        offerDetails_join.append("Applied Offer! \n");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/offer-details";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            String sts = jobj.getString("status");
+                            if(sts.equalsIgnoreCase("1"))
+                            {
+                                JSONObject jobjCourse = jobj.getJSONObject("course");
+                                JSONObject jobjOrg = jobj.getJSONObject("organization");
+
+                                String courseName = jobjCourse.getString("course");
+                                String courseOfferType = jobjCourse.getString("offer_type");
+                                String courseOffer = jobjCourse.getString("offer");
+                                String courseAmount = jobjCourse.getString("amount");
+
+                                String OrgName = jobjOrg.getString("name");
+                                String OrgOfferType = jobjOrg.getString("offer_type");
+                                String OrgOffer = jobjOrg.getString("offer");
+
+                                org_dis_type =OrgOfferType;
+                                org_dis =OrgOffer;
+                                course_dis_type = courseOfferType;
+                                course_dis = courseOffer;
+                                Double balAmount =0.0;
+                               if(!courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
+                                {
+                                    String type = "Rs";
+                                    if(courseOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
+                                        type = "%";
+                                        balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseAmount)* Double.valueOf(courseOffer)/100 ;
+                                        offerDetails_join.append("" + courseName + "    " + courseOffer + "" + type + "\n");
+                                    }
+                                    else {
+                                        balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseOffer);
+                                        offerDetails_join.append("" + courseName + "    " + type + "" + courseOffer + "\n");
+                                    }
+                                }
+                                if(!OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
+                                {
+                                    String type = "Rs";
+                                    if(OrgOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
+                                        type = "%";
+                                        balAmount = balAmount * Double.valueOf(OrgOffer) / 100;
+                                        offerDetails_join.append(""+OrgName+"      "+OrgOffer+" "+type+"\n");
+                                    }
+                                    else {
+                                        balAmount = balAmount - Double.valueOf(OrgOffer);
+                                        offerDetails_join.append(""+OrgName+"      "+type+" "+OrgOffer+"\n");
+                                    }
+
+                                }
+                                if(OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE)&&
+                                        courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
+                                {
+                                    offerDetails_join.append("Sorry, Currently no offers");
+                                    balAmount =0.0;
+                                    //Toast.makeText(AdmissionForm.this, "Sorry, Currently no offers", Toast.LENGTH_SHORT).show();
+                                }
+
+                               offerAvailable.setText(""+offerDetails_join+"\n \nAmount Payable : Rs "+balAmount);
+                               offerAvailable.setVisibility(View.VISIBLE);
+                                BalanceAmount = String.valueOf(balAmount);
+
+
+
+                            }
+                            else
+                            {
+                                Toast.makeText(AdmissionForm.this, ""+jobj.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>() ;
+                params.put("course_id",courseCatIdList.get(course_pos));
+                params.put("organization_id",collegeIdList.get(orgPosition));
+                params.put("role",userRollNo);
+                return params;
+
+            }
+        };
+
+        queue.add(stringRequest);
+    }
 
 
     @Override

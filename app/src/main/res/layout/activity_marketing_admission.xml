@@ -129,7 +129,7 @@
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Website"/>
 
-                <AutoCompleteTextView
+                <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
@@ -141,7 +141,7 @@
                     android:background="@drawable/edt_border"
                     android:hint="Enter Country"/>
 
-                <AutoCompleteTextView
+                <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
@@ -154,7 +154,7 @@
                     android:background="@drawable/edt_border"
                     android:hint="Enter State"/>
 
-                <AutoCompleteTextView
+                <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/edt_city"
@@ -166,6 +166,47 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:hint="Enter City"/>
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_organization"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:inputType="textCapSentences"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:hint="Enter Organization"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_year"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:inputType="textCapSentences"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:hint="Enter Year"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_strength"
+                    android:inputType="number"
+                    android:padding="5dp"
+                    android:maxLength="3"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:hint="Enter Strength"/>
+
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

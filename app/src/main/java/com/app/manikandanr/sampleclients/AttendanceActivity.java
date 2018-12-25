@@ -49,12 +49,8 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     public void onDialogList() {
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         final View layout11 = inflater.inflate(R.layout.dialog_sort_lyt, (ViewGroup) findViewById(R.id.layout_root));
-
-
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
         builder.setView(layout11);
         builder.setPositiveButton("Sort", new DialogInterface.OnClickListener() {
@@ -76,13 +72,10 @@ public class AttendanceActivity extends AppCompatActivity {
 
     private void init() {
         pd = new ProgressDialog(AttendanceActivity.this);
-
         pd.setMessage("Please wait...");
         pd.setCancelable(false);
-
        listViewStudent = findViewById(R.id.stud_view_list);
        onDialogList();
-
        RecyclerView.LayoutManager lytMgr = new LinearLayoutManager(AttendanceActivity.this);
        listViewStudent.setLayoutManager(lytMgr);
     }

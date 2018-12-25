@@ -213,16 +213,27 @@
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"/>
-        <Spinner
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edt_offer_avail"
-            android:singleLine="true"
-            android:padding="5dp"
-            android:gravity="center"
-            android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
-            android:background="@drawable/edt_border" />
+            android:background="@drawable/edt_border_black">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_offer_avail"
+                android:singleLine="false"
+                android:visibility="gone"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:text="hello offer"
+                android:fontFamily="@font/poppinsmedium"
+
+                 />
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="match_parent"

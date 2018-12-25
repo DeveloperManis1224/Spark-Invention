@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MenuActivity"
+            android:name=".SplashScreen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +49,9 @@
             android:name=".AddItems"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MoreMenu" />
-        <activity android:name=".AccountsHome"></activity>
+        <activity android:name=".AccountsHome" />
+        <activity android:name=".ViewStudent" />
+        <activity android:name=".MenuActivity"/>
     </application>
 
 </manifest>

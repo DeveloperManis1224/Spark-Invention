@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -44,20 +46,31 @@ import java.util.Map;
 
 public class MarketingAdmission extends AppCompatActivity {
 
-    private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eInsLandline,eInsAddress, eWebsite;
-    private AutoCompleteTextView aeCountry,aeState,aeCity;
+    private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eStrength, eInsLandline,eInsAddress, eWebsite;
+    private Spinner aeCountry,aeState,aeCity, aeOrganization , aeYear;
     private Spinner sEvent;
     final ArrayList<String> countryList = new ArrayList<String>();
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
+    final ArrayList<String> organizationList = new ArrayList<String>();
     final ArrayList<String> eventList = new ArrayList<String>();
+
+    final ArrayList<String> countryIdList = new ArrayList<String>();
+    final ArrayList<String> organizationIdList = new ArrayList<String>();
+    final ArrayList<String> stateIdList = new ArrayList<String>();
+    final ArrayList<String> cityIdList = new ArrayList<String>();
+
+    int country_pos= 0;
+    int state_pos = 0;
+    int city_pos = 0;
+    int org_pos = 0;
     String userRole,userRollNo;
     private String alertDate = "";
     private String sts_joinings = "";
     private Button btnNext;
     private String insDescrption = "";
     ProgressDialog pd = null;
-
+    ArrayList<String> yearlist = new ArrayList<>();
     GpsTracker gpsTracker;
 
     @Override
@@ -73,6 +86,7 @@ public class MarketingAdmission extends AppCompatActivity {
         gpsTracker = new GpsTracker(MarketingAdmission.this);
 
         gpsTracker.getLocation();
+
         eInsName = findViewById(R.id.edt_ins_name);
         eStaffName = findViewById(R.id.edt_staff_name);
         eStaffPhone = findViewById(R.id.edt_staff_phone);
@@ -81,6 +95,9 @@ public class MarketingAdmission extends AppCompatActivity {
         eInsLandline = findViewById(R.id.edt_landline);
         eInsAddress = findViewById(R.id.edt_ins_address);
         aeCountry = findViewById(R.id.edt_country);
+        aeOrganization = findViewById(R.id.edt_organization);
+        aeYear = findViewById(R.id.edt_year);
+        eStrength = findViewById(R.id.edt_strength);
         aeCity = findViewById(R.id.edt_city);
         aeState = findViewById(R.id.edt_state);
         sEvent = findViewById(R.id.spi_event);
@@ -90,17 +107,136 @@ public class MarketingAdmission extends AppCompatActivity {
         pd = new ProgressDialog(MarketingAdmission.this);
         pd.setMessage("loading");
 
+//        = new String[]{"1st Year","2nd Year","3rd Year","4 Year"};
+        if(getIntent().getExtras().getString(Constants.USER_ROLE).equalsIgnoreCase(Constants.USER_TYPE_SCHOOL))
+        {
+            yearlist.clear();
+            yearlist.add("5th std to 9th std");
+            yearlist.add("10th std to 12th std");
+        }
+        else if(getIntent().getExtras().getString(Constants.USER_ROLE).equalsIgnoreCase(Constants.USER_TYPE_COLLEGE))
+        {
+            yearlist.clear();
+            yearlist.add("1st Year");
+            yearlist.add("2nd Year");
+            yearlist.add("3rd Year");
+            yearlist.add("4th Year");
+        }
+        aeYear.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,yearlist));
+
 
         countryList.add("India");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, countryList);
         aeCountry.setAdapter(adapter);
-
-        getCity();
-        getState();
+        getState("1");
         getEventDetails();
-       // distance(10.789816,78.695683,10.779545,78.222329);
 
+        aeOrganization.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                org_pos = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        aeCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!aeCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country"))
+                {
+                    getState("1");
+                    country_pos = i;
+                }
+               // Log.e("SASASASA", "Country ID  :::::" +countryIdList.get(i));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        aeState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!aeState.getSelectedItem().toString().equalsIgnoreCase("Select State"))
+                {
+                    getCity(stateIdList.get(i));
+                    state_pos = i;
+                }
+
+                Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        aeCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!aeCity.getSelectedItem().toString().equalsIgnoreCase("Select City"))
+                {
+                    getOrganization(cityIdList.get(i));
+                    city_pos = i;
+                }
+                Log.e("SSSSSSSSSS",""+cityIdList.get(i));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+    }
+
+    private void getOrganization(final String cityId) {
+        organizationList.clear();
+        organizationIdList.clear();
+        organizationList.add("Select Organization");
+        organizationIdList.add("0");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/role-organization-lists";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("SSSSS",""+response);
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("organization");
+                            for (int i = 0; i < jary.length(); i++) {
+                                JSONObject jobj1 = jary.getJSONObject(i);
+                                organizationList.add(jobj1.getString("name"));
+                                organizationIdList.add(jobj1.getString("id"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item,
+                                        organizationList);
+                        aeOrganization.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("EEEEEEE",""+error.getMessage());
+                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("city_id",cityId);
+                params.put("role", userRollNo);
+                return  params;
+            }
+        };
+        queue.add(stringRequest);
     }
     private void getEventDetails() {
 
@@ -143,103 +279,135 @@ public class MarketingAdmission extends AppCompatActivity {
 
     public void onMarketingSubmit(View v)
     {
-        if (btnNext.getText().toString().trim().equalsIgnoreCase("Next")) {
-            LayoutInflater factory = LayoutInflater.from(MarketingAdmission.this);
-            final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
-            final AlertDialog deleteDialog = new AlertDialog.Builder(MarketingAdmission.this).create();
-            deleteDialog.setView(deleteDialogView);
+        if(isValid())
+        {
+            if (btnNext.getText().toString().trim().equalsIgnoreCase("Next")) {
+                LayoutInflater factory = LayoutInflater.from(MarketingAdmission.this);
+                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+                final AlertDialog deleteDialog = new AlertDialog.Builder(MarketingAdmission.this).create();
+                deleteDialog.setView(deleteDialogView);
 
-            Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
-            Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
-            Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
 
-            btnSchool.setText("Event Confirm");
-            btnSchool.setAllCaps(false);
+                btnSchool.setText("Event Confirm");
+                btnSchool.setAllCaps(false);
 
-            btnCollege.setText("Not Confirm");
-            btnCollege.setAllCaps(false);
+                btnCollege.setText("Not Confirm");
+                btnCollege.setAllCaps(false);
 
-            btnProject.setText("Project / Program");
-            btnProject.setVisibility(View.GONE);
+                btnProject.setText("Project / Program");
+                btnProject.setVisibility(View.GONE);
 
-            btnSchool.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
-                    int mYear, mMonth, mDay;
-                    final Calendar c = Calendar.getInstance();
-                    mYear = c.get(Calendar.YEAR);
-                    mMonth = c.get(Calendar.MONTH);
-                    mDay = c.get(Calendar.DAY_OF_MONTH);
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(MarketingAdmission.this,
-                            new DatePickerDialog.OnDateSetListener() {
-                                @Override
-                                public void onDateSet(DatePicker view, int year,
-                                                      int monthOfYear, int dayOfMonth) {
-                                    Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
-                                            (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
-                                    alertDate = "" + dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                btnSchool.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        int mYear, mMonth, mDay;
+                        final Calendar c = Calendar.getInstance();
+                        mYear = c.get(Calendar.YEAR);
+                        mMonth = c.get(Calendar.MONTH);
+                        mDay = c.get(Calendar.DAY_OF_MONTH);
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(MarketingAdmission.this,
+                                new DatePickerDialog.OnDateSetListener() {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year,
+                                                          int monthOfYear, int dayOfMonth) {
+                                        Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
+                                                (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
+                                        alertDate = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
 
-                                }
-                            }, mYear, mMonth, mDay);
-                    datePickerDialog.show();
-                    Toast.makeText(MarketingAdmission.this, "Event Confirmed.", Toast.LENGTH_SHORT).show();
-                    btnNext.setText("Submit");
-                    sts_joinings = "now";
-                }
-            });
-            btnCollege.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
+                                    }
+                                }, mYear, mMonth, mDay);
+                        datePickerDialog.show();
+                        Toast.makeText(MarketingAdmission.this, "Event Confirmed.", Toast.LENGTH_SHORT).show();
+                        btnNext.setText("Submit");
+                        sts_joinings = "now";
+                    }
+                });
+                btnCollege.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
 
-                    Toast.makeText(MarketingAdmission.this, "Not Confirmed", Toast.LENGTH_SHORT).show();
-                    sts_joinings = "later";
-                    btnNext.setText("Save");
+                        Toast.makeText(MarketingAdmission.this, "Not Confirmed", Toast.LENGTH_SHORT).show();
+                        sts_joinings = "later";
+                        btnNext.setText("Save");
 
-                }
-            });
-            btnProject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDialog.dismiss();
-                }
-            });
-            deleteDialog.show();
-        } else if (btnNext.getText().toString().trim().equalsIgnoreCase("Save")) {
+                    }
+                });
+                btnProject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                    }
+                });
+                deleteDialog.show();
+            } else if (btnNext.getText().toString().trim().equalsIgnoreCase("Save")) {
 
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
-            final EditText et = new EditText(MarketingAdmission.this);
-            et.setHint("Remarks");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
+                final EditText et = new EditText(MarketingAdmission.this);
+                et.setHint("Remarks");
 
-            alertDialogBuilder.setView(et);
+                alertDialogBuilder.setView(et);
 
-            alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    if(!et.getText().toString().trim().isEmpty())
-                    {
-                        insDescrption =et.getText().toString().trim();
-                        if (isValid()) {
-                            setInstituationDetails();
+                alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(!et.getText().toString().trim().isEmpty())
+                        {
+                            insDescrption =et.getText().toString().trim();
+                            if (isValid()) {
+                                setInstituationDetails();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(MarketingAdmission.this, "Please enter remarks...", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else
-                    {
-                        Toast.makeText(MarketingAdmission.this, "Please enter remarks...", Toast.LENGTH_SHORT).show();
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            } else {
+                if (sts_joinings.equalsIgnoreCase("now")) {
+                    if (isValid()) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
+                        final EditText et = new EditText(MarketingAdmission.this);
+                        et.setHint("Remarks");
+
+                        alertDialogBuilder.setView(et);
+
+                        alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                if(!et.getText().toString().trim().isEmpty())
+                                {
+                                    insDescrption =et.getText().toString().trim();
+                                    if (isValid()) {
+                                        setInstituationDetails();
+                                    }
+                                }
+                                else
+                                {
+                                    Toast.makeText(MarketingAdmission.this, "Please enter remarks...", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                        uploadStudentInfo();
                     }
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        } else {
-            if (sts_joinings.equalsIgnoreCase("now")) {
-                if (isValid()) {
-                    uploadStudentInfo();
                 }
             }
         }
+
     }
-    private void getCity() {
+
+    private void getCity(final String stateId) {
+        cityList.clear();
+        cityIdList.clear();
+        cityIdList.add("0");
+        cityList.add("Select City");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -250,16 +418,16 @@ public class MarketingAdmission extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("cities");
-                            for (int i = 1; i <= jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 cityList.add(jobj1.getString("city"));
+                                cityIdList.add(jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (MarketingAdmission.this, android.R.layout.select_dialog_item, cityList);
-                        aeCity.setThreshold(1);
+                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, cityList);
                         aeCity.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
@@ -271,14 +439,18 @@ public class MarketingAdmission extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("state_id", "22");
+                params.put("state_id", stateId);
                 return params;
             }
         };
         queue.add(stringRequest);
     }
 
-    private void getState() {
+    private void getState(final String country_id) {
+        stateIdList.clear();
+        stateList.clear();
+        stateList.add("Select State");
+        stateIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://spark.candyrestaurant.com/api/state";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -288,17 +460,18 @@ public class MarketingAdmission extends AppCompatActivity {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("states");
-                            for (int i = 1; i <= jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 stateList.add(jobj1.getString("state"));
+                                stateIdList.add(jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
                         }
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (MarketingAdmission.this, android.R.layout.select_dialog_item, stateList);
-                        aeState.setThreshold(1);
+                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, stateList);
                         aeState.setAdapter(adapter);
 
                     }
@@ -311,12 +484,98 @@ public class MarketingAdmission extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("country_id", "1");
+                params.put("country_id", country_id);
                 return params;
             }
         };
         queue.add(stringRequest);
     }
+//    private void getCity() {
+//        cityList.clear();
+//        cityIdList.clear();
+//        cityIdList.add("0");
+//        cityList.add("Select City");
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = "http://spark.candyrestaurant.com/api/city";
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            JSONObject jobj = new JSONObject(response);
+//                            JSONArray jary = jobj.getJSONArray("cities");
+//                            for (int i = 1; i <= jary.length(); i++) {
+//                                JSONObject jobj1 = jary.getJSONObject(i);
+//                                cityList.add(jobj1.getString("city"));
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                                (MarketingAdmission.this, android.R.layout.select_dialog_item, cityList);
+//                        aeCity.setThreshold(1);
+//                        aeCity.setAdapter(adapter);
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("state_id", "22");
+//                return params;
+//            }
+//        };
+//        queue.add(stringRequest);
+//    }
+//
+//    private void getState() {
+//        stateIdList.clear();
+//        stateList.clear();
+//        stateList.add("Select State");
+//        stateIdList.add("0");
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = "http://spark.candyrestaurant.com/api/state";
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            JSONObject jobj = new JSONObject(response);
+//                            JSONArray jary = jobj.getJSONArray("states");
+//                            for (int i = 1; i <= jary.length(); i++) {
+//                                JSONObject jobj1 = jary.getJSONObject(i);
+//                                stateList.add(jobj1.getString("state"));
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                                (MarketingAdmission.this, android.R.layout.select_dialog_item, stateList);
+//                        aeState.setThreshold(1);
+//                        aeState.setAdapter(adapter);
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("country_id", "1");
+//                return params;
+//            }
+//        };
+//        queue.add(stringRequest);
+//    }
 
     private double getDistance()
     {
@@ -429,26 +688,28 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
                 params.put("email", eInsMail.getText().toString().trim());
+                params.put("country_id", countryIdList.get(country_pos));
+                params.put("state_id", stateIdList.get(state_pos));
+                params.put("city_id", cityIdList.get(city_pos));
+                params.put("organization_id",organizationIdList.get(org_pos));
+                params.put("year", aeYear.getSelectedItem().toString().trim());
+                params.put("strength", ""+eStrength.getText().toString().trim());
+                params.put("address", eInsAddress.getText().toString().trim());
+                params.put("landline", eInsLandline.getText().toString().trim());
+                params.put("event", sEvent.getSelectedItem().toString().trim());
+                params.put("status", userRollNo);
+                params.put("set_date","");
+                params.put("next_date",alertDate);
+                params.put("description",insDescrption);
                 params.put("website",eWebsite.getText().toString().trim());
                 params.put("distance",""+getDistance());
                 params.put("latitude",""+gpsTracker.latitude);
                 params.put("longitude",""+gpsTracker.longitude);
-                params.put("state", aeState.getText().toString().trim());
-                params.put("city", aeCity.getText().toString().trim());
-                params.put("country", aeCountry.getText().toString().trim());
-                params.put("address", eInsAddress.getText().toString().trim());
-                params.put("landline", eInsLandline.getText().toString().trim());
-                params.put("event", "Nothing");
-                params.put("status", userRollNo);
-                params.put("set_date",alertDate);
-                params.put("description",insDescrption);
                 return params;
             }
         };
         queue.add(stringRequest);
     }
-
-
 //event Confirm
     private void uploadStudentInfo() {
         pd.show();
@@ -519,29 +780,28 @@ public class MarketingAdmission extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("instituation", eInsName.getText().toString().trim());
-                params.put("instituation_id", "1");
-                params.put("serial_no", "1");
+                params.put("instituation_id", userRollNo);
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
                 params.put("email", eInsMail.getText().toString().trim());
-                params.put("state", aeState.getText().toString().trim());
-                params.put("city", aeCity.getText().toString().trim());
-                params.put("country", aeCountry.getText().toString().trim());
-                params.put("year", aeState.getText().toString().trim());
-                params.put("strength", aeCity.getText().toString().trim());
+                params.put("country_id", "1");
+                params.put("state_id", stateIdList.get(state_pos));
+                params.put("city_id", cityIdList.get(city_pos));
+                params.put("organization_id",organizationIdList.get(org_pos));
+                params.put("year", aeYear.getSelectedItem().toString().trim());
+                params.put("strength", eStrength.getText().toString().trim());
                 params.put("address", eInsAddress.getText().toString().trim());
                 params.put("landline", eInsLandline.getText().toString().trim());
                 params.put("event", sEvent.getSelectedItem().toString().trim());
+                params.put("event_id","1");
                 params.put("status", userRollNo);
                 params.put("set_date",alertDate);
-                params.put("next_date",alertDate);
-                params.put("description","Nothing");
+                params.put("next_date","");
+                params.put("description",insDescrption);
                 params.put("website",eWebsite.getText().toString().trim());
                 params.put("distance",""+getDistance());
-                params.put("latitude",""+gpsTracker.latitude);
-                params.put("longitude",""+gpsTracker.longitude);
-
-
+                params.put("latitude",""+gpsTracker.getLatitude());
+                params.put("longitude",""+gpsTracker.getLongitude());
                 return params;
             }
         };
@@ -570,6 +830,10 @@ public class MarketingAdmission extends AppCompatActivity {
             eWebsite.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
+        if (eStrength.getText().toString().trim().isEmpty()) {
+            eStrength.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
         if (eInsAddress.getText().toString().trim().isEmpty()) {
             eInsAddress.setError(getResources().getString(R.string.error_msg));
             val = false;
@@ -578,16 +842,16 @@ public class MarketingAdmission extends AppCompatActivity {
             eInsLandline.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
-        if (aeCountry.getText().toString().trim().isEmpty()) {
-            aeCountry.setError(getResources().getString(R.string.error_msg));
+        if (aeCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")) {
+            Toast.makeText(this, "Invalid Country", Toast.LENGTH_SHORT).show();
             val = false;
         }
-        if (aeState.getText().toString().trim().isEmpty()) {
-            aeState.setError(getResources().getString(R.string.error_msg));
+        if (aeState.getSelectedItem().toString().equalsIgnoreCase("Select State")) {
+            Toast.makeText(this, "Invalid State", Toast.LENGTH_SHORT).show();
             val = false;
         }
-        if (aeCity.getText().toString().trim().isEmpty()) {
-            aeCity.setError(getResources().getString(R.string.error_msg));
+        if (aeCity.getSelectedItem().toString().equalsIgnoreCase("Select City")) {
+            Toast.makeText(this, "Invalid City", Toast.LENGTH_SHORT).show();
             val = false;
         }
         if (sEvent.getSelectedItem().toString().isEmpty()) {

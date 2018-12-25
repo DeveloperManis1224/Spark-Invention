@@ -1,5 +1,6 @@
 package com.app.manikandanr.sampleclients;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,19 +28,21 @@ public class MoreMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                startActivity(new Intent(MoreMenu.this,AddItems.class));
             }
         });
 
         btnAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MoreMenu.this,AlertActivity.class));
 
             }
         });
         btnViewStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MoreMenu.this,ViewStudent.class));
             }
         });
     }

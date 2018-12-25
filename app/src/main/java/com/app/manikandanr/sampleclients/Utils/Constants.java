@@ -15,6 +15,11 @@ public class Constants {
     public static final String ROLE_COLLEGE = "2";
     public static final String ROLE_PROJECT = "3";
 
+    public static final String OFFER_NOT_AVAILABLE = "0.00";
+
+    public static final String OFFER_PERCENTAGE = "1";
+    public static final String OFFER_RUPEES = "2";
+
 
 
 }
