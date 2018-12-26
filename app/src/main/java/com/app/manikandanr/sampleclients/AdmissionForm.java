@@ -183,6 +183,7 @@ public class AdmissionForm extends AppCompatActivity {
                 if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
                 {
                     edtCollege.setVisibility(View.GONE);
+                    ((TextView)findViewById(R.id.txt_get_offer)).setVisibility(View.GONE);
                 }
                 else
                 {
@@ -236,6 +237,7 @@ public class AdmissionForm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 course_pos = i;
                 cost_pos = i;
+                BalanceAmount = costList.get(i);
             }
 
             @Override
@@ -336,12 +338,12 @@ course_pos = i;
                 if (isValid()) {
                     setStudentAlert();
                 }
-            } else {
+            } else
                 if (sts_joinings.equalsIgnoreCase("now")) {
                     if (isValid()) {
                         uploadStudentInfo();
                     }
-                }
+
             }
         }
     }

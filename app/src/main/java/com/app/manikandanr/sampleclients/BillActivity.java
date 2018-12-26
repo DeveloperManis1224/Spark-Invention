@@ -128,14 +128,21 @@ public class BillActivity extends AppCompatActivity {
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
                                 JSONObject jobj = jsonObject.getJSONObject("payment");
-                                JSONObject jobj1 = jobj.getJSONObject("payment_plan");
-                                dueDate = jobj1.getString("due_date");
+                                try {
+                                    JSONObject jobj1 = jobj.getJSONObject("payment_plan");
+                                    dueDate = jobj1.getString("due_date");
+                                    billInitialAmount = jobj1.getString("initial_amount");
+                                    billTotalAmount = jobj1.getString("total_amount");
+                                }catch ( Exception ex)
+                                {
+                                    Log.e("ERROR",ex.getMessage());
+                                    ex.printStackTrace();
+                                }
                                 JSONObject studentObject = jobj.getJSONObject("student");
                                 billStudentName = studentObject.getString("name");
                                 billStudentRoll = studentObject.getString("serial_no");
                                 billQuationId = jobj.getString("quotation_id");
-                                billInitialAmount = jobj1.getString("initial_amount");
-                                billTotalAmount = jobj1.getString("total_amount");
+
 //                                value = "Bill number : "+eBillNumber.getText().toString().trim()+
 //                                        "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
 //                                        initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
