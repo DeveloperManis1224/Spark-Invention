@@ -84,6 +84,10 @@ public class AddItems extends AppCompatActivity {
                 Toast.makeText(AddItems.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -114,7 +118,7 @@ public class AddItems extends AppCompatActivity {
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = "http://spark.candyrestaurant.com/api/country-create";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -165,7 +169,7 @@ public class AddItems extends AppCompatActivity {
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = "http://spark.candyrestaurant.com/api/state-city-create";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -177,7 +181,7 @@ public class AddItems extends AppCompatActivity {
                             String msg = jobj.getString("message");
                             if(status.equalsIgnoreCase("1"))
                             {
-                                Toast.makeText(AddItems.this, "Country Added", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddItems.this, "State and City Added", Toast.LENGTH_SHORT).show();
                                 txtCountryName.setText("");
                             }
                             else

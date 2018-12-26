@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -236,6 +237,10 @@ public class MarketingAdmission extends AppCompatActivity {
                 return  params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
     private void getEventDetails() {
@@ -383,9 +388,9 @@ public class MarketingAdmission extends AppCompatActivity {
                                 if(!et.getText().toString().trim().isEmpty())
                                 {
                                     insDescrption =et.getText().toString().trim();
-                                    if (isValid()) {
+
                                         setInstituationDetails();
-                                    }
+
                                 }
                                 else
                                 {
@@ -688,7 +693,7 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
                 params.put("email", eInsMail.getText().toString().trim());
-                params.put("country_id", countryIdList.get(country_pos));
+                params.put("country_id", "1");
                 params.put("state_id", stateIdList.get(state_pos));
                 params.put("city_id", cityIdList.get(city_pos));
                 params.put("organization_id",organizationIdList.get(org_pos));
