@@ -861,7 +861,9 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("latitude",""+gpsTracker.GETLat());
                 params.put("longitude",""+gpsTracker.GETLong());
                 params.put("join_status","2");
+
                 return params;
+
             }
         };
         queue.add(stringRequest);
