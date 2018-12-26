@@ -180,12 +180,21 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!aedtCity.getSelectedItem().toString().equalsIgnoreCase("Select City"))
+                if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
                 {
-                    getOrganization(cityIdList.get(i));
-                    city_pos = i;
+                    edtCollege.setVisibility(View.GONE);
                 }
-                Log.e("SSSSSSSSSS",""+cityIdList.get(i));
+                else
+                {
+                    if(!aedtCity.getSelectedItem().toString().equalsIgnoreCase("Select City"))
+                    {
+                        getOrganization(cityIdList.get(i));
+                        city_pos = i;
+                        Log.e("SSSSSSSSSS",""+cityIdList.get(i));
+                    }
+                }
+
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -348,10 +357,7 @@ course_pos = i;
             edtEmail.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
-        if (edtCollege.getSelectedItem().toString().trim().isEmpty()) {
-            Toast.makeText(this, "Select College", Toast.LENGTH_SHORT).show();
-            val = false;
-        }
+
         if (edtDob.getText().toString().trim().isEmpty()) {
             edtDob.setError(getResources().getString(R.string.error_msg));
             val = false;

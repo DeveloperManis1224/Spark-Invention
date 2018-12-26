@@ -1,11 +1,16 @@
 package com.app.manikandanr.sampleclients;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationProvider;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,14 +52,17 @@ import java.util.Map;
 
 public class MarketingAdmission extends AppCompatActivity {
 
+    String yearSelected;
     private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eStrength, eInsLandline,eInsAddress, eWebsite;
     private Spinner aeCountry,aeState,aeCity, aeOrganization , aeYear;
     private Spinner sEvent;
+    int event_pos =0;
     final ArrayList<String> countryList = new ArrayList<String>();
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
     final ArrayList<String> organizationList = new ArrayList<String>();
     final ArrayList<String> eventList = new ArrayList<String>();
+    final ArrayList<String> eventIdList = new ArrayList<String>();
 
     final ArrayList<String> countryIdList = new ArrayList<String>();
     final ArrayList<String> organizationIdList = new ArrayList<String>();
@@ -108,6 +116,8 @@ public class MarketingAdmission extends AppCompatActivity {
         pd = new ProgressDialog(MarketingAdmission.this);
         pd.setMessage("loading");
 
+        getEvents();
+
 //        = new String[]{"1st Year","2nd Year","3rd Year","4 Year"};
         if(getIntent().getExtras().getString(Constants.USER_ROLE).equalsIgnoreCase(Constants.USER_TYPE_SCHOOL))
         {
@@ -125,13 +135,65 @@ public class MarketingAdmission extends AppCompatActivity {
         }
         aeYear.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,yearlist));
 
+        aeYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(aeYear.getSelectedItem().toString().equalsIgnoreCase("1st Year"))
+                {
+                    yearSelected ="1";
+                }
+                else if(aeYear.getSelectedItem().toString().equalsIgnoreCase("2nd Year"))
+                {
+                    yearSelected ="2";
+                }
+                else if (aeYear.getSelectedItem().toString().equalsIgnoreCase("3rd Year"))
+                {
+                    yearSelected = "3";
+                }
+                else if(aeYear.getSelectedItem().toString().equalsIgnoreCase("4th Year"))
+                {
+                    yearSelected = "4";
+                }
+                else if (aeYear.getSelectedItem().toString().equalsIgnoreCase("5th std to 9th std"))
+                {
+                    yearSelected = "5";
+                }
+                else if(aeYear.getSelectedItem().toString().equalsIgnoreCase("10th std to 12th std"))
+                {
+                    yearSelected = "6";
+                }
 
-        countryList.add("India");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, countryList);
-        aeCountry.setAdapter(adapter);
-        getState("1");
-        getEventDetails();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+//        countryList.add("India");
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, countryList);
+//        aeCountry.setAdapter(adapter);
+       // getState("1");
+        //getEventDetails();
+
+        getCountry();
+
+        aeCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!aeCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country"))
+                {
+                    getState(countryIdList.get(i));
+                    country_pos = i;
+                }
+                Log.e("SASASASA", "Country ID  :::::" +countryIdList.get(i));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         aeOrganization.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -145,20 +207,7 @@ public class MarketingAdmission extends AppCompatActivity {
             }
         });
 
-        aeCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!aeCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country"))
-                {
-                    getState("1");
-                    country_pos = i;
-                }
-               // Log.e("SASASASA", "Country ID  :::::" +countryIdList.get(i));
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+
         aeState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -189,6 +238,45 @@ public class MarketingAdmission extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+
+        sEvent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                 event_pos = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        if (ContextCompat.checkSelfPermission(MarketingAdmission.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(MarketingAdmission.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MarketingAdmission.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        } else {
+            Toast.makeText(MarketingAdmission.this,"You need have granted permission",Toast.LENGTH_SHORT).show();
+            gpsTracker = new GpsTracker(MarketingAdmission.this);
+
+            // Check if GPS enabled
+            if (gpsTracker.canGetLocation()) {
+
+                double latitude = gpsTracker.getLatitude();
+                double longitude = gpsTracker.getLongitude();
+
+                // \n is for new line
+                Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            } else {
+                // Can't get location.
+                // GPS or network is not enabled.
+                // Ask user to enable GPS/network in settings.
+                gpsTracker.showSettingsAlert();
+            }
+        }
+//        GeoLocator geoLocator = new GeoLocator(getApplicationContext(),MarketingAdmission.this);
+//        Toast.makeText(MarketingAdmission.this, ""+geoLocator.getLattitude()+"//"+geoLocator.getLongitude(), Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -243,44 +331,6 @@ public class MarketingAdmission extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
-    private void getEventDetails() {
-
-        eventList.add("Level 1");
-        eventList.add("Level 2");
-        eventList.add("Level 3");
-//                            }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, eventList);
-                        sEvent.setAdapter(adapter);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "http://spark.candyrestaurant.com/api/student";
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jobj = new JSONObject(response);
-//                            JSONArray jary = jobj.getJSONArray("marketing");
-//                            for (int i = 1; i <= jary.length(); i++) {
-//                                JSONObject jobj1 = jary.getJSONObject(i);
-//                                eventList.add(jobj1.getString("course"));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, eventList);
-//                        sEvent.setAdapter(adapter);
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        queue.add(stringRequest);
-    }
 
     public void onMarketingSubmit(View v)
     {
@@ -322,7 +372,6 @@ public class MarketingAdmission extends AppCompatActivity {
                                         Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
                                                 (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
                                         alertDate = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-
                                     }
                                 }, mYear, mMonth, mDay);
                         datePickerDialog.show();
@@ -336,6 +385,22 @@ public class MarketingAdmission extends AppCompatActivity {
                     public void onClick(View v) {
                         deleteDialog.dismiss();
 
+                        int mYear, mMonth, mDay;
+                        final Calendar c = Calendar.getInstance();
+                        mYear = c.get(Calendar.YEAR);
+                        mMonth = c.get(Calendar.MONTH);
+                        mDay = c.get(Calendar.DAY_OF_MONTH);
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(MarketingAdmission.this,
+                                new DatePickerDialog.OnDateSetListener() {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year,
+                                                          int monthOfYear, int dayOfMonth) {
+                                        Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
+                                                (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
+                                        alertDate = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                                    }
+                                }, mYear, mMonth, mDay);
+                        datePickerDialog.show();
                         Toast.makeText(MarketingAdmission.this, "Not Confirmed", Toast.LENGTH_SHORT).show();
                         sts_joinings = "later";
                         btnNext.setText("Save");
@@ -374,7 +439,8 @@ public class MarketingAdmission extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-            } else {
+            }
+            else
                 if (sts_joinings.equalsIgnoreCase("now")) {
                     if (isValid()) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
@@ -388,8 +454,7 @@ public class MarketingAdmission extends AppCompatActivity {
                                 if(!et.getText().toString().trim().isEmpty())
                                 {
                                     insDescrption =et.getText().toString().trim();
-
-                                        setInstituationDetails();
+                                    uploadStudentInfo();
 
                                 }
                                 else
@@ -400,10 +465,10 @@ public class MarketingAdmission extends AppCompatActivity {
                         });
                         AlertDialog alertDialog = alertDialogBuilder.create();
                         alertDialog.show();
-                        uploadStudentInfo();
+
                     }
                 }
-            }
+
         }
 
     }
@@ -493,6 +558,91 @@ public class MarketingAdmission extends AppCompatActivity {
                 return params;
             }
         };
+        queue.add(stringRequest);
+    }
+
+    private void getCountry() {
+        countryIdList.clear();
+        countryList.clear();
+        countryIdList.add("0");
+        countryList.add("Select Country");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/country";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("countries");
+
+                            for (int i = 0; i <= jary.length(); i++) {
+                                JSONObject jobj11 = jary.getJSONObject(i);
+                                String cuntry = jobj11.getString("country");
+                                String id = jobj11.getString("id");
+                                Log.v("TTTTTTTTTTT",""+ cuntry +" "+id);
+                                countryList.add(cuntry);
+                                countryIdList.add(id);
+                            }
+
+                        } catch (JSONException e) {
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
+                            e.printStackTrace();
+                        }
+
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseList);
+//                        aedtCourse.setAdapter(adapter);
+
+                        ArrayAdapter<String> countryAdapt = new ArrayAdapter<String>
+                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, countryList);
+                        aeCountry.setAdapter(countryAdapt);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+    }
+
+
+    private void getEvents() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://spark.candyrestaurant.com/api/event";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("event");
+                            for (int i = 0; i < jary.length(); i++) {
+                                JSONObject jobj1 = jary.getJSONObject(i);
+                                eventList.add(jobj1.getString("name"));
+                                eventIdList.add(jobj1.getString("id"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, eventList);
+                        sEvent.setAdapter(adapter);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        }) ;
         queue.add(stringRequest);
     }
 //    private void getCity() {
@@ -688,7 +838,7 @@ public class MarketingAdmission extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("instituation", eInsName.getText().toString().trim());
-                params.put("instituation_id", "1");
+                params.put("instituation_id", userRollNo);
                 params.put("serial_no", "1");
                 params.put("staff_name", eStaffName.getText().toString().trim());
                 params.put("phone", eStaffPhone.getText().toString().trim());
@@ -697,25 +847,27 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("state_id", stateIdList.get(state_pos));
                 params.put("city_id", cityIdList.get(city_pos));
                 params.put("organization_id",organizationIdList.get(org_pos));
-                params.put("year", aeYear.getSelectedItem().toString().trim());
+                params.put("year", yearSelected);
                 params.put("strength", ""+eStrength.getText().toString().trim());
                 params.put("address", eInsAddress.getText().toString().trim());
                 params.put("landline", eInsLandline.getText().toString().trim());
-                params.put("event", sEvent.getSelectedItem().toString().trim());
+                params.put("event_id", eventIdList.get(event_pos));
                 params.put("status", userRollNo);
-                params.put("set_date","");
+                params.put("set_date",alertDate);
                 params.put("next_date",alertDate);
                 params.put("description",insDescrption);
                 params.put("website",eWebsite.getText().toString().trim());
-                params.put("distance",""+getDistance());
-                params.put("latitude",""+gpsTracker.latitude);
-                params.put("longitude",""+gpsTracker.longitude);
+                params.put("distance","50");
+                params.put("latitude",""+gpsTracker.GETLat());
+                params.put("longitude",""+gpsTracker.GETLong());
+                params.put("join_status","2");
                 return params;
             }
         };
         queue.add(stringRequest);
     }
-//event Confirm
+
+//Event Confirm
     private void uploadStudentInfo() {
         pd.show();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -793,25 +945,26 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("state_id", stateIdList.get(state_pos));
                 params.put("city_id", cityIdList.get(city_pos));
                 params.put("organization_id",organizationIdList.get(org_pos));
-                params.put("year", aeYear.getSelectedItem().toString().trim());
+                params.put("year", yearSelected);
                 params.put("strength", eStrength.getText().toString().trim());
                 params.put("address", eInsAddress.getText().toString().trim());
                 params.put("landline", eInsLandline.getText().toString().trim());
-                params.put("event", sEvent.getSelectedItem().toString().trim());
-                params.put("event_id","1");
+                params.put("event_id",eventIdList.get(event_pos));
                 params.put("status", userRollNo);
                 params.put("set_date",alertDate);
-                params.put("next_date","");
+                params.put("next_date",alertDate);
                 params.put("description",insDescrption);
                 params.put("website",eWebsite.getText().toString().trim());
-                params.put("distance",""+getDistance());
+                params.put("distance","33");
                 params.put("latitude",""+gpsTracker.getLatitude());
                 params.put("longitude",""+gpsTracker.getLongitude());
+                params.put("join_status","1");
                 return params;
             }
         };
         queue.add(stringRequest);
     }
+
 
     private boolean isValid() {
         boolean val = true;
