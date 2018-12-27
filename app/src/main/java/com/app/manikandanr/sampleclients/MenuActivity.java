@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 
 public class MenuActivity extends AppCompatActivity {
@@ -40,10 +42,16 @@ public class MenuActivity extends AppCompatActivity {
         bAttendance = findViewById(R.id.btn_attendance);
         bRevenue = findViewById(R.id.btn_revenue);
         bMore = findViewById(R.id.btn_store);
+
+        SingleShortLocationProvider.requestSingleUpdate(MenuActivity.this,
+                new SingleShortLocationProvider.LocationCallback() {
+                    @Override public void onNewLocationAvailable(SingleShortLocationProvider.GPSCoordinates location) {
+                        Log.d("Locationasdasd", "my location is " + location.latitude+"   "+location.longitude);
+                    }
+                });
         bAdmission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
                 final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
                 final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();

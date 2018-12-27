@@ -27,6 +27,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -93,14 +94,14 @@ public class BillActivity extends AppCompatActivity {
                 if(!eBillNumber.getText().toString().isEmpty())
                 {
                     Log.e("RESPONSE111","student_id"+""+studId+
-                 "payment_mode"+payMode+
+                    "payment_mode"+payMode+
                     "initial_amount"+""+initialAmount+
                     "total_amount"+""+totalAmount+
                     "tenure"+""+tenureMonth+
-                   "payment_status"+""+paymentStatus+
+                    "payment_status"+""+paymentStatus+
                     "tenure_amount"+""+tenureAmount+
-                   "balance_amount"+""+balanceAmount+
-                   "quotation_id"+eBillNumber.getText().toString().trim());
+                    "balance_amount"+""+balanceAmount+
+                    "quotation_id"+eBillNumber.getText().toString().trim());
                     completeCashMethod();
                 }
                 else
@@ -127,21 +128,28 @@ public class BillActivity extends AppCompatActivity {
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
-                                JSONObject jobj = jsonObject.getJSONObject("payment");
-                                try {
-                                    JSONObject jobj1 = jobj.getJSONObject("payment_plan");
-                                    dueDate = jobj1.getString("due_date");
-                                    billInitialAmount = jobj1.getString("initial_amount");
-                                    billTotalAmount = jobj1.getString("total_amount");
-                                }catch ( Exception ex)
-                                {
-                                    Log.e("ERROR",ex.getMessage());
-                                    ex.printStackTrace();
+                                JSONArray jry = jsonObject.getJSONArray("payment");
+
+                                for(int i = 0; i< jry.length(); i++) {
+                                    JSONObject jobj = jry.getJSONObject(i);
+                                    billQuationId = jobj.getString("quotation_id");
+                                    JSONObject studentObject = jobj.getJSONObject("student");
+                                    billStudentName = studentObject.getString("name");
+                                    billStudentRoll = studentObject.getString("serial_no");
+                                    billInitialAmount = studentObject.getString("initial_amount");
+                                    billTotalAmount = studentObject.getString("total_amount");
+                                    try {
+                                        JSONObject jobj1 = jobj.getJSONObject("payment_plan");
+                                        dueDate = jobj1.getString("due_date");
+                                        billInitialAmount = jobj1.getString("initial_amount");
+                                        billTotalAmount = jobj1.getString("total_amount");
+                                    } catch (Exception ex) {
+                                        Log.e("ERROR", ex.getMessage());
+                                        ex.printStackTrace();
+                                    }
                                 }
-                                JSONObject studentObject = jobj.getJSONObject("student");
-                                billStudentName = studentObject.getString("name");
-                                billStudentRoll = studentObject.getString("serial_no");
-                                billQuationId = jobj.getString("quotation_id");
+
+
 
 //                                value = "Bill number : "+eBillNumber.getText().toString().trim()+
 //                                        "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+

@@ -51,7 +51,8 @@
         <activity android:name=".MoreMenu" />
         <activity android:name=".AccountsHome" />
         <activity android:name=".ViewStudent" />
-        <activity android:name=".MenuActivity"/>
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".PasswordActivity"></activity>
     </application>
 
 </manifest>

@@ -36,6 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
@@ -251,32 +252,15 @@ public class MarketingAdmission extends AppCompatActivity {
             }
         });
 
-        if (ContextCompat.checkSelfPermission(MarketingAdmission.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(MarketingAdmission.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MarketingAdmission.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        } else {
-            Toast.makeText(MarketingAdmission.this,"You need have granted permission",Toast.LENGTH_SHORT).show();
-            gpsTracker = new GpsTracker(MarketingAdmission.this);
-
-            // Check if GPS enabled
-            if (gpsTracker.canGetLocation()) {
-
-                double latitude = gpsTracker.getLatitude();
-                double longitude = gpsTracker.getLongitude();
-
-                // \n is for new line
-                Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-            } else {
-                // Can't get location.
-                // GPS or network is not enabled.
-                // Ask user to enable GPS/network in settings.
-                gpsTracker.showSettingsAlert();
-            }
-        }
-//        GeoLocator geoLocator = new GeoLocator(getApplicationContext(),MarketingAdmission.this);
-//        Toast.makeText(MarketingAdmission.this, ""+geoLocator.getLattitude()+"//"+geoLocator.getLongitude(), Toast.LENGTH_SHORT).show();
-
+        SingleShortLocationProvider.requestSingleUpdate(MarketingAdmission.this,
+                new SingleShortLocationProvider.LocationCallback() {
+                    @Override public void onNewLocationAvailable(SingleShortLocationProvider.GPSCoordinates location) {
+                        Log.d("Locationasdasd", "my location is " + location.latitude+"   "+location.longitude);
+                        lat = String.valueOf(location.latitude);
+                        lon = String.valueOf(location.longitude);
+                        Log.d("Locationasdasd", "my location is Current " + lat+"   "+lon);
+                    }
+                });
 
     }
 
@@ -858,8 +842,8 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("description",insDescrption);
                 params.put("website",eWebsite.getText().toString().trim());
                 params.put("distance","50");
-                params.put("latitude",""+gpsTracker.GETLat());
-                params.put("longitude",""+gpsTracker.GETLong());
+                params.put("latitude",""+lat);
+                params.put("longitude",""+lon);
                 params.put("join_status","2");
 
                 return params;
@@ -958,8 +942,8 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("description",insDescrption);
                 params.put("website",eWebsite.getText().toString().trim());
                 params.put("distance","33");
-                params.put("latitude",""+gpsTracker.getLatitude());
-                params.put("longitude",""+gpsTracker.getLongitude());
+                params.put("latitude",""+lat);
+                params.put("longitude",""+lon);
                 params.put("join_status","1");
                 return params;
             }
@@ -968,6 +952,7 @@ public class MarketingAdmission extends AppCompatActivity {
     }
 
 
+    String lat, lon;
     private boolean isValid() {
         boolean val = true;
         if (eInsName.getText().toString().trim().isEmpty()) {
