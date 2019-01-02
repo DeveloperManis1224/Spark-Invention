@@ -1,5 +1,9 @@
 package com.app.manikandanr.sampleclients.Utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class Constants {
     public static final String BASE_URL = "http://spark.candyrestaurant.com/";
 
@@ -19,6 +23,14 @@ public class Constants {
 
     public static final String OFFER_PERCENTAGE = "1";
     public static final String OFFER_RUPEES = "2";
+
+
+    public static boolean isNetworkAvailable(Context cntx) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) cntx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 
