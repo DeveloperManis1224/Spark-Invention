@@ -53,7 +53,7 @@ public class AttendanceActivity extends AppCompatActivity {
         final View layout11 = inflater.inflate(R.layout.dialog_sort_lyt, (ViewGroup) findViewById(R.id.layout_root));
         final AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
         builder.setView(layout11);
-        builder.setPositiveButton("Sort", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Get Students", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
