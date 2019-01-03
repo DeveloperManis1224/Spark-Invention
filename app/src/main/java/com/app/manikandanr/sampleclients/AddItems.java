@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +58,7 @@ public class AddItems extends AppCompatActivity {
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = Constants.BASE_URL+"api/country";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
 
@@ -118,7 +119,7 @@ public class AddItems extends AppCompatActivity {
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country-create";
+        String url = Constants.BASE_URL+"api/country-create";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -169,7 +170,7 @@ public class AddItems extends AppCompatActivity {
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/state-city-create";
+        String url = Constants.BASE_URL+"api/state-city-create";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

@@ -20,7 +20,6 @@ public class SampleTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_test);
-
         imgView = findViewById(R.id.img);
         try
         {

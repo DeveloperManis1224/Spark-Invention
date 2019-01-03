@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Utils.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -145,7 +146,7 @@ public class AccountsHome extends AppCompatActivity {
 
     private void addIncome() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = Constants.BASE_URL+"api/add-income";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -192,7 +193,7 @@ public class AccountsHome extends AppCompatActivity {
     private void addExpense() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = Constants.BASE_URL+"api/add-expense";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

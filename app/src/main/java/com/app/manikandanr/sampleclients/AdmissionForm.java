@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.json.JSONArray;
@@ -400,7 +401,7 @@ course_pos = i;
         collegeList.add("Select Organization");
         collegeIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/role-organization-lists";
+        String url = Constants.BASE_URL+"api/role-organization-lists";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -456,7 +457,7 @@ course_pos = i;
         cityIdList.add("0");
         cityList.add("Select City");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/city";
+        String url = Constants.BASE_URL+"api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
 
@@ -503,7 +504,7 @@ course_pos = i;
         stateList.add("Select State");
         stateIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/state";
+        String url = Constants.BASE_URL+"api/state";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -552,7 +553,7 @@ course_pos = i;
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = Constants.BASE_URL+"api/country";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -691,13 +692,12 @@ course_pos = i;
                         try {
                             pd.dismiss();
                             Log.e("RESPONSE111", "" + response);
-
                             JSONObject jsonObject = new JSONObject(response);
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
                                 new AwesomeNoticeDialog(AdmissionForm.this)
-                                        .setTitle("Success")
+                                        .setTitle("Success!")
                                         .setMessage("Alert Saved Successfully")
                                         .setColoredCircle(R.color.colorPrimaryDark)
                                         .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
@@ -714,11 +714,6 @@ course_pos = i;
                                             }
                                         })
                                         .show();
-//                                Toast.makeText(AdmissionForm.this, "" + msg, Toast.LENGTH_SHORT).show();
-//                                Intent in = new Intent(AdmissionForm.this, AlertActivity.class);
-//
-//                                startActivity(in);
-//                                finish();
                             } else {
                                 Toast.makeText(AdmissionForm.this, "Submition failed", Toast.LENGTH_SHORT).show();
                             }
@@ -775,7 +770,7 @@ course_pos = i;
         categoryList.add("Select Category");
         categoryIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/categroy";
+        String url = Constants.BASE_URL+"api/categroy";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -811,7 +806,7 @@ course_pos = i;
         courseCatList.add("Select Course");
         courseCatIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/category-course";
+        String url = Constants.BASE_URL+"api/category-course";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -819,7 +814,7 @@ course_pos = i;
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("categories");
-                            for (int i = 0; i <= jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 costList.add(jobj1.getString("amount"));
                                 courseCatList.add(jobj1.getString("course")+" ( Rs."+jobj1.getString("amount")+")");
@@ -855,7 +850,7 @@ course_pos = i;
         offerDetails_join.delete(0,offerDetails_join.length());
         offerDetails_join.append("Applied Offer! \n");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/offer-details";
+        String url = Constants.BASE_URL+"api/offer-details";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -956,8 +951,33 @@ course_pos = i;
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(AdmissionForm.this, MenuActivity.class));
-        finish();
+
+        new AwesomeSuccessDialog(AdmissionForm.this)
+                .setTitle("Exit")
+                .setMessage("Are you sure want to leave the form?")
+                .setColoredCircle(R.color.colorPrimary)
+                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setCancelable(true)
+                .setPositiveButtonText("Yes")
+                .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        startActivity(new Intent(AdmissionForm.this, MenuActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeButtonText("Cancel")
+                .setNegativeButtonTextColor(R.color.white)
+                .setNegativeButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+
+                    }
+                })
+                .show();
+
     }
 
 }

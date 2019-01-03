@@ -159,7 +159,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
             android:inputType="textCapSentences"
-            android:padding="5dp"
+
             android:id="@+id/edt_college"
             android:singleLine="true"
             android:layout_marginTop="10dp"
@@ -186,7 +186,7 @@
             android:id="@+id/edt_course"
             android:singleLine="true"
             android:gravity="center"
-            android:padding="5dp"
+
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"
@@ -196,7 +196,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_cat_course"
             android:singleLine="true"
-            android:padding="5dp"
+
             android:gravity="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"

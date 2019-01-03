@@ -171,16 +171,9 @@ public class MarketingAdmission extends AppCompatActivity {
 
             }
         });
-
-//        countryList.add("India");
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, countryList);
-//        aeCountry.setAdapter(adapter);
-       // getState("1");
-        //getEventDetails();
-
+        getAccurateDistance(13.056840,80.255169,13.055560,80.257733);
+        Log.e("Distance Kms","Getrtryftryfgh:   "+getAccurateDistance(13.056840,80.255169,13.055560,80.257733));
         getCountry();
-
         aeCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -270,7 +263,7 @@ public class MarketingAdmission extends AppCompatActivity {
         organizationList.add("Select Organization");
         organizationIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/role-organization-lists";
+        String url = Constants.BASE_URL+"api/role-organization-lists";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -463,7 +456,7 @@ public class MarketingAdmission extends AppCompatActivity {
         cityIdList.add("0");
         cityList.add("Select City");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/city";
+        String url = Constants.BASE_URL+"api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
 
@@ -506,7 +499,7 @@ public class MarketingAdmission extends AppCompatActivity {
         stateList.add("Select State");
         stateIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/state";
+        String url = Constants.BASE_URL+"api/state";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -551,7 +544,7 @@ public class MarketingAdmission extends AppCompatActivity {
         countryIdList.add("0");
         countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = Constants.BASE_URL+"api/country";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -599,7 +592,7 @@ public class MarketingAdmission extends AppCompatActivity {
     private void getEvents() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/event";
+        String url = Constants.BASE_URL+"api/event";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -733,6 +726,20 @@ public class MarketingAdmission extends AppCompatActivity {
 
         return locationA.distanceTo(locationB);
     }
+
+    private double getAccurateDistance(double latA,double lngA, double latB, double lngB)
+    {
+        double disVal = 0;
+        Location locationA = new Location("point A");
+        locationA.setLatitude(latA);
+        locationA.setLongitude(lngA);
+        Location locationB = new Location("point B");
+        locationB.setLatitude(latB);
+        locationB.setLongitude(lngB);
+        disVal = locationA.distanceTo(locationB) ;
+        return  disVal;
+    }
+
 
     private double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;

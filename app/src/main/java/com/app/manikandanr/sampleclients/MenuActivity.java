@@ -33,31 +33,32 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        if(Constants.isNetworkAvailable(MenuActivity.this))
-        {
-            new AwesomeSuccessDialog(MenuActivity.this)
-                    .setTitle("No Internet Available")
-                    .setMessage("There is no Internet Connection. please turn on your Internet connection")
-                    .setColoredCircle(R.color.colorPrimary)
-                    .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
-                    .setCancelable(true)
-                    .setPositiveButtonText("Ok")
-                    .setPositiveButtonbackgroundColor(R.color.colorPrimary)
-                    .setPositiveButtonTextColor(R.color.white)
-                    .setPositiveButtonClick(new Closure() {
-                        @Override
-                        public void exec() {
-
-                            Intent in = new Intent(MenuActivity.this, ViewBill.class);
-                            startActivity(in);
-                            finish();
-                        }
-                    })
-                    .show();
-        }
-        else {
-            init();
-        }
+//        if(Constants.isNetworkAvailable(MenuActivity.this))
+//        {
+//            new AwesomeSuccessDialog(MenuActivity.this)
+//                    .setTitle("No Internet Available")
+//                    .setMessage("There is no Internet Connection. please turn on your Internet connection")
+//                    .setColoredCircle(R.color.colorPrimary)
+//                    .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
+//                    .setCancelable(true)
+//                    .setPositiveButtonText("Ok")
+//                    .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+//                    .setPositiveButtonTextColor(R.color.white)
+//                    .setPositiveButtonClick(new Closure() {
+//                        @Override
+//                        public void exec() {
+//
+//                            Intent in = new Intent(MenuActivity.this, SplashScreen.class);
+//                            startActivity(in);
+//                            finish();
+//                        }
+//                    })
+//                    .show();
+//        }
+//        else {
+//            init();
+//        }
+        init();
         //Lib- Lists:
         //https://android-arsenal.com/details/1/6109
         //https://android-arsenal.com/details/1/6929

@@ -17,7 +17,5 @@ public class ViewStudent extends AppCompatActivity {
         lytMgr = new LinearLayoutManager(ViewStudent.this);
         viewStudent.setLayoutManager(lytMgr);
 
-
-
     }
 }

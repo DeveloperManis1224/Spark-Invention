@@ -41,7 +41,6 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="5dp">
-
             <Button
                 android:layout_width="120dp"
                 android:layout_height="120dp"

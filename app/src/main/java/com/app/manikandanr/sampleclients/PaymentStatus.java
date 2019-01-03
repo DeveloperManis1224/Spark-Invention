@@ -17,7 +17,6 @@ public class PaymentStatus extends AppCompatActivity {
 
         txtCost = findViewById(R.id.txt_cost_payment);
         txtCost.setText("Rs "+getIntent().getStringExtra("cost"));
-
         studentId = getIntent().getStringExtra("stud_id");
 
     }

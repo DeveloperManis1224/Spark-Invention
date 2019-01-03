@@ -148,8 +148,6 @@ if(isValid())
             Toast.makeText(this, "Select Category", Toast.LENGTH_SHORT).show();
             val = false;
         }
-
-
         return val ;
     }
 
@@ -246,15 +244,13 @@ if(isValid())
 
     }
 
-
-
     private void getCategoryCourse(final String categoryId) {
         categoryCourseIdList.clear();
         categoryCourseSpinnerList.clear();
         categoryCourseIdList.add("Select Course");
         categoryCourseSpinnerList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/category-course";
+        String url = Constants.BASE_URL+"api/category-course";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -297,7 +293,7 @@ if(isValid())
         cityIdList.add("0");
         citySpinnerList.add("Select City");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/city";
+        String url = Constants.BASE_URL+"api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
 
@@ -344,7 +340,7 @@ if(isValid())
         stateSpinnerList.add("Select State");
         stateIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/state";
+        String url = Constants.BASE_URL+"api/state";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -393,7 +389,7 @@ if(isValid())
         countryIdList.add("0");
         countrySpinnerList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/country";
+        String url = Constants.BASE_URL+"api/country";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -402,7 +398,7 @@ if(isValid())
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("countries");
 
-                            for (int i = 0; i <= jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj11 = jary.getJSONObject(i);
                                 String cuntry = jobj11.getString("country");
                                 String id = jobj11.getString("id");
@@ -439,7 +435,7 @@ if(isValid())
         organizationSpinnerList.add("Select Organization");
         organizationIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/role-organization-lists";
+        String url = Constants.BASE_URL+"api/role-organization-lists";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -495,7 +491,7 @@ if(isValid())
         categorySpinnerList.add("Select Category");
         categoryIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://spark.candyrestaurant.com/api/categroy";
+        String url = Constants.BASE_URL+"api/categroy";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

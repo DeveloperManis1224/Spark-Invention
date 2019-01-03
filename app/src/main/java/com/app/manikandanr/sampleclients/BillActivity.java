@@ -136,8 +136,8 @@ public class BillActivity extends AppCompatActivity {
                                     JSONObject studentObject = jobj.getJSONObject("student");
                                     billStudentName = studentObject.getString("name");
                                     billStudentRoll = studentObject.getString("serial_no");
-                                    billInitialAmount = studentObject.getString("initial_amount");
-                                    billTotalAmount = studentObject.getString("total_amount");
+                                    //billInitialAmount = studentObject.getString("initial_amount");
+                                   // billTotalAmount = studentObject.getString("total_amount");
                                     try {
                                         JSONObject jobj1 = jobj.getJSONObject("payment_plan");
                                         dueDate = jobj1.getString("due_date");
