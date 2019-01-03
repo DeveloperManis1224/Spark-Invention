@@ -212,6 +212,8 @@ public class BillActivity extends AppCompatActivity {
                                         })
                                         .show();
 
+
+
 //                                Toast.makeText(BillActivity.this, "Payment registered successfully", Toast.LENGTH_SHORT).show();
 //                                Intent in = new Intent(BillActivity.this, ViewBill.class);
 //                                in.putExtra("detail",""+ value);
