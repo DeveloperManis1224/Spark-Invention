@@ -45,7 +45,7 @@ public class BillActivity extends AppCompatActivity {
     private Button btnSubmit;
     private EditText eBillNumber;
     private String payMode="";
-    private String billStudentName,billStudentRoll,billQuationId,billInitialAmount,billTotalAmount;
+    private String student_id, billStudentName,billStudentRoll,billQuationId,billInitialAmount,billTotalAmount;
     private String studId,paymentMode,initialAmount,totalAmount,tenureMonth,dueDate,paymentStatus,tenureAmount,balanceAmount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +134,7 @@ public class BillActivity extends AppCompatActivity {
                                     JSONObject jobj = jry.getJSONObject(i);
                                     billQuationId = jobj.getString("quotation_id");
                                     JSONObject studentObject = jobj.getJSONObject("student");
+                                    student_id = studentObject.getString("id");
                                     billStudentName = studentObject.getString("name");
                                     billStudentRoll = studentObject.getString("serial_no");
                                     //billInitialAmount = studentObject.getString("initial_amount");
@@ -206,6 +207,7 @@ public class BillActivity extends AppCompatActivity {
                                             public void exec() {
                                 Intent in = new Intent(BillActivity.this, ViewBill.class);
                                 in.putExtra("detail",""+ value);
+                                in.putExtra("stud_id",student_id);
                                 startActivity(in);
                                 finish();
                                             }

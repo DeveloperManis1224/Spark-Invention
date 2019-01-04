@@ -5,9 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class Constants {
-    public static final String APP_NAME = "Spark-Invention";
     public static final String BASE_URL = "http://api.spark-invention.com/";
-
     //variable keys
     public static final String USER_ROLE = "role";
     public static final String USER_ROLE_ID= "role_id";
@@ -23,13 +21,10 @@ public class Constants {
 
     public static final String OFFER_PERCENTAGE = "1";
     public static final String OFFER_RUPEES = "2";
-
-    public static final String LOGIN_STATUS = "login_status";
+    public static final String LAST_LOGIN_DATE = "lastLoginDate";
+    public static final String LOGIN_STATUS = "login_sts";
     public static final String LOGIN = "in";
-    public static final String LOGOUT = "out";
-
-    public static final String LAST_LOGIN_DATE = "last_login_date";
-
+    public static final String APP_NAME = "spark-invention";
 
 
     public static boolean isNetworkAvailable(Context cntx) {

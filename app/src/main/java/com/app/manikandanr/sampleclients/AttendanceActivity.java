@@ -96,9 +96,9 @@ public class AttendanceActivity extends AppCompatActivity {
         citySpinner = layout11.findViewById(R.id.at_spin_city);
         categorySpinner = layout11.findViewById(R.id.at_spin_category);
         institutionTypeSpinner = layout11.findViewById(R.id.at_spin_institution_type);
-        courseSpinner = layout11.findViewById(R.id.at_spin_course);
-        yearSpinner = layout11.findViewById(R.id.at_spin_year);
-        organizationSpinner = layout11.findViewById(R.id.at_spin_organization);
+//        courseSpinner = layout11.findViewById(R.id.at_spin_course);
+//        yearSpinner = layout11.findViewById(R.id.at_spin_year);
+//        organizationSpinner = layout11.findViewById(R.id.at_spin_organization);
         final AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
         builder.setView(layout11);
         builder.setPositiveButton("Get Students", new DialogInterface.OnClickListener() {
@@ -214,17 +214,17 @@ if(isValid())
            }
        });
 
-       organizationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-           @Override
-           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               organizationPosition = i;
-           }
-
-           @Override
-           public void onNothingSelected(AdapterView<?> adapterView) {
-
-           }
-       });
+//       organizationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//           @Override
+//           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//               organizationPosition = i;
+//           }
+//
+//           @Override
+//           public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//           }
+//       });
 
        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
            @Override
@@ -360,7 +360,7 @@ if(isValid())
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                                 (AttendanceActivity.this, android.R.layout.simple_spinner_dropdown_item, stateSpinnerList);
-                        citySpinner.setAdapter(adapter);
+                        stateSpinner.setAdapter(adapter);
 
                     }
                 }, new Response.ErrorListener() {
@@ -456,12 +456,8 @@ if(isValid())
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                                 (AttendanceActivity.this, android.R.layout.simple_spinner_dropdown_item, organizationSpinnerList);
                         organizationSpinner.setAdapter(adapter);
-
                     }
-
-
                 }, new Response.ErrorListener() {
-
 
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -557,4 +553,6 @@ if(isValid())
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
+
 }

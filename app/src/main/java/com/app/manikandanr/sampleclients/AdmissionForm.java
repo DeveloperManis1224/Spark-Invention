@@ -68,7 +68,7 @@ public class AdmissionForm extends AppCompatActivity {
     private String userRole = "";
     private String userRollNo = "";
     private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
-    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse ,category_course;
+    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, edtdepartmentYear, aedtCourse ,category_course;
     final ArrayList<String> costList = new ArrayList<String>();
     final ArrayList<String> courseList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
@@ -91,6 +91,8 @@ public class AdmissionForm extends AppCompatActivity {
     final ArrayList<String> courseIdList = new ArrayList<String>();
     final ArrayList<String> courseCatIdList = new ArrayList<String>();
 
+    String departmentId;
+
     int coursPosition= 0;
     int orgPosition = 0;
 
@@ -103,6 +105,8 @@ public class AdmissionForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admission_form);
         init();
+
+
     }
 
     private void init() {
@@ -124,6 +128,49 @@ public class AdmissionForm extends AppCompatActivity {
         category_course = findViewById(R.id.edt_cat_course);
         userRole = getIntent().getStringExtra(Constants.USER_ROLE);
         userRollNo = getIntent().getStringExtra(Constants.USER_ROLE_ID);
+        edtdepartmentYear = findViewById(R.id.edt_department_year);
+
+        if(userRollNo.equalsIgnoreCase(Constants.ROLE_SCHOOL))
+        {
+            String[] departmentList = new String[]{"5th to 9th","10th to 12th"};
+            edtdepartmentYear.setAdapter(new ArrayAdapter<String >(this,
+                    android.R.layout.simple_spinner_dropdown_item,departmentList));
+            edtdepartmentYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    departmentId = ""+i;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+        else  if(userRollNo.equalsIgnoreCase(Constants.ROLE_COLLEGE))
+        {
+            String[] departmentList = new String[]{"1st Year","2nd Year", "3rd Year","4th Year"};
+            edtdepartmentYear.setAdapter(new ArrayAdapter<String >(this,
+                    android.R.layout.simple_spinner_dropdown_item,departmentList));
+            edtdepartmentYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    departmentId = ""+i;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+        else  if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
+        {
+//            String[] departmentList = new String[]{"5th to 9th","10th to 12th"};
+//            edtdepartmentYear.setAdapter(new ArrayAdapter<String >(this,
+//                    android.R.layout.simple_spinner_dropdown_item,departmentList));
+            edtdepartmentYear.setVisibility(View.GONE);
+        }
         pd = new ProgressDialog(AdmissionForm.this);
 
         offerDetails_join.append("Applied Offer! \n");
@@ -131,8 +178,6 @@ public class AdmissionForm extends AppCompatActivity {
         getCountry();
 
 
-       // aedtCountry.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,countryList));
-       // getState("1");
         getCatgories();
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +268,6 @@ public class AdmissionForm extends AppCompatActivity {
                     getCategoryCourse(categoryIdList.get(i));
                     cat_pos = i;
                 }
-                //Log.e("SASTTTTT", courseIdList.get(i)+" ////" + i);
             }
 
             @Override
@@ -659,6 +703,7 @@ course_pos = i;
                 params.put("address", edtAddress.getText().toString().trim());
                 params.put("course_id", courseCatIdList.get(course_pos));
                 params.put("status", sts_joinings);
+                params.put("department_id",departmentId);
                 params.put("alert_date", alertDate);
                 params.put("join_status", "1");
                 params.put("role", userRollNo);
@@ -744,6 +789,7 @@ course_pos = i;
                 params.put("course_id", courseCatIdList.get(course_pos));
                 params.put("status", sts_joinings);
                 params.put("alert_date", alertDate);
+                params.put("department_id",departmentId);
                 params.put("join_status", "2");
                 params.put("role", userRollNo);
                 params.put("category_id",categoryIdList.get(category_pos));

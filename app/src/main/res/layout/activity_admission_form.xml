@@ -167,6 +167,19 @@
             android:background="@drawable/edt_border"
             android:fontFamily="@font/poppinsmedium"
             android:hint="Enter College"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:id="@+id/edt_department_year"
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:background="@drawable/edt_border"
+            android:fontFamily="@font/poppinsmedium"
+            android:hint="Enter Year"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
