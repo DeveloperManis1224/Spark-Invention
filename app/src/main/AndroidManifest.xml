@@ -51,7 +51,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MoreMenu" />
         <activity android:name=".AccountsHome"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme" />
         <activity android:name=".ViewStudent"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".MenuActivity"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,146 +7,190 @@
     android:orientation="vertical"
     tools:context=".AccountsHome">
 
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:padding="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:id="@+id/income_lyt">
+                android:orientation="vertical">
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:text="Add Income"/>
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radio_income"
+                        android:checked="true"
+                        android:layout_marginRight="10dp"
+                        android:text="Income"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radio_expense"
+                        android:layout_marginLeft="10dp"
+                        android:text="Expense"/>
+                </RadioGroup>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:id="@+id/income_name"
-                    android:inputType="number"
-                    android:layout_marginTop="20dp"
+                    android:inputType="textCapSentences"
+                    android:padding="10dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
-                    android:hint="Enter Your Name"/>
+                    android:id="@+id/acc_txt_name"
+                    android:hint="Enter Name"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:id="@+id/income_amount"
-                    android:inputType="number"
-                    android:layout_marginTop="20dp"
+                    android:inputType="phone"
+                    android:padding="10dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
+                    android:id="@+id/acc_txt_phone"
+                    android:hint="Enter Phone"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:id="@+id/acc_txt_amount"
                     android:hint="Enter Amount"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:padding="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:id="@+id/acc_txt_referance"
+                    android:hint="Referrance &amp; Description"/>
+
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Payment Mode"/>
+                    </LinearLayout>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radio_cash"
+                        android:checked="true"
+                        android:text="by Cash"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radio_bank"
+                        android:text="by Bank"/>
+
+                </RadioGroup>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Payment Type"/>
+                    </LinearLayout>
+
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radio_advance"
+                            android:checked="true"
+                            android:layout_marginRight="10dp"
+                            android:text="Advance"/>
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radio_full"
+                            android:layout_marginLeft="10dp"
+                            android:text="Full"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radio_part"
+                            android:layout_marginRight="10dp"
+                            android:text="Part"/>
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radio_others"
+                            android:layout_marginLeft="10dp"
+                            android:text="Others"/>
+                    </RadioGroup>
+
+
+                </RadioGroup>
+
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
-                    android:id="@+id/income_category"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:id="@+id/income_desc"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Description"/>
+                    android:id="@+id/category"/>
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:onClick="onClickIncome"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_clr_drawble"
-                    android:text="Add Income"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:id="@+id/expense_lyt">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:text="Add Expense"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:id="@+id/expense_name"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Your Name"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:id="@+id/expense_amount"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Amount"/>
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/btnSave"
+                    android:layout_marginBottom="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:id="@+id/expense_category"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:id="@+id/expense_desc"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edt_border"
-                    android:hint="Enter Description"/>
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:textStyle="bold"
-                    android:onClick="onCLickExpense"
-                    android:textSize="14sp"
                     android:fontFamily="@font/poppinsmedium"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_clr_drawble"
-                    android:text="Add Expense"/>
-
+                    android:text="Submit"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_clr_drawble"/>
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
 
-
-
-
-
-
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:padding="2dp"
+        android:gravity="center"
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignParentBottom="true"
+        android:text="* Note - before verify submit"/>
+</RelativeLayout>

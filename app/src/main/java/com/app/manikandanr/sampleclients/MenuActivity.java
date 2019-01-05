@@ -193,6 +193,9 @@ public class MenuActivity extends AppCompatActivity {
         bRevenue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent in = new Intent(MenuActivity.this,AccountsHome.class);
+                startActivity(in);
+                finish();
 
             }
         });

@@ -26,6 +26,15 @@ public class Constants {
     public static final String LOGIN = "in";
     public static final String APP_NAME = "spark-invention";
 
+    public static final String PAYMENT_CASH = "1";
+    public static final String PAYMENT_Bank = "2";
+
+    public static final String ACCOUNT_INCOME = "1";
+    public static final String ACCOUNT_EXPENSE = "2";
+
+
+
+
 
     public static boolean isNetworkAvailable(Context cntx) {
         ConnectivityManager connectivityManager

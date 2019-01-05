@@ -506,7 +506,6 @@ course_pos = i;
         String url = Constants.BASE_URL+"api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
-
                     @Override
                     public void onResponse(String response) {
                         try {
