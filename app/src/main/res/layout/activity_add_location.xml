@@ -34,8 +34,6 @@
                     android:fontFamily="@font/poppinsmedium"
                     android:text="Add Location"/>
             </LinearLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

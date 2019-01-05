@@ -54,6 +54,7 @@ public class AccountsHome extends AppCompatActivity {
         expenseName = findViewById(R.id.expense_name);
         lytIncome = findViewById(R.id.income_lyt);
         lytExpense = findViewById(R.id.expense_lyt);
+
         incomeList.add("Part-time work");
         incomeList.add("Personal Savings");
         incomeList.add("Rents and Royalties");

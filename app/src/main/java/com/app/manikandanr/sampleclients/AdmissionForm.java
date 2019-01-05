@@ -58,6 +58,7 @@ public class AdmissionForm extends AppCompatActivity {
     String org_dis = "";
     String course_dis_type = "";
     String course_dis = "";
+    String organizationId  = "";
     int cat_pos = 0;
     StringBuilder offerDetails_join = new StringBuilder();
     String coursePosition = "";
@@ -251,6 +252,7 @@ public class AdmissionForm extends AppCompatActivity {
         edtCollege.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 orgPosition = i;
             }
 
@@ -694,7 +696,7 @@ course_pos = i;
                 params.put("name", edtName.getText().toString().trim());
                 params.put("dob", edtDob.getText().toString().trim());
                 params.put("instituation_id",getIntent().getExtras().getString(Constants.USER_ROLE_ID));
-                params.put("organization_id", collegeIdList.get(institution_pos));
+                params.put("organization_id", collegeIdList.get(orgPosition));
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
                 params.put("country_id", countryIdList.get(country_pos));
@@ -779,7 +781,7 @@ course_pos = i;
                 params.put("name", edtName.getText().toString().trim());
                 params.put("dob", edtDob.getText().toString().trim());
                 params.put("instituation_id",getIntent().getExtras().getString(Constants.USER_ROLE_ID));
-                params.put("organization_id", collegeIdList.get(institution_pos));
+                params.put("organization_id", collegeIdList.get(orgPosition));
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
                 params.put("country_id", countryIdList.get(country_pos));
