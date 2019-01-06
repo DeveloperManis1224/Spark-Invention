@@ -96,6 +96,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
                 btnProject.setText("Project / Program");
+                btnProject.setVisibility(View.GONE);
                 btnProject.setAllCaps(false);
 
                 btnSchool.setOnClickListener(new View.OnClickListener() {
@@ -185,8 +186,54 @@ public class MenuActivity extends AppCompatActivity {
         bAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent in = new Intent(MenuActivity.this,AttendanceActivity.class);
-               startActivity(in);
+                LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
+                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+                final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
+                deleteDialog.setView(deleteDialogView);
+                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+
+                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+
+                btnSchool.setText("School");
+                btnSchool.setAllCaps(false);
+
+                btnCollege.setText("College");
+                btnCollege.setAllCaps(false);
+
+
+                btnProject.setText("Project / Program");
+                btnProject.setVisibility(View.GONE);
+                btnProject.setAllCaps(false);
+
+                btnSchool.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Intent in = new Intent(MenuActivity.this, AttendanceActivity.class);
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
+                        startActivity(in);
+                    }
+                });
+                btnCollege.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Intent in = new Intent(MenuActivity.this, AttendanceActivity.class);
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
+                        startActivity(in);
+                    }
+                });
+                btnProject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                        Intent in = new Intent(MenuActivity.this, AttendanceActivity.class);
+                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_PROJECT);
+                        startActivity(in);
+                    }
+                });
+                deleteDialog.show();
             }
         });
 

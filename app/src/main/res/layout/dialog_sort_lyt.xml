@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:padding="2dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/edt_border"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/at_spin_country"/>
@@ -27,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -36,33 +38,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/at_spin_city"/>
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:id="@+id/at_spin_institution_type"/>
+
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/at_spin_department"/>
+        android:id="@+id/at_spin_organization"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:background="@drawable/edt_border"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/at_spin_type_year"/>
+
+
+    <!--<Spinner-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="2dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:id="@+id/at_spin_institution_type"/>-->
+
+    <!--<Spinner-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="2dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:id="@+id/at_spin_department"/>-->
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -72,10 +99,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/at_spin_batch"/>
+        android:id="@+id/at_spin_course"/>
 
 
 </LinearLayout>

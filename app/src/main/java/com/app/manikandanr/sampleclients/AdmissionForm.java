@@ -282,7 +282,7 @@ public class AdmissionForm extends AppCompatActivity {
         category_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-course_pos = i;
+                course_pos = i;
                 cost_pos = i;
                 BalanceAmount = costList.get(i);
             }
@@ -825,7 +825,7 @@ course_pos = i;
                         try {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("categories");
-                            for (int i = 0; i <= jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 categoryList.add(jobj1.getString("category"));
                                 categoryIdList.add(jobj1.getString("id"));

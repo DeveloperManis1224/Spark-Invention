@@ -55,6 +55,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:onClick="onCLickPresentStudent"
             android:background="@drawable/btn_clr_drawble"
             android:textStyle="bold"
             android:elevation="2dp"

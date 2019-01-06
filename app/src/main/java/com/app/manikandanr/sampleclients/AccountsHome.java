@@ -327,4 +327,12 @@ categoryPos = i;
                         PaymentType = mRadioOthers.getText().toString();
                     }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent in = new Intent(AccountsHome.this,MenuActivity.class);
+        startActivity(in);
+        finish();
+    }
 }

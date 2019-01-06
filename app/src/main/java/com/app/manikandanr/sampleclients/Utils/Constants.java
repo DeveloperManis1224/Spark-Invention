@@ -33,6 +33,19 @@ public class Constants {
     public static final String ACCOUNT_EXPENSE = "2";
 
 
+    public static final String SCHOOL_5TO9 = "1";
+    public static final String SCHOOL_10TO11 = "2";
+
+    public static final String COLLEGE_1YEAR = "1";
+    public static final String COLLEGE_2YEAR = "2";
+    public static final String COLLEGE_3YEAR = "3";
+    public static final String COLLEGE_4YEAR = "4";
+
+    public static  final String RESPONSE_SUCCESS ="1";
+    public static  final String RESPONSE_FAILED = "0";
+
+
+
 
 
 
