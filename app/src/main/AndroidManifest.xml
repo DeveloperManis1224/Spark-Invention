@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
 
     <application
         android:allowBackup="true"
@@ -50,14 +52,19 @@
             android:name=".AddItems"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MoreMenu" />
-        <activity android:name=".AccountsHome"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ViewStudent"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".MenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".PasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".AccountsHome"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewStudent"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".StudentScanner"></activity>
     </application>
 
 </manifest>
