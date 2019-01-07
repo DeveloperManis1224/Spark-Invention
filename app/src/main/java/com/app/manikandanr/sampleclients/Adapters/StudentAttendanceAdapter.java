@@ -52,7 +52,8 @@ public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAtten
                 @Override
                 public void onClick(View view) {
                     int pos =position;
-                    AttendanceActivity.studentPresentList.add(obj_arr.get(pos).get_studentId()+"");
+                    //AttendanceActivity.studentPresentList.add(obj_arr.get(pos).get_studentId()+"");
+                    AttendanceActivity.studentBuilder.append(obj_arr.get(pos).get_studentId()+",");
                     Log.e("CLICKED_POSITION",pos+"////"+obj_arr.get(pos).get_studentId()+"");
                 }
             });

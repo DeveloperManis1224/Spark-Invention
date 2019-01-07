@@ -94,7 +94,6 @@ public class MenuActivity extends AppCompatActivity {
                 btnCollege.setText("College");
                 btnCollege.setAllCaps(false);
 
-
                 btnProject.setText("Project / Program");
                 btnProject.setVisibility(View.GONE);
                 btnProject.setAllCaps(false);

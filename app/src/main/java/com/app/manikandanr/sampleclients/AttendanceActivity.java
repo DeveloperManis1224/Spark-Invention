@@ -42,6 +42,7 @@ import java.util.Map;
 
 public class AttendanceActivity extends AppCompatActivity {
     ProgressDialog pd;
+    public static StringBuilder studentBuilder = new StringBuilder();
     public static ArrayList<String> studentPresentList = new ArrayList<>();
     public static RecyclerView listViewStudent;
     private Spinner countrySpinner, stateSpinner, citySpinner,typeYear, categorySpinner, institutionTypeSpinner,
@@ -616,9 +617,9 @@ if(isValid())
                                 if (studentArray.length() == 0) {
                                     new AwesomeSuccessDialog(AttendanceActivity.this)
                                             .setTitle("Information")
-                                            .setMessage("No students found by your search")
+                                            .setMessage("No students found")
                                             .setColoredCircle(R.color.colorPrimary)
-                                            .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                            .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
                                             .setCancelable(true)
                                             .setPositiveButtonText("Ok")
                                             .setPositiveButtonbackgroundColor(R.color.colorPrimary)
@@ -733,7 +734,7 @@ if(isValid())
                 params.put("category_id",categoryIdList.get(categoryPosition));
                 params.put("department_id",yearOrStandard);
                 params.put("course_id",categoryCourseIdList.get(coursePosition));
-                params.put("students",""+studentPresentList);
+                params.put("students",""+studentBuilder);
                 return params;
             }
         };
@@ -745,7 +746,7 @@ if(isValid())
     }
 
     public void onCLickPresentStudent(View view) {
-        if(studentPresentList.size()==0)
+        if(studentBuilder.equals(""))
         {
             Toast.makeText(this, "No Students Selected...", Toast.LENGTH_SHORT).show();
         }

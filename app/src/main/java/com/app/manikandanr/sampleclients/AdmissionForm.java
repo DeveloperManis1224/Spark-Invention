@@ -859,6 +859,7 @@ public class AdmissionForm extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.e("RESPONSE_Result",""+response);
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("categories");
                             for (int i = 0; i < jary.length(); i++) {
@@ -918,6 +919,7 @@ public class AdmissionForm extends AppCompatActivity {
                                 String OrgName = jobjOrg.getString("name");
                                 String OrgOfferType = jobjOrg.getString("offer_type");
                                 String OrgOffer = jobjOrg.getString("offer");
+                                String orgAmount = jobjCourse.getString("amount");
 
                                 org_dis_type =OrgOfferType;
                                 org_dis =OrgOffer;
@@ -929,7 +931,8 @@ public class AdmissionForm extends AppCompatActivity {
                                     String type = "Rs";
                                     if(courseOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
                                         type = "%";
-                                        balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseAmount)* Double.valueOf(courseOffer)/100 ;
+                                        balAmount = (Double.valueOf(courseAmount)/100.f) * Double.valueOf(courseOffer);
+                                        //balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseAmount)* Double.valueOf(courseOffer)/100 ;
                                         offerDetails_join.append("" + courseName + "    " + courseOffer + "" + type + "\n");
                                     }
                                     else {
@@ -942,7 +945,8 @@ public class AdmissionForm extends AppCompatActivity {
                                     String type = "Rs";
                                     if(OrgOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
                                         type = "%";
-                                        balAmount = balAmount * Double.valueOf(OrgOffer) / 100;
+                                        balAmount = (Double.valueOf(orgAmount)/100.f) * Double.valueOf(OrgOffer);
+                                       // balAmount = balAmount * Double.valueOf(OrgOffer) / 100;
                                         offerDetails_join.append(""+OrgName+"      "+OrgOffer+" "+type+"\n");
                                     }
                                     else {

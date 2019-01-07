@@ -2,7 +2,9 @@ package com.app.manikandanr.sampleclients;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
@@ -27,14 +29,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddItems extends AppCompatActivity {
+
     private AutoCompleteTextView txtCountryName;
     ArrayList<String> countryList = new ArrayList<>();
     ArrayList<String> countryIdList = new ArrayList<>();
-
     int country_pos = 0;
-
     private Spinner mCountry;
     private AutoCompleteTextView txtStateName, txtCityName ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,21 @@ public class AddItems extends AppCompatActivity {
         txtCityName = findViewById(R.id.edt_add_city);
 
         getCountry();
+
+        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!mCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country"))
+                {
+                    country_pos = i;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void getCountry() {
@@ -107,17 +124,13 @@ public class AddItems extends AppCompatActivity {
 
     public void onClickAddCityState(View v)
     {
-        if(!txtStateName.getText().toString().isEmpty() && !txtCityName.getText().toString().isEmpty())
+        if(!mCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")||!txtStateName.getText().toString().isEmpty() && !txtCityName.getText().toString().isEmpty())
         {
             addStateandCity(txtStateName.getText().toString().trim(),txtCityName.getText().toString().trim());
         }
     }
 
     private void addCountry(final String countryName) {
-        countryIdList.clear();
-        countryList.clear();
-        countryIdList.add("0");
-        countryList.add("Select Country");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/country-create";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -165,10 +178,8 @@ public class AddItems extends AppCompatActivity {
     }
 
     private void addStateandCity(final String stateName, final String cityName) {
-        countryIdList.clear();
-        countryList.clear();
-        countryIdList.add("0");
-        countryList.add("Select Country");
+
+        Log.e("STATE_CITY",countryIdList.get(country_pos)+"///"+stateName+"///"+cityName);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/state-city-create";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -183,7 +194,8 @@ public class AddItems extends AppCompatActivity {
                             if(status.equalsIgnoreCase("1"))
                             {
                                 Toast.makeText(AddItems.this, "State and City Added", Toast.LENGTH_SHORT).show();
-                                txtCountryName.setText("");
+                                txtCityName.setText("");
+                                txtStateName.setText("");
                             }
                             else
                             {
