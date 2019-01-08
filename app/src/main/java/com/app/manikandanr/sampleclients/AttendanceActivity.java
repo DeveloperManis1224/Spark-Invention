@@ -698,18 +698,30 @@ if(isValid())
                     public void onResponse(String response) {
                         try {
                             Log.v("TTTTTTTTTTT",""+response);
-//                            JSONObject jobj = new JSONObject(response);
-//                            JSONArray jary = jobj.getJSONArray("countries");
-//
-//                            for (int i = 0; i < jary.length(); i++) {
-//                                JSONObject jobj11 = jary.getJSONObject(i);
-//                                String cuntry = jobj11.getString("country");
-//                                String id = jobj11.getString("id");
-//                                Log.v("TTTTTTTTTTT",""+ cuntry +" "+id);
-//                                countrySpinnerList.add(cuntry);
-//                                countryIdList.add(id);
-//                            }
-
+                            JSONObject jobj = new JSONObject(response);
+                            String sts = jobj.getString("status");
+                            String msg = jobj.getString("message");
+                            if(sts.equalsIgnoreCase(Constants.RESPONSE_SUCCESS))
+                            {
+                                new AwesomeSuccessDialog(AttendanceActivity.this)
+                                        .setTitle("Admission Status")
+                                        .setMessage("Admission Successfull.")
+                                        .setColoredCircle(R.color.colorPrimary)
+                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                        .setCancelable(true)
+                                        .setPositiveButtonText("Ok")
+                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                        .setPositiveButtonTextColor(R.color.white)
+                                        .setPositiveButtonClick(new Closure() {
+                                            @Override
+                                            public void exec() {
+                                                Intent in = new Intent(AttendanceActivity.this, ViewBill.class);
+                                                startActivity(in);
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+                            }
                         } catch (Exception e) {
                             Log.v("TTTTTTTTTTT",""+ e.getMessage());
                             e.printStackTrace();
@@ -755,4 +767,5 @@ if(isValid())
             setPresentStudent();
         }
     }
+
 }

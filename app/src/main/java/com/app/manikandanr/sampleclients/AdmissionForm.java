@@ -953,9 +953,11 @@ public class AdmissionForm extends AppCompatActivity {
                                     String type = "Rs";
                                     if(courseOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
                                         type = "%";
-                                        balAmount = (Double.valueOf(courseAmount)/100.f) * Double.valueOf(courseOffer);
+                                        balAmount = (Double.valueOf(courseOffer)/100.f) * Double.valueOf(courseAmount);
                                         //balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseAmount)* Double.valueOf(courseOffer)/100 ;
                                         offerDetails_join.append("" + courseName + "    " + courseOffer + "" + type + "\n");
+
+                                        //amounttotal = amount*18/100;
                                     }
                                     else {
                                         balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseOffer);
@@ -967,7 +969,7 @@ public class AdmissionForm extends AppCompatActivity {
                                     String type = "Rs";
                                     if(OrgOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
                                         type = "%";
-                                        balAmount = (Double.valueOf(orgAmount)/100.f) * Double.valueOf(OrgOffer);
+                                        balAmount = (Double.valueOf(OrgOffer)/100.f) * Double.valueOf(orgAmount);
                                        // balAmount = balAmount * Double.valueOf(OrgOffer) / 100;
                                         offerDetails_join.append(""+OrgName+"      "+OrgOffer+" "+type+"\n");
                                     }

@@ -837,7 +837,8 @@ public class MarketingAdmission extends AppCompatActivity {
                 params.put("country_id", "1");
                 params.put("state_id", stateIdList.get(state_pos));
                 params.put("city_id", cityIdList.get(city_pos));
-                params.put("organization_id",organizationIdList.get(org_pos));
+                params.put("organization_id",eInsName.getText().toString().trim());
+//              params.put("organization_id",organizationIdList.get(org_pos));
                 params.put("year", yearSelected);
                 params.put("strength", ""+eStrength.getText().toString().trim());
                 params.put("address", eInsAddress.getText().toString().trim());
