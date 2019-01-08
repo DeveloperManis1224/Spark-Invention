@@ -271,20 +271,31 @@ public class AdmissionForm extends AppCompatActivity {
                     cat_pos = i;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
-
         category_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 course_pos = i;
                 cost_pos = i;
-                BalanceAmount = costList.get(i);
+                Log.e("BALANCE_AMT",courseCatList.get(i)+"///"+courseCatIdList.get(i)+"///"+i+"///"+BalanceAmount);
+                try {
+                    BalanceAmount = costList.get(i);
+                }catch (IndexOutOfBoundsException ex)
+                {
+                    ex.printStackTrace();
+                }
+                for (int ij =0; i<costList.size();i++)
+                {
+                    Log.e("BALANCE_AMT"+i,costList.get(ij));
+                }
+
+                Log.e("BALANCE_AMT",""+BalanceAmount);
             }
 
             @Override
@@ -862,11 +873,18 @@ public class AdmissionForm extends AppCompatActivity {
                             Log.e("RESPONSE_Result",""+response);
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("categories");
-                            for (int i = 0; i < jary.length(); i++) {
-                                JSONObject jobj1 = jary.getJSONObject(i);
-                                costList.add(jobj1.getString("amount"));
-                                courseCatList.add(jobj1.getString("course")+" ( Rs."+jobj1.getString("amount")+")");
-                                courseCatIdList.add(jobj1.getString("id"));
+
+                            if(jary.length()==0)
+                            {
+                                Toast.makeText(AdmissionForm.this, "No Course Available", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                for (int i = 0; i < jary.length(); i++) {
+                                    JSONObject jobj1 = jary.getJSONObject(i);
+                                    costList.add(jobj1.getString("amount"));
+                                    courseCatList.add(jobj1.getString("course") + " ( Rs." + jobj1.getString("amount") + ")");
+                                    courseCatIdList.add(jobj1.getString("id"));
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -895,6 +913,9 @@ public class AdmissionForm extends AppCompatActivity {
 
     private void getOffers() {
         final int calcAmount = 0;
+       Log.e("CHECK IDS",""+courseCatIdList.get(course_pos)+"////" +
+               ""+collegeIdList.get(orgPosition)+"////" +
+               ""+userRollNo);
         offerDetails_join.delete(0,offerDetails_join.length());
         offerDetails_join.append("Applied Offer! \n");
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -911,15 +932,16 @@ public class AdmissionForm extends AppCompatActivity {
                                 JSONObject jobjCourse = jobj.getJSONObject("course");
                                 JSONObject jobjOrg = jobj.getJSONObject("organization");
 
-                                String courseName = jobjCourse.getString("course");
-                                String courseOfferType = jobjCourse.getString("offer_type");
-                                String courseOffer = jobjCourse.getString("offer");
-                                String courseAmount = jobjCourse.getString("amount");
 
-                                String OrgName = jobjOrg.getString("name");
-                                String OrgOfferType = jobjOrg.getString("offer_type");
-                                String OrgOffer = jobjOrg.getString("offer");
-                                String orgAmount = jobjCourse.getString("amount");
+                                    String courseName = jobjCourse.getString("course");
+                                    String courseOfferType = jobjCourse.getString("offer_type");
+                                    String courseOffer = jobjCourse.getString("offer");
+                                    String courseAmount = jobjCourse.getString("amount");
+
+                                    String OrgName = jobjOrg.getString("name");
+                                    String OrgOfferType = jobjOrg.getString("offer_type");
+                                    String OrgOffer = jobjOrg.getString("offer");
+                                    String orgAmount = jobjCourse.getString("amount");
 
                                 org_dis_type =OrgOfferType;
                                 org_dis =OrgOffer;
@@ -1007,7 +1029,7 @@ public class AdmissionForm extends AppCompatActivity {
                 .setTitle("Exit")
                 .setMessage("Are you sure want to leave the form?")
                 .setColoredCircle(R.color.colorPrimary)
-                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
                 .setCancelable(true)
                 .setPositiveButtonText("Yes")
                 .setPositiveButtonbackgroundColor(R.color.colorPrimary)
