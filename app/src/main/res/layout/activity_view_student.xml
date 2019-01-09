@@ -1,23 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f2f2f2"
     tools:context=".ViewStudent">
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textColor="@color/colorAccent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="20dp"
+        android:text="Pay Emi"
+        android:id="@+id/btn_pay_emi"
+        android:visibility="gone"
         android:textStyle="bold"
-        android:text="Studnet Info"/>
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_clr_drawble"
+        />
 
-    <android.support.v7.widget.RecyclerView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:id="@+id/view_student_list" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="7dp"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:id="@+id/header_tab"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/clr_white"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="Show student Information"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-150dp"
+                android:elevation="3dp"
+                android:layout_below="@+id/header_tab"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="#f9f8f8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="Basic Informations"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Student Details"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#2b2b2b"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:id="@+id/txt_basic_info"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="#cecece"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="Other Informations"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Student Details"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#2b2b2b"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:id="@+id/txt_other_info"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

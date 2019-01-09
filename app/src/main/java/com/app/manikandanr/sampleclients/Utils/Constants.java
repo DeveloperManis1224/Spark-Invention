@@ -43,10 +43,10 @@ public class Constants {
 
     public static  final String RESPONSE_SUCCESS ="1";
     public static  final String RESPONSE_FAILED = "0";
-
-
-
-
+    public static final String STUDENT_BASIC_INFO = "basicInfo";
+    public static final String STUDENT_OTHER_INFO = "otherInfo";
+    public static final String STUDENT_PAYMENT_STATUS = "paymentSts";
+    public static final String STUDENT_ALL_INFO = "allInfo";
 
 
     public static boolean isNetworkAvailable(Context cntx) {

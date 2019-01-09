@@ -1,18 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".StudentScanner">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:fontFamily="@font/poppinsmedium"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:onClick="onCLickStudentRegQr"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_clr_drawble"
+        android:text="Scan Qr code"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Or"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textColor="#454444"
+        android:textSize="16sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Register Number"
+        android:layout_marginTop="20dp"
+        android:id="@+id/edt_reg_number"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/edt_border"
+        android:padding="7dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:fontFamily="@font/poppinsmedium"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:onClick="onClickStudentRegNumber"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_clr_drawble"
+        android:text="Find Student"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:textStyle="bold"
+        android:visibility="gone"
         android:textColor="#0c95e4"
         android:id="@+id/txt_qrdata"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

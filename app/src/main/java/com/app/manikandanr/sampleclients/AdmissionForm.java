@@ -43,25 +43,23 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AdmissionForm extends AppCompatActivity {
+    int orgPosition = 0;
     int mday = 24;
     int mmonth=10;
     int myear=1990;
-    int institution_pos = 0;
     int country_pos= 0;
     int state_pos = 0;
     int city_pos = 0;
     int course_pos = 0;
     int category_pos = 0;
     int cost_pos = 0;
+    int cat_pos = 0;
     String BalanceAmount ="";
     String org_dis_type ="";
     String org_dis = "";
     String course_dis_type = "";
     String course_dis = "";
-    String organizationId  = "";
-    int cat_pos = 0;
-    StringBuilder offerDetails_join = new StringBuilder();
-    String coursePosition = "";
+    String departmentId;
     private String alertDate = "";
     private String sts_joinings = "";
     private Button nextButton;
@@ -71,43 +69,26 @@ public class AdmissionForm extends AppCompatActivity {
     private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
     private Spinner aedtCountry, aedtState, aedtCity,edtCollege, edtdepartmentYear, aedtCourse ,category_course;
     final ArrayList<String> costList = new ArrayList<String>();
-    final ArrayList<String> courseList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
     final ArrayList<String> stateList = new ArrayList<String>();
     final ArrayList<String> cityList = new ArrayList<String>();
     final ArrayList<String> courseCatList = new ArrayList<String>();
-
     final ArrayList<String> collegeList = new ArrayList<>();
     final ArrayList<String> collegeIdList = new ArrayList<>();
-
-
-    final ArrayList<String> offerQuanOrgList = new ArrayList<>();
-
-    final ArrayList<String> offerAvailList = new ArrayList<>();
     final ArrayList<String> countryIdList = new ArrayList<String>();
     final ArrayList<String> categoryList = new ArrayList<String>();
     final ArrayList<String> categoryIdList = new ArrayList<String>();
     final ArrayList<String> stateIdList = new ArrayList<String>();
     final ArrayList<String> cityIdList = new ArrayList<String>();
-    final ArrayList<String> courseIdList = new ArrayList<String>();
     final ArrayList<String> courseCatIdList = new ArrayList<String>();
-
-    String departmentId;
-
-    int coursPosition= 0;
-    int orgPosition = 0;
-
+    StringBuilder offerDetails_join = new StringBuilder();
     Calendar myCalendar = Calendar.getInstance();
     ProgressDialog pd = null;
-    int check= 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admission_form);
         init();
-
-
     }
 
     private void init() {
@@ -821,7 +802,6 @@ public class AdmissionForm extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
     private void getCatgories() {
         categoryIdList.clear();
         categoryList.clear();
@@ -909,7 +889,6 @@ public class AdmissionForm extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
-
 
     private void getOffers() {
         final int calcAmount = 0;
@@ -1022,7 +1001,6 @@ public class AdmissionForm extends AppCompatActivity {
 
         queue.add(stringRequest);
     }
-
 
     @Override
     public void onBackPressed() {
