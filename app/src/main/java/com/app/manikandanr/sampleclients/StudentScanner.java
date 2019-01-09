@@ -43,8 +43,8 @@ public class StudentScanner extends AppCompatActivity {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrator.setPrompt("Scan");
         integrator.setCameraId(0);
-        integrator.setOrientationLocked(true);
-        integrator.setBeepEnabled(false);
+        integrator.setOrientationLocked(false);
+        integrator.setBeepEnabled(true);
         integrator.setBarcodeImageEnabled(false);
         integrator.initiateScan();
     }
@@ -77,9 +77,11 @@ public class StudentScanner extends AppCompatActivity {
                             Gson gson = new Gson();
                             StudentData studentData = gson.fromJson(response,StudentData.class);
 
-                            Intent n = new Intent(StudentScanner.this,StudentScanner.class);
-                            n.putExtra(Constants.STUDENT_BASIC_INFO,"");
-                            n.putExtra(Constants.STUDENT_OTHER_INFO,"");
+                            Intent n = new Intent(StudentScanner.this,ViewStudent.class);
+                            n.putExtra(Constants.STUDENT_BASIC_INFO,""+studentData.getStudents().getName());
+                            n.putExtra(Constants.STUDENT_OTHER_INFO,""+studentData.getStudents().getAddress());
+
+                            n.putExtra(Constants.STUDENT_PAYMENT_STATUS,"1");
                             startActivity(n);
                         } catch (Exception e) {
                             Log.v("TTTTTTTTTTT",""+ e.getMessage());
@@ -121,6 +123,7 @@ public class StudentScanner extends AppCompatActivity {
                 txtResult.setText("Scanned Qr code ::: "+result.getContents());
 
                 regNumber = result.getContents();
+                getStudentInformation();
 
             }
         }

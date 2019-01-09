@@ -53,7 +53,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:background="@color/colorPrimaryDark"
-                android:text="Pay EMI Payment"/>
+                android:text="View Student"/>
         </LinearLayout>
 
         <LinearLayout
@@ -71,7 +71,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:background="@color/colorPrimaryDark"
-                android:text="Alerts"/>
+                android:text="Today Alerts"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -43,7 +43,7 @@ public class MoreMenu extends AppCompatActivity {
         btnViewStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MoreMenu.this,ViewStudent.class));
+                startActivity(new Intent(MoreMenu.this,StudentScanner.class));
             }
         });
     }
