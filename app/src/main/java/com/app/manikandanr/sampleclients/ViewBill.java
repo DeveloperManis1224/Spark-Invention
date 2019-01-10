@@ -47,10 +47,9 @@ public class ViewBill extends AppCompatActivity {
         imgView = findViewById(R.id.img_bill);
         txtInvoice = findViewById(R.id.txt_invoice);
         txtInvoice.setText("Bill Details : \n"+invoiceNumber);
-
         try
         {
-            Bitmap bmp =  encodeAsBitmap(invoiceNumber);
+            Bitmap bmp =  encodeAsBitmap(getIntent().getExtras().getString("reg_num"));
             imgView.setImageBitmap(bmp);
         } catch (Exception e) {
             e.printStackTrace();

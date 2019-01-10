@@ -3,7 +3,7 @@ package com.app.manikandanr.sampleclients.DataModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 public class Student_ {
 
@@ -292,11 +292,6 @@ public class Student_ {
 
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("serialNo", serialNo).append("name", name).append("dob", dob).append("instituationId", instituationId).append("organizationId", organizationId).append("categoryId", categoryId).append("phone", phone).append("email", email).append("countryId", countryId).append("stateId", stateId).append("cityId", cityId).append("address", address).append("courseId", courseId).append("role", role).append("joinStatus", joinStatus).append("orgDiscountType", orgDiscountType).append("orgDiscount", orgDiscount).append("courseDiscountType", courseDiscountType).append("courseDiscount", courseDiscount).append("overallDiscount", overallDiscount).append("calcAmount", calcAmount).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("departmentId", departmentId).toString();
     }
 
 }

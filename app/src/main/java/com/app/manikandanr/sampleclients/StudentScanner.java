@@ -43,7 +43,7 @@ public class StudentScanner extends AppCompatActivity {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrator.setPrompt("Scan");
         integrator.setCameraId(0);
-        integrator.setOrientationLocked(false);
+        integrator.setOrientationLocked(true);
         integrator.setBeepEnabled(true);
         integrator.setBarcodeImageEnabled(false);
         integrator.initiateScan();
@@ -76,10 +76,20 @@ public class StudentScanner extends AppCompatActivity {
                             Log.v("TTTTTTTTTTT",""+ response);
                             Gson gson = new Gson();
                             StudentData studentData = gson.fromJson(response,StudentData.class);
+                            StringBuilder basicData = new StringBuilder();
+                            basicData.append(studentData.getStudents().getName()+"\n");
+                            basicData.append(studentData.getStudents().getPhone()+"\n");
+                            basicData.append(studentData.getStudents().getEmail()+"\n");
+                            basicData.append(studentData.getStudents().getAddress()+"\n");
+                            basicData.append(studentData.getStudents().getSerialNo()+"\n");
+
+                            StringBuilder otherData = new StringBuilder();
+                            otherData.append(studentData.getStudents().getCourse().getCourse()+"\n");
+                            otherData.append(studentData.getStudents().getOrganizationId());
 
                             Intent n = new Intent(StudentScanner.this,ViewStudent.class);
-                            n.putExtra(Constants.STUDENT_BASIC_INFO,""+studentData.getStudents().getName());
-                            n.putExtra(Constants.STUDENT_OTHER_INFO,""+studentData.getStudents().getAddress());
+                            n.putExtra(Constants.STUDENT_BASIC_INFO,""+basicData);
+                            n.putExtra(Constants.STUDENT_OTHER_INFO,""+otherData);
 
                             n.putExtra(Constants.STUDENT_PAYMENT_STATUS,"1");
                             startActivity(n);

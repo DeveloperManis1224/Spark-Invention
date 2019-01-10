@@ -3,7 +3,7 @@ package com.app.manikandanr.sampleclients.DataModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 public class Student {
 
@@ -83,11 +83,6 @@ public class Student {
 
     public void setStudent(Student_ student) {
         this.student = student;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("studentId", studentId).append("date", date).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("student", student).toString();
     }
 
 }

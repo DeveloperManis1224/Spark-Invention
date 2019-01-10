@@ -208,6 +208,7 @@ public class BillActivity extends AppCompatActivity {
                                 Intent in = new Intent(BillActivity.this, ViewBill.class);
                                 in.putExtra("detail",""+ value);
                                 in.putExtra("stud_id",student_id);
+                                in.putExtra("reg_num",billStudentRoll);
                                 startActivity(in);
                                 finish();
                                             }

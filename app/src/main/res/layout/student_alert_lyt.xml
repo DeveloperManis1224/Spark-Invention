@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="6dp"
+    android:layout_marginBottom="7dp"
+    android:background="@drawable/student_card_bg"
+    android:elevation="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lyt_txt_student_name"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:text="student Name"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:padding="5dp"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/lyt_txt_studentt_phone"
+            android:text="Phone"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#dedede"
+            android:id="@+id/lyt_txt_student_email"
+            android:text="Mail"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lyt_txt_date"
+            android:padding="5dp"
+            android:textColor="#ffefef"
+            android:text="date"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-30dp"
+            android:gravity="right">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:id="@+id/lyt_img_phone"
+                android:contentDescription="@null"
+                android:layout_marginBottom="2dp"
+                android:src="@android:drawable/stat_sys_phone_call"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

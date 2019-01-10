@@ -622,9 +622,20 @@ if(isValid())
                                             .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
                                             .setCancelable(true)
                                             .setPositiveButtonText("Ok")
+                                            .setNegativeButtonText("Back")
+                                            .setNegativeButtonbackgroundColor(R.color.colorAccent)
                                             .setPositiveButtonbackgroundColor(R.color.colorPrimary)
                                             .setPositiveButtonTextColor(R.color.white)
                                             .setPositiveButtonClick(new Closure() {
+                                                @Override
+                                                public void exec() {
+                                                    Intent in = new Intent(AttendanceActivity.this, AttendanceActivity.class);
+                                                    in.putExtra(Constants.USER_ROLE,getIntent().getExtras().getString(Constants.USER_ROLE));
+                                                    startActivity(in);
+                                                    finish();
+                                                }
+                                            })
+                                            .setNegativeButtonClick(new Closure() {
                                                 @Override
                                                 public void exec() {
                                                     Intent in = new Intent(AttendanceActivity.this, MenuActivity.class);
@@ -704,8 +715,8 @@ if(isValid())
                             if(sts.equalsIgnoreCase(Constants.RESPONSE_SUCCESS))
                             {
                                 new AwesomeSuccessDialog(AttendanceActivity.this)
-                                        .setTitle("Admission Status")
-                                        .setMessage("Admission Successfull.")
+                                        .setTitle("Attendance submitted successfully.")
+                                        .setMessage(""+studentBuilder)
                                         .setColoredCircle(R.color.colorPrimary)
                                         .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
                                         .setCancelable(true)
@@ -715,7 +726,7 @@ if(isValid())
                                         .setPositiveButtonClick(new Closure() {
                                             @Override
                                             public void exec() {
-                                                Intent in = new Intent(AttendanceActivity.this, ViewBill.class);
+                                                Intent in = new Intent(AttendanceActivity.this, MenuActivity.class);
                                                 startActivity(in);
                                                 finish();
                                             }
@@ -768,4 +779,12 @@ if(isValid())
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent in = new Intent(AttendanceActivity.this, MenuActivity.class);
+        startActivity(in);
+        finish();
+    }
 }

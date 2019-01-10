@@ -1,6 +1,8 @@
 package com.app.manikandanr.sampleclients;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,13 +28,23 @@ import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
+import java.security.Permission;
+import java.security.Permissions;
+
 public class MenuActivity extends AppCompatActivity {
 
     private Button bAdmission,bMarketing,bAttendance,bRevenue,bMore;
+    String[] perms = {"android.permission.FINE_LOCATION","android.permission.CALL_PHONE","android.permission.ACCESS_COARSE_LOCATION", "android.permission.CAMERA"};
+    int permsRequestCode = 200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(perms, permsRequestCode);
+        }
+
+
 //        if(Constants.isNetworkAvailable(MenuActivity.this))
 //        {
 //            new AwesomeSuccessDialog(MenuActivity.this)
@@ -63,7 +75,20 @@ public class MenuActivity extends AppCompatActivity {
         //https://android-arsenal.com/details/1/6109
         //https://android-arsenal.com/details/1/6929
     }
-    private void init() {
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+        switch (permsRequestCode) {
+            case 200:
+                boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean cameraAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+    }
+
+        private void init() {
         bAdmission = findViewById(R.id.btn_admission);
         bMarketing = findViewById(R.id.btn_marketing);
         bAttendance = findViewById(R.id.btn_attendance);
