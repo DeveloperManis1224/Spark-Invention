@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
+    android:background="#eaeaea"
     tools:context=".AttendanceActivity">
 
 
@@ -16,31 +16,6 @@
         android:id="@+id/header"
         android:layout_alignParentTop="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:text="Attendance"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:text="college name"/>
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -51,20 +26,19 @@
         android:background="@android:color/white"
         android:padding="10dp"
         android:layout_alignParentBottom="true">
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:onClick="onCLickPresentStudent"
             android:background="@drawable/btn_clr_drawble"
             android:textStyle="bold"
+            android:textAllCaps="false"
             android:elevation="2dp"
             android:layout_marginRight="10dp"
             android:textColor="@android:color/white"
-            android:text="Present"/>
+            android:text="Present" />
+
     </LinearLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,13 +46,11 @@
         android:padding="5dp"
         android:orientation="vertical">
 
-<android.support.v7.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/stud_view_list"
-    android:orientation="vertical">
-
-</android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/stud_view_list"
+            android:orientation="vertical"/>
 
     </LinearLayout>
     <!--<ScrollView-->

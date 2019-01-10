@@ -74,10 +74,7 @@ public class AttendanceActivity extends AppCompatActivity {
     ArrayList<String> organizationSpinnerList = new ArrayList<>();
     ArrayList<String> organizationIdList = new ArrayList<>();
 
-
     String yearOrStandard = "";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -699,8 +696,7 @@ if(isValid())
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private void setPresentStudent()
-    {
+    private void setPresentStudent() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/attendance";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -779,7 +775,6 @@ if(isValid())
         }
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -787,4 +782,5 @@ if(isValid())
         startActivity(in);
         finish();
     }
+
 }

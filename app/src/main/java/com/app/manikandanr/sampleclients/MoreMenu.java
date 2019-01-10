@@ -23,12 +23,9 @@ public class MoreMenu extends AppCompatActivity {
         btnAddItems = findViewById(R.id.btn_add_items);
         btnAlert = findViewById(R.id.btn_alert);
         btnViewStudent = findViewById(R.id.btn_view_student);
-
-
         btnAddItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 startActivity(new Intent(MoreMenu.this,AddItems.class));
             }
         });
@@ -37,7 +34,6 @@ public class MoreMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MoreMenu.this,AlertActivity.class));
-
             }
         });
         btnViewStudent.setOnClickListener(new View.OnClickListener() {

@@ -27,7 +27,7 @@
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/btn_clr_drawble"
                 android:text="Add Items"/>
             <TextView
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/btn_clr_drawble"
                 android:text="View Student"/>
         </LinearLayout>
 
@@ -70,7 +70,7 @@
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/btn_clr_drawble"
                 android:text="Today Alerts"/>
             <TextView
                 android:layout_width="match_parent"

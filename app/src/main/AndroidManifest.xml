@@ -49,8 +49,10 @@
         <activity android:name=".SampleTestActivity" />
         <activity
             android:name=".ViewBill"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AttendanceActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".AttendanceActivity"
+            android:theme="@style/AppTheme"
+            android:label="Attendance"/>
         <activity
             android:name=".AddItems"
             android:theme="@style/AppTheme.NoActionBar" />

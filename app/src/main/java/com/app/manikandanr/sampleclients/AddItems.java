@@ -124,9 +124,15 @@ public class AddItems extends AppCompatActivity {
 
     public void onClickAddCityState(View v)
     {
-        if(!mCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")||!txtStateName.getText().toString().isEmpty() && !txtCityName.getText().toString().isEmpty())
+        if(!mCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")||
+                !txtStateName.getText().toString().isEmpty() &&
+                        !txtCityName.getText().toString().isEmpty())
         {
             addStateandCity(txtStateName.getText().toString().trim(),txtCityName.getText().toString().trim());
+        }
+        else
+        {
+            Toast.makeText(this, "Please fill all fields.All fields are Mandatory", Toast.LENGTH_SHORT).show();
         }
     }
 

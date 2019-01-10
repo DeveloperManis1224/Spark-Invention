@@ -80,21 +80,20 @@ public class CashActivity extends AppCompatActivity {
                 if (radioStatus.equalsIgnoreCase("FULL CASH")) {
                     Intent in = new Intent(CashActivity.this, BillActivity.class);
                     in.putExtra("stud_id",""+txtId);
-                    in.putExtra("payment_mode","1");
+                    in.putExtra("payment_mode",Constants.FULLCASH);
                     in.putExtra("initial_amount","0");
                     in.putExtra("total_amount",""+txtCost);
                     in.putExtra("tenure",""+"0");
                     in.putExtra("payment_status","2");
                     in.putExtra("tenure_amount","0");
                     in.putExtra("balance_amount","0");
-
                     startActivity(in);
                 } else if (radioStatus.equalsIgnoreCase("EMI")) {
                     if(!eCaltxt.getText().toString().trim().isEmpty()&&!emiPlans.getSelectedItem().toString().isEmpty()&&
                             !emiPlans.getSelectedItem().toString().equalsIgnoreCase("Select One")) {
                         Intent in = new Intent(CashActivity.this, BillActivity.class);
                         in.putExtra("stud_id", "" + txtId);
-                        in.putExtra("payment_mode", "2");
+                        in.putExtra("payment_mode", Constants.EMI);
                         in.putExtra("initial_amount", "" + eCaltxt.getText().toString());
                         in.putExtra("total_amount", "" + txtCost);
                         in.putExtra("tenure", "" + emiSelection);

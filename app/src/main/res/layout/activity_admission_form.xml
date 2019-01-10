@@ -123,8 +123,7 @@
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
             android:id="@+id/edt_country"
-
-            android:gravity="center"
+            android:textAlignment="center"
             android:fontFamily="@font/poppinsmedium"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_border"

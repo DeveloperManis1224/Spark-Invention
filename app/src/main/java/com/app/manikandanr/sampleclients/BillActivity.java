@@ -245,8 +245,8 @@ public class BillActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("student_id",""+studId);
-                params.put("payment_mode",payMode);
-                params.put("initial_amount",""+initialAmount);
+                params.put("payment_mode",payMode);// for emi
+                params.put("initial_amount",""+initialAmount); //
                 params.put("total_amount",""+totalAmount);
                 params.put("tenure",""+tenureMonth);
                 params.put("payment_status",""+paymentStatus);
