@@ -198,7 +198,7 @@ public class AdmissionForm extends AppCompatActivity {
                     state_pos = i;
                 }
 
-                Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
+               // Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -261,22 +261,24 @@ public class AdmissionForm extends AppCompatActivity {
         category_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+try {
+    course_pos = i;
+    cost_pos = i;
+    Log.e("BALANCE_AMT", courseCatList.get(i) + "///" + courseCatIdList.get(i) + "///" + i + "///" + BalanceAmount);
+    try {
+        BalanceAmount = costList.get(i);
+    } catch (IndexOutOfBoundsException ex) {
+        ex.printStackTrace();
+    }
+    for (int ij = 0; i < costList.size(); i++) {
+        Log.e("BALANCE_AMT" + i, costList.get(ij));
+    }
 
-                course_pos = i;
-                cost_pos = i;
-                Log.e("BALANCE_AMT",courseCatList.get(i)+"///"+courseCatIdList.get(i)+"///"+i+"///"+BalanceAmount);
-                try {
-                    BalanceAmount = costList.get(i);
-                }catch (IndexOutOfBoundsException ex)
-                {
-                    ex.printStackTrace();
-                }
-                for (int ij =0; i<costList.size();i++)
-                {
-                    Log.e("BALANCE_AMT"+i,costList.get(ij));
-                }
-
-                Log.e("BALANCE_AMT",""+BalanceAmount);
+    Log.e("BALANCE_AMT", "" + BalanceAmount);
+}catch (Exception ex)
+{
+    Log.e("EXCEPTION",""+ex.getMessage());
+}
             }
 
             @Override
@@ -284,6 +286,24 @@ public class AdmissionForm extends AppCompatActivity {
 
             }
         });
+
+        cityList.add("Select City");
+        stateList.add("Select State");
+        collegeList.add("Select Organization");
+        courseCatList.add("Select Course");
+
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, cityList);
+        aedtCity.setAdapter(adapter1);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>
+                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, stateList);
+        aedtState.setAdapter(adapter2);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>
+                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, collegeList);
+        edtCollege.setAdapter(adapter3);
+        ArrayAdapter<String> adapter4 = new ArrayAdapter<String>
+                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseCatList);
+        category_course.setAdapter(adapter4);
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -891,10 +911,11 @@ public class AdmissionForm extends AppCompatActivity {
     }
 
     private void getOffers() {
+
         final int calcAmount = 0;
-       Log.e("CHECK IDS",""+courseCatIdList.get(course_pos)+"////" +
-               ""+collegeIdList.get(orgPosition)+"////" +
-               ""+userRollNo);
+//       Log.e("CHECK IDS",""+courseCatIdList.get(course_pos)+"////" +
+//               ""+collegeIdList.get(orgPosition)+"////" +
+//               ""+userRollNo);
         offerDetails_join.delete(0,offerDetails_join.length());
         offerDetails_join.append("Applied Offer! \n");
         RequestQueue queue = Volley.newRequestQueue(this);

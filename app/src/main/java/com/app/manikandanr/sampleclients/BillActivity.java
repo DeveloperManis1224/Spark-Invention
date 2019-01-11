@@ -93,15 +93,15 @@ public class BillActivity extends AppCompatActivity {
 
                 if(!eBillNumber.getText().toString().isEmpty())
                 {
-                    Log.e("RESPONSE111","student_id"+""+studId+
-                    "payment_mode"+payMode+
-                    "initial_amount"+""+initialAmount+
-                    "total_amount"+""+totalAmount+
-                    "tenure"+""+tenureMonth+
-                    "payment_status"+""+paymentStatus+
-                    "tenure_amount"+""+tenureAmount+
-                    "balance_amount"+""+balanceAmount+
-                    "quotation_id"+eBillNumber.getText().toString().trim());
+                    Log.e("RESPONSE111","///student_id"+""+studId+
+                    "///payment_mode"+payMode+
+                    "///initial_amount"+""+initialAmount+
+                    "///total_amount"+""+totalAmount+
+                    "///tenure"+""+tenureMonth+
+                    "///payment_status"+""+paymentStatus+
+                    "///tenure_amount"+""+tenureAmount+
+                    "///balance_amount"+""+balanceAmount+
+                    "///quotation_id"+eBillNumber.getText().toString().trim());
                     completeCashMethod();
                 }
                 else
@@ -249,7 +249,7 @@ public class BillActivity extends AppCompatActivity {
                 params.put("initial_amount",""+initialAmount); //
                 params.put("total_amount",""+totalAmount);
                 params.put("tenure",""+tenureMonth);
-                params.put("payment_status",""+paymentStatus);
+                params.put("payment_status","2");
                 params.put("tenure_amount",""+tenureAmount);
                 params.put("balance_amount",""+balanceAmount);
                 params.put("quotation_id",eBillNumber.getText().toString().trim());

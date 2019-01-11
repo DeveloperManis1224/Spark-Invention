@@ -27,6 +27,7 @@ import com.app.manikandanr.sampleclients.Utils.Constants;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +72,9 @@ public class CashActivity extends AppCompatActivity {
 
         radioStatus = "FULL CASH";
 
-        txt_Cost.setText("Rs " + txtCost);
+        DecimalFormat df = new DecimalFormat("####0.00");
+        //System.out.println("Value: " + df.format(value));
+        txt_Cost.setText("Rs " + df.format(txtCost));
 
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

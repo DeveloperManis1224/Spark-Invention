@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -36,6 +37,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.DataModels.Marketing;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
@@ -210,9 +212,10 @@ public class MarketingAdmission extends AppCompatActivity {
                 {
                     getCity(stateIdList.get(i));
                     state_pos = i;
+                    Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
                 }
 
-                Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -226,8 +229,9 @@ public class MarketingAdmission extends AppCompatActivity {
                 {
                     getOrganization(cityIdList.get(i));
                     city_pos = i;
+                    Log.e("SSSSSSSSSS",""+cityIdList.get(i));
                 }
-                Log.e("SSSSSSSSSS",""+cityIdList.get(i));
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -255,6 +259,18 @@ public class MarketingAdmission extends AppCompatActivity {
                         Log.d("Locationasdasd", "my location is Current " + lat+"   "+lon);
                     }
                 });
+
+        cityList.add("Select City");
+        stateList.add("Select State");
+
+
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, cityList);
+        aeCity.setAdapter(adapter1);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>
+                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, stateList);
+        aeState.setAdapter(adapter2);
+
 
     }
 
@@ -394,29 +410,58 @@ public class MarketingAdmission extends AppCompatActivity {
                 deleteDialog.show();
             } else if (btnNext.getText().toString().trim().equalsIgnoreCase("Save")) {
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
-                final EditText et = new EditText(MarketingAdmission.this);
-                et.setHint("Remarks");
-
-                alertDialogBuilder.setView(et);
-
-                alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if(!et.getText().toString().trim().isEmpty())
-                        {
-                            insDescrption =et.getText().toString().trim();
-                            if (isValid()) {
-                                setInstituationDetails();
-                            }
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                final View layout11 = inflater.inflate(R.layout.dialog_remarks_lyt, (ViewGroup) findViewById(R.id.layout_root));
+                final EditText et = layout11.findViewById(R.id.edt_remarks);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MarketingAdmission.this);
+                builder.setView(layout11);
+                builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(!et.getText().toString().isEmpty()) {
+                            insDescrption = et.getText().toString().trim();
+                            setInstituationDetails();
+                            dialog.dismiss();
                         }
                         else
                         {
-                            Toast.makeText(MarketingAdmission.this, "Please enter remarks...", Toast.LENGTH_SHORT).show();
+                            et.setError("Invalid");
                         }
+
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.show();
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
+//                final EditText et = new EditText(MarketingAdmission.this);
+//                et.setHint("Remarks");
+//
+//                alertDialogBuilder.setView(et);
+//
+//                alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        if(!et.getText().toString().trim().isEmpty())
+//                        {
+//                            insDescrption =et.getText().toString().trim();
+//                            if (isValid()) {
+//                                setInstituationDetails();
+//                            }
+//                        }
+//                        else
+//                        {
+//                            Toast.makeText(MarketingAdmission.this, "Please enter remarks...", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
             }
             else
                 if (sts_joinings.equalsIgnoreCase("now")) {

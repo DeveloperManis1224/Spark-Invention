@@ -64,7 +64,7 @@
                     android:singleLine="true"
                     android:inputType="textCapSentences"
                     android:id="@+id/edt_ins_name"
-                    android:gravity="center"
+
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Institution "/>
@@ -80,7 +80,7 @@
                     android:id="@+id/edt_staff_name"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
+
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Staff Name"/>
@@ -95,7 +95,6 @@
                     android:maxLength="10"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Staff Phone"/>
@@ -110,7 +109,6 @@
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Institution Email"/>
@@ -124,14 +122,14 @@
                     android:inputType="textWebEmailAddress"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
+
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Website"/>
 
                 <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:padding="5dp"
                     android:inputType="textCapSentences"
                     android:id="@+id/edt_country"
@@ -143,7 +141,7 @@
 
                 <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:padding="5dp"
                     android:singleLine="true"
                     android:inputType="textCapSentences"
@@ -156,7 +154,7 @@
 
                 <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:id="@+id/edt_city"
                     android:padding="5dp"
                     android:singleLine="true"
@@ -169,9 +167,10 @@
 
                 <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:id="@+id/edt_organization"
                     android:padding="5dp"
+                    android:visibility="gone"
                     android:singleLine="true"
                     android:inputType="textCapSentences"
                     android:gravity="center"
@@ -181,7 +180,7 @@
                     android:hint="Enter Organization"/>
                 <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:id="@+id/edt_year"
                     android:padding="5dp"
                     android:singleLine="true"
@@ -200,12 +199,10 @@
                     android:padding="5dp"
                     android:maxLength="3"
                     android:singleLine="true"
-                    android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:hint="Enter Strength"/>
-
 
                 <EditText
                     android:layout_width="match_parent"
@@ -214,7 +211,6 @@
                     android:inputType="textCapSentences"
                     android:padding="5dp"
                     android:singleLine="true"
-                    android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
@@ -230,14 +226,13 @@
                     android:maxLength="10"
                     android:singleLine="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Lanline Number"/>
 
                 <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:id="@+id/spi_event"
                     android:gravity="center"
                     android:fontFamily="@font/poppinsmedium"
@@ -260,7 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:gravity="center">
                     <Button
                         android:layout_width="120dp"

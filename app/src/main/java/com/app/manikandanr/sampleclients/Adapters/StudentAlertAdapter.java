@@ -47,10 +47,10 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
     @Override
     public void onBindViewHolder(final StudentAlertAdapter.MyViewHolder holder, final int position) {
         try {
-            holder.studentName.setText(obj_arr.get(position).getStudents().get(position).getName());
-            holder.studentPhone.setText(obj_arr.get(position).getStudents().get(position).getPhone());
-            holder.studentEmail.setText(obj_arr.get(position).getStudents().get(position).getEmail());
-            holder.studentDate.setText(obj_arr.get(position).getStudents().get(position).getJoinStatus());
+            holder.studentName.setText("mmm"+obj_arr.get(position).getStudents().get(position).getName());
+            holder.studentPhone.setText("mmm"+obj_arr.get(position).getStudents().get(position).getPhone());
+            holder.studentEmail.setText("mmm"+obj_arr.get(position).getStudents().get(position).getEmail());
+            holder.studentDate.setText("mmm"+obj_arr.get(position).getStudents().get(position).getJoinStatus());
 
             holder.imgCall.setOnClickListener(new View.OnClickListener() {
                 @Override
