@@ -7,9 +7,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -49,18 +50,19 @@
         <activity android:name=".SampleTestActivity" />
         <activity
             android:name=".ViewBill"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".AttendanceActivity"
-            android:theme="@style/AppTheme"
-            android:label="Attendance"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AttendanceActivity"
+            android:label="Attendance"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AddItems"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MoreMenu" />
         <activity
             android:name=".AccountsHome"
-            android:theme="@style/AppTheme"
-            android:label="Accounts"/>
+            android:label="Accounts"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ViewStudent"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -70,10 +72,13 @@
         <activity
             android:name=".PasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".StudentScanner"
+        <activity
+            android:name=".StudentScanner"
             android:screenOrientation="portrait"
-            tools:replace="android:screenOrientation"
-            android:stateNotNeeded="true"/>
+            android:stateNotNeeded="true"
+            tools:replace="android:screenOrientation" />
+        <activity android:name=".WebViewPayment" />
+        <activity android:name=".CompletePayment"></activity>
     </application>
 
 </manifest>

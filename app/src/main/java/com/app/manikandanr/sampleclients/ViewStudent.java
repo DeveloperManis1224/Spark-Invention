@@ -67,7 +67,6 @@ public class ViewStudent extends AppCompatActivity {
     }
 
     private void payEmiMethod() {
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL + "api/payment";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,

@@ -52,8 +52,7 @@ public class Constants {
     public static final String FULLCASH = "1";
     public static final String EMI = "2";
     public static final String ONLINE_PAYMENT = "3";
-
-
+    public static final String STUDENT_ID = "stud_id";
 
 
     public static boolean isNetworkAvailable(Context cntx) {

@@ -1,11 +1,16 @@
 package com.app.manikandanr.sampleclients;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.app.manikandanr.sampleclients.Utils.Constants;
 
 public class PaymentStatus extends AppCompatActivity {
     String studentId = "";
@@ -32,7 +37,50 @@ public class PaymentStatus extends AppCompatActivity {
 
     public void onClickPayment(View v)
     {
-        Toast.makeText(this, "Online Payment", Toast.LENGTH_SHORT).show();
+        LayoutInflater factory = LayoutInflater.from(PaymentStatus.this);
+        final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+        final AlertDialog deleteDialog = new AlertDialog.Builder(PaymentStatus.this).create();
+        deleteDialog.setView(deleteDialogView);
+        Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+        Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+        Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+
+        btnSchool.setText("Pay Money");
+        btnSchool.setAllCaps(false);
+
+        btnCollege.setText("Complete Payment");
+        btnCollege.setAllCaps(false);
+
+        btnProject.setText("Project / Program");
+        btnProject.setVisibility(View.GONE);
+        btnProject.setAllCaps(false);
+
+        btnSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog.dismiss();
+                Intent in = new Intent(PaymentStatus.this, WebViewPayment.class);
+                startActivity(in);
+            }
+        });
+        btnCollege.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog.dismiss();
+                Intent in = new Intent(PaymentStatus.this, CompletePayment.class);
+                in.putExtra("cost",getIntent().getStringExtra("cost"));
+                in.putExtra(Constants.STUDENT_ID,studentId);
+                startActivity(in);
+            }
+        });
+        btnProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog.dismiss();
+            }
+        });
+        deleteDialog.show();
+        //Toast.makeText(this, "Online Payment", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CompletePayment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:id="@+id/header_tab"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/clr_white"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Bill"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_below="@id/header_tab"
+        android:layout_marginTop="-140dp"
+        android:elevation="2dp"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="left"
+            android:textColor="#303030"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Bill Entry"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edt_border"
+                android:textColor="#797979"
+                android:padding="8dp"
+                android:id="@+id/edt_bill"
+                android:imeOptions="actionDone"
+                android:inputType="number|textCapCharacters"
+                android:fontFamily="@font/poppinsmedium"
+                android:hint="Bill number"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edt_border"
+                android:textColor="#797979"
+                android:padding="8dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/edt_trans_num"
+                android:imeOptions="actionDone"
+                android:inputType="number|textCapCharacters"
+                android:fontFamily="@font/poppinsmedium"
+                android:hint="Transaction number"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_clr_drawble"
+                android:textColor="@color/clr_white"
+                android:clickable="true"
+                android:layout_marginTop="20dp"
+                android:id="@+id/btn_bill"
+                android:onClick="onClickSumbitPayment"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="Submit"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
