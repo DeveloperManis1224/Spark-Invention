@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class Student {
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -80,7 +79,6 @@ public class Student {
     public Student_ getStudent() {
         return student;
     }
-
     public void setStudent(Student_ student) {
         this.student = student;
     }
