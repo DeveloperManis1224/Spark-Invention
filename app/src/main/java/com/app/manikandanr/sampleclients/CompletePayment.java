@@ -181,18 +181,19 @@ public class CompletePayment extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(CompletePayment.this, "" + error, Toast.LENGTH_SHORT).show();
             }
-        }) {
+        })
+        {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("student_id",""+studId);
                 params.put("payment_mode",Constants.ONLINE_PAYMENT);// for emi
-                params.put("initial_amount",""+initialAmount); //
-                params.put("total_amount",""+totalAmount);
-                params.put("tenure","0");
-                params.put("payment_status","0");
-                params.put("tenure_amount","0.0");
-                params.put("balance_amount",""+"0.0");
+//                params.put("initial_amount",""+initialAmount); //
+//                params.put("total_amount",""+totalAmount);
+//                params.put("tenure","0");
+//                params.put("payment_status","0");
+//                params.put("tenure_amount","0.0");
+ params.put("balance_amount","0.0");
                 params.put("quotation_id",mBill.getText().toString().trim());
                 return params;
             }

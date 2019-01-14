@@ -989,10 +989,7 @@ try {
 
                                offerAvailable.setText(""+offerDetails_join+"\n \nAmount Payable : Rs "+balAmount);
                                offerAvailable.setVisibility(View.VISIBLE);
-                                BalanceAmount = String.valueOf(balAmount);
-
-
-
+                               BalanceAmount = String.valueOf(balAmount);
                             }
                             else
                             {
@@ -1051,7 +1048,6 @@ try {
                     }
                 })
                 .show();
-
     }
 
 }
