@@ -16,9 +16,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Data.BillData;
+import com.app.manikandanr.sampleclients.Data.Payment;
+import com.app.manikandanr.sampleclients.Data.Student;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,7 +61,6 @@ public class CompletePayment extends AppCompatActivity {
     }
 
     private void completeCashMethod() {
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL + "api/payment";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -163,11 +166,39 @@ public class CompletePayment extends AppCompatActivity {
 //                                in.putExtra("detail",""+ value);
 //                                startActivity(in);
 //                                finish();
-                                Log.e("RESPONSE111","bill number"+mBill.getText().toString().trim()+
-                                        "  studentId = "+studId+"  payment Mode = "+paymentMode+"  initial Amount ="+
-                                        initialAmount+"  toal amount = "+totalAmount+" tenureMonth = "+ tenureMonth
-                                        +" dueDate ="+dueDate+" paymentStatus = "+paymentStatus+" tenureAmount = "+tenureAmount+
-                                        "balanceAmount = "+balanceAmount);
+                                Gson billdata = new Gson();
+                                billdata.fromJson(response,BillData.class);
+                                final Student student = new Student();
+                                final Payment payment = new Payment();
+
+                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
+                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
+                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
+                                        "Payment Method:  ONLINE PAYMENT\n"+
+                                        "Amount Paid   : "+initialAmount;
+
+                                new AwesomeSuccessDialog(CompletePayment.this)
+                                        .setTitle("Admission Status")
+                                        .setMessage("Admission Successfull.")
+                                        .setColoredCircle(R.color.colorPrimary)
+                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                        .setCancelable(true)
+                                        .setPositiveButtonText("Ok")
+                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                        .setPositiveButtonTextColor(R.color.white)
+                                        .setPositiveButtonClick(new Closure() {
+                                            @Override
+                                            public void exec() {
+                                                Intent in = new Intent(CompletePayment.this, ViewBill.class);
+                                                in.putExtra("detail",""+ value);
+                                                in.putExtra("stud_id",student.getId());
+                                                in.putExtra("reg_num",student.getStudent().getSerialNo());
+                                                startActivity(in);
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+
 
                             } else {
                                 Toast.makeText(CompletePayment.this, "Submition failed", Toast.LENGTH_SHORT).show();

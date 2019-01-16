@@ -5,8 +5,9 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class MarketingData {
+public class BillData {
 
     @SerializedName("status")
     @Expose
@@ -14,12 +15,9 @@ public class MarketingData {
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("students")
+    @SerializedName("payment")
     @Expose
-    private List<Student> students = null;
-    @SerializedName("marketings")
-    @Expose
-    private List<Marketing> marketings = null;
+    private List<Payment> payment = null;
 
     public Integer getStatus() {
         return status;
@@ -37,22 +35,17 @@ public class MarketingData {
         this.message = message;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Payment> getPayment() {
+        return payment;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setPayment(List<Payment> payment) {
+        this.payment = payment;
     }
 
-    public List<Marketing> getMarketings() {
-        return marketings;
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("status", status).append("message", message).append("payment", payment).toString();
     }
-
-    public void setMarketings(List<Marketing> marketings) {
-        this.marketings = marketings;
-    }
-
-
 
 }

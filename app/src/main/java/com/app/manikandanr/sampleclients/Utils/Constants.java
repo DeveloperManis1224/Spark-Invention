@@ -55,6 +55,8 @@ public class Constants {
     public static final String STUDENT_ID = "stud_id";
 
 
+
+
     public static boolean isNetworkAvailable(Context cntx) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) cntx.getSystemService(Context.CONNECTIVITY_SERVICE);

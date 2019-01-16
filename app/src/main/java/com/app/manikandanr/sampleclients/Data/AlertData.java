@@ -1,10 +1,10 @@
 
-package com.app.manikandanr.sampleclients.DataModels;
+package com.app.manikandanr.sampleclients.Data;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AlertData {
 
@@ -16,7 +16,7 @@ public class AlertData {
     private String message;
     @SerializedName("students")
     @Expose
-    private List<Student_> students = null;
+    private List<Student> students = null;
     @SerializedName("marketings")
     @Expose
     private List<Marketing> marketings = null;
@@ -37,11 +37,11 @@ public class AlertData {
         this.message = message;
     }
 
-    public List<Student_> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student_> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
@@ -53,6 +53,9 @@ public class AlertData {
         this.marketings = marketings;
     }
 
-
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("status", status).append("message", message).append("students", students).append("marketings", marketings).toString();
+    }
 
 }

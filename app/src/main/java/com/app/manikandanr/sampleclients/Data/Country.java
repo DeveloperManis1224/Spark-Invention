@@ -5,23 +5,23 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Event {
+public class Country {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("name")
+    @SerializedName("country")
     @Expose
-    private String name;
+    private String country;
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("created_at")
     @Expose
-    private String createdAt;
+    private Object createdAt;
     @SerializedName("updated_at")
     @Expose
-    private String updatedAt;
+    private Object updatedAt;
 
     public Integer getId() {
         return id;
@@ -31,12 +31,12 @@ public class Event {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCountry() {
+        return country;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getStatus() {
@@ -47,25 +47,25 @@ public class Event {
         this.status = status;
     }
 
-    public String getCreatedAt() {
+    public Object getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Object createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Object getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Object updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("name", name).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).toString();
+        return new ToStringBuilder(this).append("id", id).append("country", country).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).toString();
     }
 
 }

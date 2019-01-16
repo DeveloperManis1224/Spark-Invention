@@ -18,10 +18,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Data.BillData;
+import com.app.manikandanr.sampleclients.Data.Payment;
+import com.app.manikandanr.sampleclients.Data.Student;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -111,11 +115,9 @@ public class BillActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void completeCashMethod() {
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL + "api/payment";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -124,76 +126,28 @@ public class BillActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             Log.e("RESPONSE1Bill", "" + response);
-                            JSONObject jsonObject = new JSONObject(response);
-                            String sts = jsonObject.getString("status");
-                            String msg = jsonObject.getString("message");
-                            if (sts.equalsIgnoreCase("1")) {
-                                JSONArray jry = jsonObject.getJSONArray("payment");
+                            Gson billdata = new Gson();
+                            billdata.fromJson(response,BillData.class);
+                            final Student student = new Student();
+                            final Payment payment = new Payment();
+                            if(initialAmount.equalsIgnoreCase(Constants.FULLCASH))
+                            {
+                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
+                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
+                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
+                                        "Payment Method:  CASH\n"+
+                                        "Amount Paid   : "+initialAmount;
+                            }
+                            else
+                            {
+                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
+                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
+                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
+                                        "Payment Method:  EMI\n"+
+                                        "Amount Paid   : "+initialAmount;
+                            }
 
-                                for(int i = 0; i< jry.length(); i++) {
-                                    JSONObject jobj = jry.getJSONObject(i);
-                                    billQuationId = jobj.getString("quotation_id");
-                                    JSONObject studentObject = jobj.getJSONObject("student");
-                                    student_id = studentObject.getString("id");
-                                    billStudentName = studentObject.getString("name");
-                                    billStudentRoll = studentObject.getString("serial_no");
-                                    //billInitialAmount = studentObject.getString("initial_amount");
-                                   // billTotalAmount = studentObject.getString("total_amount");
-                                    try {
-                                        JSONObject jobj1 = jobj.getJSONObject("payment_plan");
-                                        dueDate = jobj1.getString("due_date");
-                                        billInitialAmount = jobj1.getString("initial_amount");
-                                        billTotalAmount = jobj1.getString("total_amount");
-                                    } catch (Exception ex) {
-                                        Log.e("ERROR", ex.getMessage());
-                                        ex.printStackTrace();
-                                    }
-                                }
-
-
-
-//                                value = "Bill number : "+eBillNumber.getText().toString().trim()+
-//                                        "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
-//                                        initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
-//                                        +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
-//                                        "\n Balance Amount : "+balanceAmount;
-
-                                if(initialAmount.equalsIgnoreCase("0"))
-                                {
-                                    //full cash
-//                                    value = "Bill number : "+eBillNumber.getText().toString().trim()+
-//                                            "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
-//                                            initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
-//                                            +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
-//                                            "\n Balance Amount : "+balanceAmount;
-
-                                    value = "Student Name  : "+billStudentName+"\n" +
-                                            "Serial Number : "+billStudentRoll+"\n"+
-                                            "Bill Number   : "+billQuationId+"\n"+
-                                            "Payment Status:  Paid\n"+
-                                            "Payment Method:  Cash\n"+
-                                            "Amount Paid   : "+billTotalAmount;
-
-                                }
-                                else
-                                {
-                                    //emi
-//                                    value = "Bill number : "+eBillNumber.getText().toString().trim()+
-//                                            "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
-//                                            initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
-//                                            +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
-//                                            "\n Balance Amount : "+balanceAmount;
-
-                                    value = "Student Name  : "+billStudentName+"\n" +
-                                            "Serial Number : "+billStudentRoll+"\n"+
-                                            "Bill Number   : "+billQuationId+"\n"+
-                                            "Payment Method:  EMI\n"+
-                                            "Amount Paid   : "+billInitialAmount;
-                                }
-
-
-
-                                new AwesomeSuccessDialog(BillActivity.this)
+                                    new AwesomeSuccessDialog(BillActivity.this)
                                         .setTitle("Admission Status")
                                         .setMessage("Admission Successfull.")
                                         .setColoredCircle(R.color.colorPrimary)
@@ -207,8 +161,8 @@ public class BillActivity extends AppCompatActivity {
                                             public void exec() {
                                 Intent in = new Intent(BillActivity.this, ViewBill.class);
                                 in.putExtra("detail",""+ value);
-                                in.putExtra("stud_id",student_id);
-                                in.putExtra("reg_num",billStudentRoll);
+                                in.putExtra("stud_id",student.getId());
+                                in.putExtra("reg_num",student.getStudent().getSerialNo());
                                 startActivity(in);
                                 finish();
                                             }
@@ -216,21 +170,113 @@ public class BillActivity extends AppCompatActivity {
                                         .show();
 
 
-
-//                                Toast.makeText(BillActivity.this, "Payment registered successfully", Toast.LENGTH_SHORT).show();
+//                            JSONObject jsonObject = new JSONObject(response);
+//                            String sts = jsonObject.getString("status");
+//                            String msg = jsonObject.getString("message");
+//                            if (sts.equalsIgnoreCase("1")) {
+//                                JSONArray jry = jsonObject.getJSONArray("payment");
+//
+//                                for(int i = 0; i< jry.length(); i++) {
+//                                    JSONObject jobj = jry.getJSONObject(i);
+//                                    billQuationId = jobj.getString("quotation_id");
+//                                    JSONObject studentObject = jobj.getJSONObject("student");
+//                                    student_id = studentObject.getString("id");
+//                                    billStudentName = studentObject.getString("name");
+//                                    billStudentRoll = studentObject.getString("serial_no");
+//                                    //billInitialAmount = studentObject.getString("initial_amount");
+//                                   // billTotalAmount = studentObject.getString("total_amount");
+//                                    try {
+//                                        JSONObject jobj1 = jobj.getJSONObject("payment_plan");
+//                                        dueDate = jobj1.getString("due_date");
+//                                        billInitialAmount = jobj1.getString("initial_amount");
+//                                        billTotalAmount = jobj1.getString("total_amount");
+//                                    } catch (Exception ex) {
+//                                        Log.e("ERROR", ex.getMessage());
+//                                        ex.printStackTrace();
+//                                    }
+//                                }
+//
+//
+//
+////                                value = "Bill number : "+eBillNumber.getText().toString().trim()+
+////                                        "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
+////                                        initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
+////                                        +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
+////                                        "\n Balance Amount : "+balanceAmount;
+//
+//                                if(initialAmount.equalsIgnoreCase("0"))
+//                                {
+//                                    //full cash
+////                                    value = "Bill number : "+eBillNumber.getText().toString().trim()+
+////                                            "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
+////                                            initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
+////                                            +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
+////                                            "\n Balance Amount : "+balanceAmount;
+//
+//                                    value = "Student Name  : "+billStudentName+"\n" +
+//                                            "Serial Number : "+billStudentRoll+"\n"+
+//                                            "Bill Number   : "+billQuationId+"\n"+
+//                                            "Payment Status:  Paid\n"+
+//                                            "Payment Method:  Cash\n"+
+//                                            "Amount Paid   : "+billTotalAmount;
+//
+//                                }
+//                                else
+//                                {
+//                                    //emi
+////                                    value = "Bill number : "+eBillNumber.getText().toString().trim()+
+////                                            "\n Student Roll Number : "+studId+"\n Payment Mode : "+paymentMode+"\n Initial Amount : "+
+////                                            initialAmount+"\n Total amount : "+totalAmount+"\n Tenure month : "+ tenureMonth
+////                                            +"\n Next Due Date : "+dueDate+"\n Payment Status : "+paymentStatus+"\n Tenure Amount : "+tenureAmount+
+////                                            "\n Balance Amount : "+balanceAmount;
+//
+//                                    value = "Student Name  : "+billStudentName+"\n" +
+//                                            "Serial Number : "+billStudentRoll+"\n"+
+//                                            "Bill Number   : "+billQuationId+"\n"+
+//                                            "Payment Method:  EMI\n"+
+//                                            "Amount Paid   : "+billInitialAmount;
+//                                }
+//
+//
+//
+//                                new AwesomeSuccessDialog(BillActivity.this)
+//                                        .setTitle("Admission Status")
+//                                        .setMessage("Admission Successfull.")
+//                                        .setColoredCircle(R.color.colorPrimary)
+//                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+//                                        .setCancelable(true)
+//                                        .setPositiveButtonText("Ok")
+//                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+//                                        .setPositiveButtonTextColor(R.color.white)
+//                                        .setPositiveButtonClick(new Closure() {
+//                                            @Override
+//                                            public void exec() {
 //                                Intent in = new Intent(BillActivity.this, ViewBill.class);
 //                                in.putExtra("detail",""+ value);
+//                                in.putExtra("stud_id",student_id);
+//                                in.putExtra("reg_num",billStudentRoll);
 //                                startActivity(in);
 //                                finish();
-                                Log.e("RESPONSE111","bill number"+eBillNumber.getText().toString().trim()+
-                                        "  studentId = "+studId+"  payment Mode = "+paymentMode+"  initial Amount ="+
-                                        initialAmount+"  toal amount = "+totalAmount+" tenureMonth = "+ tenureMonth
-                                        +" dueDate ="+dueDate+" paymentStatus = "+paymentStatus+" tenureAmount = "+tenureAmount+
-                                        "balanceAmount = "+balanceAmount);
+//                                            }
+//                                        })
+//                                        .show();
+//
+//
+//
+////                                Toast.makeText(BillActivity.this, "Payment registered successfully", Toast.LENGTH_SHORT).show();
+////                                Intent in = new Intent(BillActivity.this, ViewBill.class);
+////                                in.putExtra("detail",""+ value);
+////                                startActivity(in);
+////                                finish();
+//                                Log.e("RESPONSE111","bill number"+eBillNumber.getText().toString().trim()+
+//                                        "  studentId = "+studId+"  payment Mode = "+paymentMode+"  initial Amount ="+
+//                                        initialAmount+"  toal amount = "+totalAmount+" tenureMonth = "+ tenureMonth
+//                                        +" dueDate ="+dueDate+" paymentStatus = "+paymentStatus+" tenureAmount = "+tenureAmount+
+//                                        "balanceAmount = "+balanceAmount);
 
-                            } else {
-                                Toast.makeText(BillActivity.this, "Submition failed", Toast.LENGTH_SHORT).show();
-                            }
+//                            } else {
+//                                Toast.makeText(BillActivity.this, "Submition failed", Toast.LENGTH_SHORT).show();
+//                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

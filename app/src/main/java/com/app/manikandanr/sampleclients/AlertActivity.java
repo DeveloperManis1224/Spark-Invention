@@ -1,6 +1,5 @@
 package com.app.manikandanr.sampleclients;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Adapters.MarketingAdapter;
 import com.app.manikandanr.sampleclients.Adapters.StudentAlertAdapter;
-import com.app.manikandanr.sampleclients.DataModels.AlertData;
+import com.app.manikandanr.sampleclients.Data.AlertData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.google.gson.Gson;
 

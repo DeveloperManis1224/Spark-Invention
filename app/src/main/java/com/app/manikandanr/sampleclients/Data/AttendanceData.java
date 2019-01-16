@@ -1,4 +1,4 @@
-package com.app.manikandanr.sampleclients.DataModels;
+package com.app.manikandanr.sampleclients.Data;
 
 public class AttendanceData {
     private String _studentName;

@@ -1,21 +1,17 @@
 package com.app.manikandanr.sampleclients.Adapters;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.app.manikandanr.sampleclients.DataModels.AlertData;
+import com.app.manikandanr.sampleclients.Data.AlertData;
 import com.app.manikandanr.sampleclients.R;
 
 import java.math.BigDecimal;
@@ -47,15 +43,15 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
     @Override
     public void onBindViewHolder(final StudentAlertAdapter.MyViewHolder holder, final int position) {
         try {
-            holder.studentName.setText("mmm"+obj_arr.get(position).getStudents().get(position).getName());
-            holder.studentPhone.setText("mmm"+obj_arr.get(position).getStudents().get(position).getPhone());
-            holder.studentEmail.setText("mmm"+obj_arr.get(position).getStudents().get(position).getEmail());
-            holder.studentDate.setText("mmm"+obj_arr.get(position).getStudents().get(position).getJoinStatus());
+            holder.studentName.setText("mmm"+obj_arr.get(position).getStudents().get(position).getStudent().getName());
+            holder.studentPhone.setText("mmm"+obj_arr.get(position).getStudents().get(position).getStudent().getPhone());
+            holder.studentEmail.setText("mmm"+obj_arr.get(position).getStudents().get(position).getStudent().getEmail());
+            holder.studentDate.setText("mmm"+obj_arr.get(position).getStudents().get(position).getStudent().getJoinStatus());
 
             holder.imgCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String uri = "tel:" + obj_arr.get(position).getStudents().get(position).getPhone();
+                    String uri = "tel:" + obj_arr.get(position).getStudents().get(position).getStudent().getPhone();
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse(uri));
                     holder.studentPhone.getContext().startActivity(intent);

@@ -1,28 +1,19 @@
 package com.app.manikandanr.sampleclients;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,10 +28,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.app.manikandanr.sampleclients.DataModels.Marketing;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
@@ -51,7 +40,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MarketingAdmission extends AppCompatActivity {

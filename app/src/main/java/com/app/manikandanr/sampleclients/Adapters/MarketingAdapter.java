@@ -1,10 +1,7 @@
 package com.app.manikandanr.sampleclients.Adapters;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.app.manikandanr.sampleclients.DataModels.AlertData;
+import com.app.manikandanr.sampleclients.Data.AlertData;
 import com.app.manikandanr.sampleclients.R;
 
 import java.math.BigDecimal;

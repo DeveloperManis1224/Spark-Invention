@@ -3,7 +3,7 @@ package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Organization {
 
@@ -107,5 +107,9 @@ public class Organization {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("cityId", cityId).append("name", name).append("offerType", offerType).append("offer", offer).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("role", role).toString();
+    }
 
 }

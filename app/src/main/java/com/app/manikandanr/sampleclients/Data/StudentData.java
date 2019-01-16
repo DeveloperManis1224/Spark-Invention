@@ -1,8 +1,9 @@
 
-package com.app.manikandanr.sampleclients.DataModels;
+package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class StudentData {
 
@@ -38,6 +39,11 @@ public class StudentData {
 
     public void setStudents(Students students) {
         this.students = students;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("status", status).append("message", message).append("students", students).toString();
     }
 
 }

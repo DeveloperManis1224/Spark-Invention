@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,15 +18,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.app.manikandanr.sampleclients.DataModels.StudentData;
+import com.app.manikandanr.sampleclients.Data.Student;
+import com.app.manikandanr.sampleclients.Data.StudentData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,12 +56,9 @@ public class StudentScanner extends AppCompatActivity {
         setContentView(R.layout.activity_student_scanner);
         txtResult = findViewById(R.id.txt_qrdata);
         mRegNumber = findViewById(R.id.edt_reg_number);
-
-
     }
 
     private void getStudentInformation() {
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/emi";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,

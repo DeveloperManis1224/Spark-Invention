@@ -1,11 +1,12 @@
 
-package com.app.manikandanr.sampleclients.DataModels;
+package com.app.manikandanr.sampleclients.Data;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-
-public class Student_ {
+public class Students {
 
     @SerializedName("id")
     @Expose
@@ -85,6 +86,36 @@ public class Student_ {
     @SerializedName("department_id")
     @Expose
     private String departmentId;
+    @SerializedName("payment_status")
+    @Expose
+    private String paymentStatus;
+    @SerializedName("last_payment_date")
+    @Expose
+    private String lastPaymentDate;
+    @SerializedName("balance_amount")
+    @Expose
+    private String balanceAmount;
+    @SerializedName("deleted_at")
+    @Expose
+    private Object deletedAt;
+    @SerializedName("payment")
+    @Expose
+    private List<Object> payment = null;
+    @SerializedName("course")
+    @Expose
+    private Course course;
+    @SerializedName("alert")
+    @Expose
+    private Alert alert;
+    @SerializedName("city")
+    @Expose
+    private City city;
+    @SerializedName("state")
+    @Expose
+    private State state;
+    @SerializedName("country")
+    @Expose
+    private Country country;
 
     public Integer getId() {
         return id;
@@ -292,6 +323,91 @@ public class Student_ {
 
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(String lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    public String getBalanceAmount() {
+        return balanceAmount;
+    }
+
+    public void setBalanceAmount(String balanceAmount) {
+        this.balanceAmount = balanceAmount;
+    }
+
+    public Object getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Object deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public List<Object> getPayment() {
+        return payment;
+    }
+
+    public void setPayment(List<Object> payment) {
+        this.payment = payment;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Alert getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Alert alert) {
+        this.alert = alert;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("serialNo", serialNo).append("name", name).append("dob", dob).append("instituationId", instituationId).append("organizationId", organizationId).append("categoryId", categoryId).append("phone", phone).append("email", email).append("countryId", countryId).append("stateId", stateId).append("cityId", cityId).append("address", address).append("courseId", courseId).append("role", role).append("joinStatus", joinStatus).append("orgDiscountType", orgDiscountType).append("orgDiscount", orgDiscount).append("courseDiscountType", courseDiscountType).append("courseDiscount", courseDiscount).append("overallDiscount", overallDiscount).append("calcAmount", calcAmount).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("departmentId", departmentId).append("paymentStatus", paymentStatus).append("lastPaymentDate", lastPaymentDate).append("balanceAmount", balanceAmount).append("deletedAt", deletedAt).append("payment", payment).append("course", course).append("alert", alert).append("city", city).append("state", state).append("country", country).toString();
     }
 
 }

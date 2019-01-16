@@ -1,8 +1,9 @@
 
-package com.app.manikandanr.sampleclients.DataModels;
+package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Course {
 
@@ -104,6 +105,11 @@ public class Course {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("course", course).append("amount", amount).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("offerType", offerType).append("offer", offer).append("categoryId", categoryId).toString();
     }
 
 }

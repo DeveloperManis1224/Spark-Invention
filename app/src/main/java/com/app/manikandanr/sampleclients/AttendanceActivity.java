@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,7 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Adapters.StudentAttendanceAdapter;
-import com.app.manikandanr.sampleclients.DataModels.AttendanceData;
+import com.app.manikandanr.sampleclients.Data.AttendanceData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;

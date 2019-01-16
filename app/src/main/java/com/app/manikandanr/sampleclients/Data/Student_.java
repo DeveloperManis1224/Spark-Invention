@@ -3,7 +3,7 @@ package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Student_ {
 
@@ -87,13 +87,13 @@ public class Student_ {
     private String departmentId;
     @SerializedName("payment_status")
     @Expose
-    private Object paymentStatus;
+    private String paymentStatus;
     @SerializedName("last_payment_date")
     @Expose
-    private Object lastPaymentDate;
+    private String lastPaymentDate;
     @SerializedName("balance_amount")
     @Expose
-    private Object balanceAmount;
+    private String balanceAmount;
     @SerializedName("deleted_at")
     @Expose
     private Object deletedAt;
@@ -306,27 +306,27 @@ public class Student_ {
         this.departmentId = departmentId;
     }
 
-    public Object getPaymentStatus() {
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(Object paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
-    public Object getLastPaymentDate() {
+    public String getLastPaymentDate() {
         return lastPaymentDate;
     }
 
-    public void setLastPaymentDate(Object lastPaymentDate) {
+    public void setLastPaymentDate(String lastPaymentDate) {
         this.lastPaymentDate = lastPaymentDate;
     }
 
-    public Object getBalanceAmount() {
+    public String getBalanceAmount() {
         return balanceAmount;
     }
 
-    public void setBalanceAmount(Object balanceAmount) {
+    public void setBalanceAmount(String balanceAmount) {
         this.balanceAmount = balanceAmount;
     }
 
@@ -338,5 +338,9 @@ public class Student_ {
         this.deletedAt = deletedAt;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("serialNo", serialNo).append("name", name).append("dob", dob).append("instituationId", instituationId).append("organizationId", organizationId).append("categoryId", categoryId).append("phone", phone).append("email", email).append("countryId", countryId).append("stateId", stateId).append("cityId", cityId).append("address", address).append("courseId", courseId).append("role", role).append("joinStatus", joinStatus).append("orgDiscountType", orgDiscountType).append("orgDiscount", orgDiscount).append("courseDiscountType", courseDiscountType).append("courseDiscount", courseDiscount).append("overallDiscount", overallDiscount).append("calcAmount", calcAmount).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("departmentId", departmentId).append("paymentStatus", paymentStatus).append("lastPaymentDate", lastPaymentDate).append("balanceAmount", balanceAmount).append("deletedAt", deletedAt).toString();
+    }
 
 }

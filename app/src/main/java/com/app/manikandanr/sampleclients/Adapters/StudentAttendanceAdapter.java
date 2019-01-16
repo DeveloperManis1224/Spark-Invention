@@ -6,12 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.manikandanr.sampleclients.AttendanceActivity;
-import com.app.manikandanr.sampleclients.DataModels.AttendanceData;
+import com.app.manikandanr.sampleclients.Data.AttendanceData;
 import com.app.manikandanr.sampleclients.R;
 
 import java.math.BigDecimal;
@@ -21,25 +20,20 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAttendanceAdapter.MyViewHolder> {
-
     public static ArrayList<AttendanceData> obj_arr=new ArrayList<>();
-
     public StudentAttendanceAdapter(ArrayList<AttendanceData> objs) {
         this.obj_arr =objs;
     }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View contentView= LayoutInflater.from(parent.getContext()).inflate(R.layout.student_attendance_lyt,parent,false);
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
         return new MyViewHolder(contentView);
     }
-
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         try {

@@ -5,17 +5,17 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Event {
+public class State {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("name")
+    @SerializedName("country_id")
     @Expose
-    private String name;
-    @SerializedName("status")
+    private String countryId;
+    @SerializedName("state")
     @Expose
-    private String status;
+    private String state;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -31,20 +31,20 @@ public class Event {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCountryId() {
+        return countryId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getState() {
+        return state;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getCreatedAt() {
@@ -65,7 +65,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("name", name).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).toString();
+        return new ToStringBuilder(this).append("id", id).append("countryId", countryId).append("state", state).append("createdAt", createdAt).append("updatedAt", updatedAt).toString();
     }
 
 }
