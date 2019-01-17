@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.app.manikandanr.sampleclients.Data.AlertData;
+import com.app.manikandanr.sampleclients.Data.MarketingAlertData;
 import com.app.manikandanr.sampleclients.R;
 
 import java.math.BigDecimal;
@@ -22,9 +22,9 @@ import java.util.Locale;
 
 public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyViewHolder> {
 
-    public static ArrayList<AlertData> obj_arr = new ArrayList<>();
+    public static ArrayList<MarketingAlertData> obj_arr = new ArrayList<>();
 
-    public MarketingAdapter(ArrayList<AlertData> objs) {
+    public MarketingAdapter(ArrayList<MarketingAlertData> objs) {
         this.obj_arr = objs;
     }
 
@@ -43,20 +43,20 @@ public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyVi
     @Override
     public void onBindViewHolder(final MarketingAdapter.MyViewHolder holder, final int position) {
         try {
-            holder.studentName.setText(obj_arr.get(position).getMarketings().get(position).getInstituationId());
-            holder.studentPhone.setText(obj_arr.get(position).getMarketings().get(position).getPhone());
-            holder.studentEmail.setText(obj_arr.get(position).getMarketings().get(position).getEmail());
-            holder.studentDate.setText(obj_arr.get(position).getMarketings().get(position).getDate());
-
-            holder.imgCall.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String uri = "tel:" + obj_arr.get(position).getMarketings().get(position).getPhone();
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse(uri));
-                    holder.studentPhone.getContext().startActivity(intent);
-                }
-            });
+//            holder.studentName.setText(obj_arr.get(position).getMarketings().get(position).getInstituationId());
+//            holder.studentPhone.setText(obj_arr.get(position).getMarketings().get(position).getPhone());
+//            holder.studentEmail.setText(obj_arr.get(position).getMarketings().get(position).getEmail());
+//            holder.studentDate.setText(obj_arr.get(position).getMarketings().get(position).getDate());
+//
+//            holder.imgCall.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    String uri = "tel:" + obj_arr.get(position).getMarketings().get(position).getPhone();
+//                    Intent intent = new Intent(Intent.ACTION_DIAL);
+//                    intent.setData(Uri.parse(uri));
+//                    holder.studentPhone.getContext().startActivity(intent);
+//                }
+//            });
 //            holder.studentName.setText(obj_arr.get(position).);
 //            holder.studentPhone.setText(obj_arr.get(position).get_studentRegNumber());
 //            holder.studentEmail.setText(obj_arr.get(position).get_studentPaymentStatus());

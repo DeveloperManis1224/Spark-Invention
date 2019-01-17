@@ -1,7 +1,6 @@
 package com.app.manikandanr.sampleclients;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,25 +19,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Data.BillData;
 import com.app.manikandanr.sampleclients.Data.Payment;
-import com.app.manikandanr.sampleclients.Data.Student;
 import com.app.manikandanr.sampleclients.Utils.Constants;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.google.gson.Gson;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.WHITE;
 
 public class BillActivity extends AppCompatActivity {
 
@@ -130,45 +117,45 @@ public class BillActivity extends AppCompatActivity {
                             billdata.fromJson(response,BillData.class);
                             final Student student = new Student();
                             final Payment payment = new Payment();
-                            if(initialAmount.equalsIgnoreCase(Constants.FULLCASH))
-                            {
-                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
-                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
-                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
-                                        "Payment Method:  CASH\n"+
-                                        "Amount Paid   : "+initialAmount;
-                            }
-                            else
-                            {
-                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
-                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
-                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
-                                        "Payment Method:  EMI\n"+
-                                        "Amount Paid   : "+initialAmount;
-                            }
-
-                                    new AwesomeSuccessDialog(BillActivity.this)
-                                        .setTitle("Admission Status")
-                                        .setMessage("Admission Successfull.")
-                                        .setColoredCircle(R.color.colorPrimary)
-                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
-                                        .setCancelable(true)
-                                        .setPositiveButtonText("Ok")
-                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
-                                        .setPositiveButtonTextColor(R.color.white)
-                                        .setPositiveButtonClick(new Closure() {
-                                            @Override
-                                            public void exec() {
-                                Intent in = new Intent(BillActivity.this, ViewBill.class);
-                                in.putExtra("detail",""+ value);
-                                in.putExtra("stud_id",student.getId());
-                                in.putExtra("reg_num",student.getStudent().getSerialNo());
-                                startActivity(in);
-                                finish();
-                                            }
-                                        })
-                                        .show();
-
+//                            if(initialAmount.equalsIgnoreCase(Constants.FULLCASH))
+//                            {
+//                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
+//                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
+//                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
+//                                        "Payment Method:  CASH\n"+
+//                                        "Amount Paid   : "+initialAmount;
+//                            }
+//                            else
+//                            {
+//                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
+//                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
+//                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
+//                                        "Payment Method:  EMI\n"+
+//                                        "Amount Paid   : "+initialAmount;
+//                            }
+//
+//                                    new AwesomeSuccessDialog(BillActivity.this)
+//                                        .setTitle("Admission Status")
+//                                        .setMessage("Admission Successfull.")
+//                                        .setColoredCircle(R.color.colorPrimary)
+//                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+//                                        .setCancelable(true)
+//                                        .setPositiveButtonText("Ok")
+//                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+//                                        .setPositiveButtonTextColor(R.color.white)
+//                                        .setPositiveButtonClick(new Closure() {
+//                                            @Override
+//                                            public void exec() {
+//                                Intent in = new Intent(BillActivity.this, ViewBill.class);
+//                                in.putExtra("detail",""+ value);
+//                                in.putExtra("stud_id",student.getId());
+//                                in.putExtra("reg_num",student.getStudent().getSerialNo());
+//                                startActivity(in);
+//                                finish();
+//                                            }
+//                                        })
+//                                        .show();
+//
 
 //                            JSONObject jsonObject = new JSONObject(response);
 //                            String sts = jsonObject.getString("status");

@@ -18,7 +18,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Data.BillData;
 import com.app.manikandanr.sampleclients.Data.Payment;
-import com.app.manikandanr.sampleclients.Data.Student;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
@@ -171,33 +170,33 @@ public class CompletePayment extends AppCompatActivity {
                                 final Student student = new Student();
                                 final Payment payment = new Payment();
 
-                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
-                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
-                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
-                                        "Payment Method:  ONLINE PAYMENT\n"+
-                                        "Amount Paid   : "+initialAmount;
-
-                                new AwesomeSuccessDialog(CompletePayment.this)
-                                        .setTitle("Admission Status")
-                                        .setMessage("Admission Successfull.")
-                                        .setColoredCircle(R.color.colorPrimary)
-                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
-                                        .setCancelable(true)
-                                        .setPositiveButtonText("Ok")
-                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
-                                        .setPositiveButtonTextColor(R.color.white)
-                                        .setPositiveButtonClick(new Closure() {
-                                            @Override
-                                            public void exec() {
-                                                Intent in = new Intent(CompletePayment.this, ViewBill.class);
-                                                in.putExtra("detail",""+ value);
-                                                in.putExtra("stud_id",student.getId());
-                                                in.putExtra("reg_num",student.getStudent().getSerialNo());
-                                                startActivity(in);
-                                                finish();
-                                            }
-                                        })
-                                        .show();
+//                                value = "Student Name  : "+student.getStudent().getName()+"\n" +
+//                                        "Serial Number : "+student.getStudent().getSerialNo()+"\n"+
+//                                        "Bill Number   : "+payment.getQuotationId()+"\n"+
+//                                        "Payment Method:  ONLINE PAYMENT\n"+
+//                                        "Amount Paid   : "+initialAmount;
+//
+//                                new AwesomeSuccessDialog(CompletePayment.this)
+//                                        .setTitle("Admission Status")
+//                                        .setMessage("Admission Successfull.")
+//                                        .setColoredCircle(R.color.colorPrimary)
+//                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+//                                        .setCancelable(true)
+//                                        .setPositiveButtonText("Ok")
+//                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+//                                        .setPositiveButtonTextColor(R.color.white)
+//                                        .setPositiveButtonClick(new Closure() {
+//                                            @Override
+//                                            public void exec() {
+//                                                Intent in = new Intent(CompletePayment.this, ViewBill.class);
+//                                                in.putExtra("detail",""+ value);
+//                                                in.putExtra("stud_id",student.getId());
+//                                                in.putExtra("reg_num",student.getStudent().getSerialNo());
+//                                                startActivity(in);
+//                                                finish();
+//                                            }
+//                                        })
+//                                        .show();
 
 
                             } else {

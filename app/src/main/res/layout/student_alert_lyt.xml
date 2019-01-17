@@ -4,6 +4,9 @@
     android:layout_marginBottom="7dp"
     android:background="@drawable/student_card_bg"
     android:elevation="3dp"
+
+    android:padding="5sp"
+    android:id="@+id/lyt_student_alert"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -40,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/lyt_txt_date"
-
+            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:text="date"/>
         <LinearLayout

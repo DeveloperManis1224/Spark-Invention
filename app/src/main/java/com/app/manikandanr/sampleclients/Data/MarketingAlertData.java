@@ -1,4 +1,4 @@
 package com.app.manikandanr.sampleclients.Data;
 
-class Student {
+public class MarketingAlertData {
 }

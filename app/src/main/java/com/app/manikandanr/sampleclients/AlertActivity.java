@@ -14,18 +14,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.app.manikandanr.sampleclients.Adapters.MarketingAdapter;
 import com.app.manikandanr.sampleclients.Adapters.StudentAlertAdapter;
-import com.app.manikandanr.sampleclients.Data.AlertData;
+import com.app.manikandanr.sampleclients.Data.StudentAlertData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class AlertActivity extends AppCompatActivity {
 
     RecyclerView studList, clgList;
-    ArrayList<AlertData> studentDataList = new ArrayList<>();
+    ArrayList<StudentAlertData> studentDataList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,7 @@ public class AlertActivity extends AppCompatActivity {
     }
 
     private void getAlertDetails() {
+
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/alert";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -48,12 +53,51 @@ public class AlertActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             Log.v("TTTTTTTTTTT",""+ response);
-                            Gson gson = new Gson();
-                            studentDataList.add (gson.fromJson(response,AlertData.class));
+                            String studentId = "";
+                             String studentDate = "";
+                              String studentSerialNumber = "";
+                             String studentName = "";
+                             String studentDob = "";
+                             String studentInstitutionType = "";
+                             String studentCategory = "";
+                             String studentOrganization = "";
+                             String studentPhone = "";
+                             String studentEmail = "";
+                             String studentAddress = null;
+                             String studentCourse = null;
+                            JSONObject jobj = new JSONObject(response);
+                            String sts = jobj.getString("status");
+                            String msg = jobj.getString("message");
+                            JSONArray studentArray = jobj.getJSONArray("students");
+                            for(int i = 0; i< studentArray.length(); i++)
+                            {
+                                JSONObject studentObj = studentArray.getJSONObject(i);
+                                studentId = studentObj.getString("student_id");
+                                studentDate = studentObj.getString("date");
+                                JSONObject studentDataObject = studentObj.getJSONObject("student");
+
+                                    studentSerialNumber = studentDataObject.getString("serial_no");
+                                    studentName = studentDataObject.getString("name");
+                                    studentDob = studentDataObject.getString("dob");
+                                    studentInstitutionType = studentDataObject.getString("instituation_id");
+                                    studentCategory = studentDataObject.getString("category_id");
+                                    studentOrganization = studentDataObject.getString("organization_id");
+                                    studentPhone = studentDataObject.getString("phone");
+                                    studentEmail = studentDataObject.getString("email");
+                                    studentAddress = studentDataObject.getString("address")+
+                                            ""+studentDataObject.getJSONObject("city").getString("city")+""
+                                    +studentDataObject.getJSONObject("state").getString("state")+""
+                                            +studentDataObject.getJSONObject("country").getString("country");
+                                    studentCourse = ""+studentDataObject.getJSONObject("course").getString("course");
+
+                                studentDataList.add(new StudentAlertData(studentId,studentDate,studentSerialNumber,studentName,studentDob,studentInstitutionType,
+                                        studentCategory,studentOrganization,studentPhone,studentEmail,studentAddress,studentCourse));
+
+                            }
+
                             StudentAlertAdapter alertAdapter = new StudentAlertAdapter(studentDataList);
-                            MarketingAdapter marketingAdapter = new MarketingAdapter(studentDataList);
                             studList.setAdapter(alertAdapter);
-                            clgList.setAdapter(marketingAdapter);
+                            //clgList.setAdapter(marketingAdapter);
                         } catch (Exception e) {
                             Log.v("TTTTTTTTTTT",""+ e.getMessage());
                             e.printStackTrace();

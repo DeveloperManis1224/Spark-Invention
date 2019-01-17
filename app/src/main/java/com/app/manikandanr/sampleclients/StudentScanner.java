@@ -18,7 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.app.manikandanr.sampleclients.Data.Student;
 import com.app.manikandanr.sampleclients.Data.StudentData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.google.gson.Gson;
