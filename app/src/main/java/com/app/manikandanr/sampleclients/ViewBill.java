@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ViewBill extends AppCompatActivity {
+
     String regNumber =null;
     String invoiceNumber =  "";
     String studentId = "";
@@ -42,6 +43,7 @@ public class ViewBill extends AppCompatActivity {
     public final static int WIDTH=500;
     ImageView imgView ;
     TextView txtInvoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,4 +226,5 @@ public class ViewBill extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
+
 }

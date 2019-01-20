@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".SplashScreen">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:contentDescription="@null"
         android:src="@mipmap/splash_img"/>
 
@@ -24,9 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="49dp"
-        android:text="Loading..."
+        android:text="Please wait...."
         android:textAlignment="center"
-        android:textColor="@android:color/black"
+
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         android:textStyle="bold" />
 

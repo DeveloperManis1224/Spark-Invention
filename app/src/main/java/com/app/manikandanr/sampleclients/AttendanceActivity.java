@@ -46,7 +46,6 @@ public class AttendanceActivity extends AppCompatActivity {
     public static RecyclerView listViewStudent;
     private Spinner countrySpinner, stateSpinner, citySpinner,typeYear, categorySpinner, institutionTypeSpinner,
     courseSpinner, yearSpinner, organizationSpinner, categoryCourseSpinner;
-
     int countryPosition, statePosition, cityPosition, categoryPosition, institutionPosition,
             coursePosition, yearPosition ,organizationPosition;
 

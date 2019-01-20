@@ -604,7 +604,7 @@ public class MarketingAdmission extends AppCompatActivity {
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("countries");
 
-                            for (int i = 0; i <= jary.length(); i++) {
+                            for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj11 = jary.getJSONObject(i);
                                 String cuntry = jobj11.getString("country");
                                 String id = jobj11.getString("id");

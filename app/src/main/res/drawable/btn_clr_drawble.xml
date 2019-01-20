@@ -4,6 +4,6 @@
     android:shape="rectangle">
 
     <corners android:radius="29dp" />
-    <solid android:color="#ff7878" />
+    <solid android:color="@color/colorPrimaryDark" />
 
 </shape>

@@ -3,25 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="10dp"
-    android:gravity="center"
-    android:background="#f5f5f5"
-    tools:context=".MenuActivity">
+    tools:context=".AddItems">
 
-
-    //Header
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
+        android:background="#f9f5f5"
         android:gravity="center"
-        android:elevation="2dp"
-        android:paddingBottom="20dp"
-        android:background="#fff"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="2dp"
+        android:paddingRight="15dp"
+        tools:context=".MenuActivity">
 
         <TextView
             android:layout_width="match_parent"
@@ -29,8 +24,11 @@
             android:fontFamily="@font/poppinsmedium"
             android:gravity="center"
             android:padding="10dp"
-            android:textSize="18sp"
-            android:text="Menu" />
+            android:text="Menu"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
 
         //1st row
 
@@ -41,28 +39,56 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="5dp">
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:id="@+id/btn_admission"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/menu_button_border"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="Admission" />
 
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/btn_marketing"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/menu_button_border"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="Marketing" />
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#4787DF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardMaxElevation="5dp">
+
+                <Button
+
+                    android:id="@+id/btn_admission"
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+
+                    android:background="@null"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/ic_add"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:padding="20dp"
+                    android:text="Admission"
+                    android:textColor="@color/white" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="#45AFDC"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardMaxElevation="5dp">
+
+                <Button
+                    android:id="@+id/btn_marketing"
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@null"
+                    android:drawableTop="@drawable/ic_market"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:padding="20dp"
+                    android:text="Marketing"
+                    android:textColor="@color/white" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
         //2nd row
@@ -74,27 +100,53 @@
             android:orientation="horizontal"
             android:padding="5dp">
 
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="2dp"
-                android:id="@+id/btn_attendance"
-                android:background="@drawable/menu_button_border"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="Attendance" />
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#54BD9A"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardMaxElevation="5dp">
 
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/btn_revenue"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/menu_button_border"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="Revenue" />
+                <Button
+                    android:id="@+id/btn_attendance"
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@null"
+                    android:drawableTop="@drawable/ic_attendance"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:padding="20dp"
+                    android:singleLine="true"
+                    android:text="Attendance"
+                    android:textColor="@color/white" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="#F7BC44"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardMaxElevation="5dp">
+
+                <Button
+                    android:id="@+id/btn_revenue"
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@null"
+                    android:drawableTop="@drawable/ic_revenue"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:padding="20dp"
+                    android:text="Revenue"
+                    android:textColor="@color/white" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
         3rd row
@@ -102,21 +154,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="10dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginRight="2dp"
-                android:id="@+id/btn_store"
-                android:background="@drawable/menu_button_border"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="More" />
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#9677DE"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardMaxElevation="5dp">
+
+                <Button
+                    android:id="@+id/btn_store"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:background="@null"
+                    android:drawableTop="@drawable/ic_more"
+                    android:fontFamily="@font/poppinsmedium"
+
+                    android:padding="20dp"
+                    android:text="More"
+                    android:textColor="@color/white" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
+
 
     </LinearLayout>
 
@@ -124,14 +189,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:background="@color/colorPrimary"
         android:fontFamily="@font/poppinsmedium"
+        android:gravity="center"
+        android:padding="5dp"
         android:text="Powered by SB Technologies."
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark" />
-
-
-
+        android:textColor="@color/clr_white"
+        android:textSize="12dp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

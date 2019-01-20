@@ -32,17 +32,28 @@
         android:textColor="#454444"
         android:textSize="16sp" />
 
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Register Number"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:id="@+id/edt_reg_number"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:background="@drawable/edt_border"-->
+        <!--android:padding="7dp"/>-->
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Register Number"
-        android:layout_marginTop="20dp"
         android:id="@+id/edt_reg_number"
-        android:textAllCaps="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:inputType="textCapCharacters"
+        android:padding="7dp"
+        android:hint="Register Number"
         android:background="@drawable/edt_border"
-        android:padding="7dp"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <Button
         android:layout_width="match_parent"

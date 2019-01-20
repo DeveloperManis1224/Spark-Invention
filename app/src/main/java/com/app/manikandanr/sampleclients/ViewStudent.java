@@ -116,18 +116,8 @@ public class ViewStudent extends AppCompatActivity {
             }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent n = new Intent(ViewStudent.this,StudentScanner.class);
-        startActivity(n);
-        finish();
     }
 }
