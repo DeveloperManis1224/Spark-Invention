@@ -590,6 +590,9 @@ if(isValid())
     }
 
     private void getStudentList() {
+        Log.e("SASASASASASSSSSS",categoryCourseIdList.get(coursePosition)+"||"
+                +organizationIdList.get(organizationPosition)+
+                "||"+yearOrStandard);
         Log.e("SASASASA",categoryCourseIdList.get(coursePosition)+"///"+yearOrStandard+"///"+organizationIdList.get(organizationPosition));
         stateIdList.clear();
         pd.show();
@@ -678,8 +681,8 @@ if(isValid())
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+
                 params.put("course_id",categoryCourseIdList.get(coursePosition));
-               // params.put("department_id",yearOrStandard);
                 params.put("organization_id",""+organizationIdList.get(organizationPosition));
                 params.put("department_id",yearOrStandard);
 

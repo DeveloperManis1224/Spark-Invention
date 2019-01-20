@@ -43,13 +43,8 @@ public class ViewStudent extends AppCompatActivity {
         mOtherInfo = findViewById(R.id.txt_other_info);
         btnPayEmi = findViewById(R.id.btn_pay_emi);
 
-        StringBuilder details=new StringBuilder("Country : India\n");
-//        details.append("State : "+data.getState().getState()+"\n");
-//        details.append("City : "+data.getCity().getCity()+"\n");
-        details.append("Address : "+data.getAddress()+"\n");
+        StringBuilder details=new StringBuilder();
         details.append("Department : "+data.getDepartmentId()+"\n");
-       // details.append("City : "+data.getCity().getCity()+"\n");
-       // details.append("Course : "+data.getCourse().getCourse()+"\n");
         details.append("Balance Amount : "+data.getBalanceAmount()+"\n");
         details.append("Calc Amount : "+data.getCalcAmount()+"\n");
         details.append("Org Discount Amount : "+data.getOrgDiscount()+"\n");
@@ -57,7 +52,6 @@ public class ViewStudent extends AppCompatActivity {
         details.append("Overall Discount : "+data.getOverallDiscount()+"\n");
         details.append("Payment Status : "+data.getPaymentStatus()+"\n");
         details.append("Last Payment Date : "+data.getLastPaymentDate()+"\n");
-
 
         mBasicInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_BASIC_INFO)+""+details);
         mOtherInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_OTHER_INFO));

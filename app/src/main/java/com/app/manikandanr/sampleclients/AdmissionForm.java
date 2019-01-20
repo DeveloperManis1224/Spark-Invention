@@ -51,7 +51,7 @@ public class AdmissionForm extends AppCompatActivity {
     int state_pos = 0;
     int city_pos = 0;
     int course_pos = 0;
-    int category_pos = 0;
+
     int cost_pos = 0;
     int cat_pos = 0;
     String BalanceAmount ="";
@@ -120,7 +120,8 @@ public class AdmissionForm extends AppCompatActivity {
             edtdepartmentYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    departmentId = ""+i;
+                    departmentId = ""+(i+1);
+                    Log.e("DEPARTMENT_ID",""+departmentId);
                 }
 
                 @Override
@@ -137,7 +138,8 @@ public class AdmissionForm extends AppCompatActivity {
             edtdepartmentYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    departmentId = ""+i;
+                    departmentId = ""+(i+1);
+                    Log.e("DEPARTMENT_ID",""+departmentId);
                 }
 
                 @Override
@@ -153,6 +155,8 @@ public class AdmissionForm extends AppCompatActivity {
 //                    android.R.layout.simple_spinner_dropdown_item,departmentList));
             edtdepartmentYear.setVisibility(View.GONE);
         }
+
+        Log.e("DEPARTMENT_ID",""+departmentId);
         pd = new ProgressDialog(AdmissionForm.this);
 
         offerDetails_join.append("Applied Offer! \n");
@@ -250,6 +254,7 @@ public class AdmissionForm extends AppCompatActivity {
                 {
                     getCategoryCourse(categoryIdList.get(i));
                     cat_pos = i;
+
                 }
             }
             @Override
@@ -720,7 +725,7 @@ try {
                 params.put("alert_date", alertDate);
                 params.put("join_status", "1");
                 params.put("role", userRollNo);
-                params.put("category_id",categoryIdList.get(category_pos));
+                params.put("category_id",categoryIdList.get(cat_pos));
                 params.put("org_discount_type",""+org_dis_type);
                 params.put("org_discount",""+org_dis);
                 params.put("course_discount_type",""+course_dis_type);
@@ -805,7 +810,7 @@ try {
                 params.put("department_id",departmentId);
                 params.put("join_status", "2");
                 params.put("role", userRollNo);
-                params.put("category_id",categoryIdList.get(category_pos));
+                params.put("category_id",categoryIdList.get(cat_pos));
                 params.put("org_discount_type",""+org_dis_type);
                 params.put("org_discount",""+org_dis);
                 params.put("course_discount_type",""+course_dis_type);
@@ -948,29 +953,29 @@ try {
                                 course_dis_type = courseOfferType;
                                 course_dis = courseOffer;
                                 Double balAmount =0.0;
+                                double balance;
+                                double orgbalance =0.0;
+                                double coursebalance = 0.0;
                                if(!courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
                                 {
                                     String type = "Rs";
                                     if(courseOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
                                         type = "%";
-                                        balAmount = (Double.valueOf(courseOffer)/100.f) * Double.valueOf(courseAmount);
-                                        //balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseAmount)* Double.valueOf(courseOffer)/100 ;
+                                        balAmount = (Double.valueOf(courseOffer) / 100.f) * Double.valueOf(courseAmount);
                                         offerDetails_join.append("" + courseName + "    " + courseOffer + "" + type + "\n");
-
-                                        //amounttotal = amount*18/100;
                                     }
                                     else {
                                         balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseOffer);
                                         offerDetails_join.append("" + courseName + "    " + type + "" + courseOffer + "\n");
                                     }
                                 }
+                                coursebalance = balAmount;
                                 if(!OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
                                 {
                                     String type = "Rs";
                                     if(OrgOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
                                         type = "%";
                                         balAmount = (Double.valueOf(OrgOffer)/100.f) * Double.valueOf(orgAmount);
-                                       // balAmount = balAmount * Double.valueOf(OrgOffer) / 100;
                                         offerDetails_join.append(""+OrgName+"      "+OrgOffer+" "+type+"\n");
                                     }
                                     else {
@@ -979,17 +984,21 @@ try {
                                     }
 
                                 }
+                                orgbalance = balAmount;
                                 if(OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE)&&
                                         courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
                                 {
                                     offerDetails_join.append("Sorry, Currently no offers");
                                     balAmount =0.0;
-                                    //Toast.makeText(AdmissionForm.this, "Sorry, Currently no offers", Toast.LENGTH_SHORT).show();
+                                    orgbalance = 0.0;
+                                    coursebalance = 0.0;
                                 }
 
-                               offerAvailable.setText(""+offerDetails_join+"\n \nAmount Payable : Rs "+balAmount);
+                                Log.e("BALANCE_CECEC",orgbalance+"////"+coursebalance);
+                                balance =Double.valueOf(courseAmount) - ( orgbalance + coursebalance) ;
+                               offerAvailable.setText(""+offerDetails_join+"\n \nAmount Payable : Rs "+balance );
                                offerAvailable.setVisibility(View.VISIBLE);
-                               BalanceAmount = String.valueOf(balAmount);
+                               BalanceAmount = String.valueOf(balance);
                             }
                             else
                             {
