@@ -10,7 +10,7 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:fontFamily="@font/poppinsmedium"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
@@ -38,6 +38,7 @@
         android:hint="Enter Register Number"
         android:layout_marginTop="20dp"
         android:id="@+id/edt_reg_number"
+        android:textAllCaps="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/edt_border"
@@ -45,7 +46,7 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:fontFamily="@font/poppinsmedium"
         android:textColor="@android:color/white"
         android:textAllCaps="false"

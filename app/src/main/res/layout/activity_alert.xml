@@ -37,9 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:padding="10dp"
+            android:padding="5dp"
+            android:fontFamily="@font/poppinsmedium"
             android:textStyle="bold"
-            android:textColor="#020202"
+            android:textColor="#484848"
             android:text="Students"/>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -54,11 +55,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppinsmedium"
                 android:textStyle="bold"
-                android:textColor="#020202"
-                android:text="Colleges"/>
+                android:textColor="#484848"
+                android:text="Marketing"/>
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

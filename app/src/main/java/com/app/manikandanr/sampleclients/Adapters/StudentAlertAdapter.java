@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,9 +54,9 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
     @Override
     public void onBindViewHolder(final StudentAlertAdapter.MyViewHolder holder, final int position) {
         try {
-                holder.studentName.setText("Name : "+obj_arr.get(position).getStudentName());
+                holder.studentName.setText(""+obj_arr.get(position).getStudentName());
                 holder.studentPhone.setText(obj_arr.get(position).getStudentPhone());
-                holder.studentEmail.setText(""+obj_arr.get(position).getStudentEmail());
+                holder.studentEmail.setText(obj_arr.get(position).getStudentEmail());
                 holder.studentDate.setText("Alert Date : "+obj_arr.get(position).getStudentDate());
                 holder.imgCall.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -75,14 +76,20 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
                             final View layout11 = inflater.inflate(R.layout.dialog_student_info,
                                     (ViewGroup) holder.lyt_students.findViewById(R.id.layout_root));
                             final TextView txtStudentInfo = layout11.findViewById(R.id.student_info);
-                            txtStudentInfo.setText("Name :"+obj_arr.get(position).getStudentName()+",\n"+
-                                    "Date of Birth :"+obj_arr.get(position).getStudentDob()+",\n"+
-                                    "Phone :"+obj_arr.get(position).getStudentPhone()+",\n"+
-                                    "Email :"+obj_arr.get(position).getStudentEmail()+",\n"+
-                                    "Serial Number :"+obj_arr.get(position).getStudentSerialNumber()+",\n"+
-                                    "Category :"+obj_arr.get(position).getStudentCategory()+",\n"+
-                                    "Organization :"+obj_arr.get(position).getStudentOrganization()+",\n"+
-                                    "Address :"+obj_arr.get(position).getStudentAddress()+".");
+                        final TextView header = layout11.findViewById(R.id.header);
+                        header.setText("Student Details");
+
+                        String styledText ="Name :"+obj_arr.get(position).getStudentName()+",<br>"+
+                                "Date of Birth :"+obj_arr.get(position).getStudentDob()+",<br>"+
+                                "Phone :"+obj_arr.get(position).getStudentPhone()+",<br>"+
+                                "Email :"+obj_arr.get(position).getStudentEmail()+",<br>"+
+                                "Serial Number :"+obj_arr.get(position).getStudentSerialNumber()+",<br>"+
+                                "Category :"+obj_arr.get(position).getStudentCategory()+",<br>"+
+                                "Organization :"+obj_arr.get(position).getStudentOrganization()+",<br>"+
+                                "<font color='red'>Date :"+obj_arr.get(position).getStudentDate()+",<br></font>"+
+                                "<font color='red'>Type :"+obj_arr.get(position).getStudentInstitutionType()+",<br></font>"+
+                                "Address :"+obj_arr.get(position).getStudentAddress()+".";
+                                txtStudentInfo.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
                             final AlertDialog.Builder builder = new AlertDialog.Builder(holder.lyt_students.getContext());
                             builder.setView(layout11);
                             builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {

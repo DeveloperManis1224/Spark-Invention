@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -484,20 +486,20 @@ public class MarketingAdmission extends AppCompatActivity {
 
     }
 
-//    private float distanceBetween(LatLng latLng1, LatLng latLng2) {
-//
-//        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
-//        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
-//
-//        loc1.setLatitude(latLng1.latitude);
-//        loc1.setLongitude(latLng1.longitude);
-//
-//        loc2.setLatitude(latLng2.latitude);
-//        loc2.setLongitude(latLng2.longitude);
-//
-//
-//        return loc1.distanceTo(loc2);
-//    }
+    private float distanceBetween(LatLng latLng1, LatLng latLng2) {
+
+        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+
+        loc1.setLatitude(latLng1.latitude);
+        loc1.setLongitude(latLng1.longitude);
+
+        loc2.setLatitude(latLng2.latitude);
+        loc2.setLongitude(latLng2.longitude);
+
+
+        return loc1.distanceTo(loc2);
+    }
 
     private void getCity(final String stateId) {
         cityList.clear();
@@ -637,7 +639,6 @@ public class MarketingAdmission extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
     private void getEvents() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -671,95 +672,8 @@ public class MarketingAdmission extends AppCompatActivity {
         }) ;
         queue.add(stringRequest);
     }
-//    private void getCity() {
-//        cityList.clear();
-//        cityIdList.clear();
-//        cityIdList.add("0");
-//        cityList.add("Select City");
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "http://spark.candyrestaurant.com/api/city";
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jobj = new JSONObject(response);
-//                            JSONArray jary = jobj.getJSONArray("cities");
-//                            for (int i = 1; i <= jary.length(); i++) {
-//                                JSONObject jobj1 = jary.getJSONObject(i);
-//                                cityList.add(jobj1.getString("city"));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                                (MarketingAdmission.this, android.R.layout.select_dialog_item, cityList);
-//                        aeCity.setThreshold(1);
-//                        aeCity.setAdapter(adapter);
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("state_id", "22");
-//                return params;
-//            }
-//        };
-//        queue.add(stringRequest);
-//    }
-//
-//    private void getState() {
-//        stateIdList.clear();
-//        stateList.clear();
-//        stateList.add("Select State");
-//        stateIdList.add("0");
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "http://spark.candyrestaurant.com/api/state";
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jobj = new JSONObject(response);
-//                            JSONArray jary = jobj.getJSONArray("states");
-//                            for (int i = 1; i <= jary.length(); i++) {
-//                                JSONObject jobj1 = jary.getJSONObject(i);
-//                                stateList.add(jobj1.getString("state"));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                                (MarketingAdmission.this, android.R.layout.select_dialog_item, stateList);
-//                        aeState.setThreshold(1);
-//                        aeState.setAdapter(adapter);
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("country_id", "1");
-//                return params;
-//            }
-//        };
-//        queue.add(stringRequest);
-//    }
 
-    private double getDistance()
-    {
+    private double getDistance() {
 //        LatLng latLngA = new LatLng(12.3456789,98.7654321);
 //        LatLng latLngB = new LatLng(98.7654321,12.3456789);
 

@@ -10,8 +10,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textStyle="bold"
+        android:id="@+id/header"
         android:textSize="18sp"
         android:padding="10dp"
+        android:fontFamily="@font/poppinsmedium"
         android:textColor="@color/colorPrimary"
         android:text="Student Information"/>
     <View
@@ -22,11 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="student info"
-        android:textColor="#333333"
-        android:textStyle="bold"
-        android:textSize="18sp"
+        android:textColor="#3b3b3b"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppinsmedium"
         android:padding="10dp"
         android:id="@+id/student_info"/>
+
+
 
 
 

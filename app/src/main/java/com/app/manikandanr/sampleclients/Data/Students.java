@@ -1,12 +1,15 @@
 
 package com.app.manikandanr.sampleclients.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Students {
+public class Students implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -116,6 +119,97 @@ public class Students {
     @SerializedName("country")
     @Expose
     private Country country;
+
+    protected Students(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        serialNo = in.readString();
+        name = in.readString();
+        dob = in.readString();
+        instituationId = in.readString();
+        organizationId = in.readString();
+        categoryId = in.readString();
+        phone = in.readString();
+        email = in.readString();
+        countryId = in.readString();
+        stateId = in.readString();
+        cityId = in.readString();
+        address = in.readString();
+        courseId = in.readString();
+        role = in.readString();
+        joinStatus = in.readString();
+        orgDiscountType = in.readString();
+        orgDiscount = in.readString();
+        courseDiscountType = in.readString();
+        courseDiscount = in.readString();
+        overallDiscount = in.readString();
+        calcAmount = in.readString();
+        status = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        departmentId = in.readString();
+        paymentStatus = in.readString();
+        lastPaymentDate = in.readString();
+        balanceAmount = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(serialNo);
+        dest.writeString(name);
+        dest.writeString(dob);
+        dest.writeString(instituationId);
+        dest.writeString(organizationId);
+        dest.writeString(categoryId);
+        dest.writeString(phone);
+        dest.writeString(email);
+        dest.writeString(countryId);
+        dest.writeString(stateId);
+        dest.writeString(cityId);
+        dest.writeString(address);
+        dest.writeString(courseId);
+        dest.writeString(role);
+        dest.writeString(joinStatus);
+        dest.writeString(orgDiscountType);
+        dest.writeString(orgDiscount);
+        dest.writeString(courseDiscountType);
+        dest.writeString(courseDiscount);
+        dest.writeString(overallDiscount);
+        dest.writeString(calcAmount);
+        dest.writeString(status);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(departmentId);
+        dest.writeString(paymentStatus);
+        dest.writeString(lastPaymentDate);
+        dest.writeString(balanceAmount);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Students> CREATOR = new Creator<Students>() {
+        @Override
+        public Students createFromParcel(Parcel in) {
+            return new Students(in);
+        }
+
+        @Override
+        public Students[] newArray(int size) {
+            return new Students[size];
+        }
+    };
 
     public Integer getId() {
         return id;

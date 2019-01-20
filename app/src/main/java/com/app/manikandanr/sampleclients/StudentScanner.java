@@ -1,5 +1,6 @@
 package com.app.manikandanr.sampleclients;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +59,10 @@ public class StudentScanner extends AppCompatActivity {
     }
 
     private void getStudentInformation() {
+        final ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setTitle("Wait");
+        progressDialog.setMessage("Please wait.......");
+        progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/emi";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -69,32 +74,40 @@ public class StudentScanner extends AppCompatActivity {
                             Gson gson = new Gson();
                             StudentData studentData = gson.fromJson(response,StudentData.class);
                             StringBuilder basicData = new StringBuilder();
-                            basicData.append(studentData.getStudents().getName()+"\n");
-                            basicData.append(studentData.getStudents().getPhone()+"\n");
-                            basicData.append(studentData.getStudents().getEmail()+"\n");
-                            basicData.append(studentData.getStudents().getAddress()+"\n");
-                            basicData.append(studentData.getStudents().getSerialNo()+"\n");
-
+                            basicData.append("Register No: "+studentData.getStudents().getSerialNo()+"\n");
+                            basicData.append("Name : "+studentData.getStudents().getName()+"\n");
+                            basicData.append("Phone No : "+studentData.getStudents().getPhone()+"\n");
+                            basicData.append("Email : "+studentData.getStudents().getEmail()+"\n");
+                            basicData.append("Country : "+studentData.getStudents().getCountry().getCountry()+"\n");
+                            basicData.append("State : "+studentData.getStudents().getState().getState()+"\n");
+                            basicData.append("City : "+studentData.getStudents().getCity().getCity()+"\n");
+                            basicData.append("Category : "+studentData.getStudents().getCategoryId()+"\n");
+                            basicData.append("Course : "+studentData.getStudents().getCourse().getCourse()+"\n");
+                            basicData.append("Type : "+studentData.getStudents().getRole()+"\n");
+                            basicData.append("Organization : "+studentData.getStudents().getOrganizationId()+"\n");
+                            basicData.append("Address : "+studentData.getStudents().getAddress()+"\n");
                             StringBuilder otherData = new StringBuilder();
-                            otherData.append(studentData.getStudents().getCourse().getCourse()+"\n");
-                            otherData.append(studentData.getStudents().getOrganizationId());
+//                            otherData.append(studentData.getStudents().getCourse().getCourse()+"\n");
+//                            otherData.append(studentData.getStudents().getOrganizationId());
 
                             Intent n = new Intent(StudentScanner.this,ViewStudent.class);
                             n.putExtra(Constants.STUDENT_BASIC_INFO,""+basicData);
                             n.putExtra(Constants.STUDENT_OTHER_INFO,""+otherData);
-
                             n.putExtra(Constants.STUDENT_PAYMENT_STATUS,"1");
+                            n.putExtra("Students",studentData.getStudents());
                             startActivity(n);
                         } catch (Exception e) {
                             Log.v("TTTTTTTTTTT",""+ e.getMessage());
                             e.printStackTrace();
                         }
 
+                        progressDialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(StudentScanner.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(StudentScanner.this, "Unable to connect server" + error, Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         })
         {

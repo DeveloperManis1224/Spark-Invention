@@ -2,6 +2,8 @@ package com.app.manikandanr.sampleclients;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.security.Permission;
 import java.security.Permissions;
@@ -34,12 +37,47 @@ import java.security.Permissions;
 public class MenuActivity extends AppCompatActivity {
 
     private Button bAdmission,bMarketing,bAttendance,bRevenue,bMore;
-    String[] perms = {"android.permission.FINE_LOCATION","android.permission.CALL_PHONE","android.permission.ACCESS_COARSE_LOCATION", "android.permission.CAMERA"};
+    String[] perms = {"android.permission.FINE_LOCATION",
+            "android.permission.CALL_PHONE",
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.CAMERA"};
     int permsRequestCode = 200;
+
+    private float distanceBetween(LatLng latLng1, LatLng latLng2) {
+        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+        loc1.setLatitude(latLng1.latitude);
+        loc1.setLongitude(latLng1.longitude);
+        loc2.setLatitude(latLng2.latitude);
+        loc2.setLongitude(latLng2.longitude);
+        return loc1.distanceTo(loc2);
+    }
+
+
+    public double distance (double lat_a, double lng_a, double lat_b, double lng_b )
+    {
+        double earthRadius = 3958.75;
+        double latDiff = Math.toRadians(lat_b-lat_a);
+        double lngDiff = Math.toRadians(lng_b-lng_a);
+        double a = Math.sin(latDiff /2) * Math.sin(latDiff /2) +
+                Math.cos(Math.toRadians(lat_a)) * Math.cos(Math.toRadians(lat_b)) *
+                        Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double distance = earthRadius * c;
+
+        int meterConversion = 1609;
+
+        return new Float(distance * meterConversion).floatValue();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        distanceBetween(new LatLng(13.064884,80.22537),new LatLng(13.056807,80.255341));
+
+        distance(13.064884,80.22537,13.056807,80.255341);
+        Log.e("Distance between :","sdgsdg "+distanceBetween(new LatLng(13.064884,80.22537),new LatLng(13.056807,80.255341)));
+        Log.e("Distance between :","distance "+distance(13.064884,80.22537,13.056807,80.255341));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(perms, permsRequestCode);
         }

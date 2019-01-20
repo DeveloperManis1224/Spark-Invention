@@ -19,12 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Data.Students;
 import com.app.manikandanr.sampleclients.Utils.Constants;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,11 +36,30 @@ public class ViewStudent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_student);
 
+        //Receive Data
+        Students data=getIntent().getExtras().getParcelable("Students");
+
         mBasicInfo = findViewById(R.id.txt_basic_info);
         mOtherInfo = findViewById(R.id.txt_other_info);
         btnPayEmi = findViewById(R.id.btn_pay_emi);
 
-        mBasicInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_BASIC_INFO));
+        StringBuilder details=new StringBuilder("Country : India\n");
+//        details.append("State : "+data.getState().getState()+"\n");
+//        details.append("City : "+data.getCity().getCity()+"\n");
+        details.append("Address : "+data.getAddress()+"\n");
+        details.append("Department : "+data.getDepartmentId()+"\n");
+       // details.append("City : "+data.getCity().getCity()+"\n");
+       // details.append("Course : "+data.getCourse().getCourse()+"\n");
+        details.append("Balance Amount : "+data.getBalanceAmount()+"\n");
+        details.append("Calc Amount : "+data.getCalcAmount()+"\n");
+        details.append("Org Discount Amount : "+data.getOrgDiscount()+"\n");
+        details.append("Org Discount Type : "+data.getOrgDiscountType()+"\n");
+        details.append("Overall Discount : "+data.getOverallDiscount()+"\n");
+        details.append("Payment Status : "+data.getPaymentStatus()+"\n");
+        details.append("Last Payment Date : "+data.getLastPaymentDate()+"\n");
+
+
+        mBasicInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_BASIC_INFO)+""+details);
         mOtherInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_OTHER_INFO));
 
         String paidStatus = getIntent().getExtras().getString(Constants.STUDENT_PAYMENT_STATUS);
