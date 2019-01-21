@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "641083915355",
+    "firebase_url": "https://spark-invention.firebaseio.com",
+    "project_id": "spark-invention",
+    "storage_bucket": "spark-invention.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641083915355:android:5777ae8dba60e5e0",
+        "android_client_info": {
+          "package_name": "com.app.manikandanr.sampleclients"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641083915355-9606nhr5480pco1kqr36e7060fdc7rn2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.manikandanr.sampleclients",
+            "certificate_hash": "fcbfb683aaa36d8b68504524f2e7e3d53b3756f8"
+          }
+        },
+        {
+          "client_id": "641083915355-j7q6rcvnavm8tihbjbub0cndju89k6h0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsB7pWv03YDZYuQ6WuzrkYgfqCV3PYek0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641083915355-j7q6rcvnavm8tihbjbub0cndju89k6h0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

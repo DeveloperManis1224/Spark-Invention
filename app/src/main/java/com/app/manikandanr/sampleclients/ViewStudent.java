@@ -35,7 +35,6 @@ public class ViewStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_student);
-
         //Receive Data
         Students data=getIntent().getExtras().getParcelable("Students");
 

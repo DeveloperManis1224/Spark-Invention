@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Adapters.StudentAttendanceAdapter;
 import com.app.manikandanr.sampleclients.Data.AttendanceData;
+import com.app.manikandanr.sampleclients.Data.StudentAlertData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
@@ -42,6 +43,7 @@ import java.util.Map;
 public class AttendanceActivity extends AppCompatActivity {
     ProgressDialog pd;
     public static StringBuilder studentBuilder = new StringBuilder();
+    public static StringBuilder studentRegnumbers = new StringBuilder();
     public static ArrayList<String> studentPresentList = new ArrayList<>();
     public static RecyclerView listViewStudent;
     private Spinner countrySpinner, stateSpinner, citySpinner,typeYear, categorySpinner, institutionTypeSpinner,
@@ -49,7 +51,7 @@ public class AttendanceActivity extends AppCompatActivity {
     int countryPosition, statePosition, cityPosition, categoryPosition, institutionPosition,
             coursePosition, yearPosition ,organizationPosition;
 
-    ArrayList<AttendanceData> studentList = new ArrayList<>();
+    ArrayList<StudentAlertData> studentList = new ArrayList<>();
     ArrayList<String> studentIdList = new ArrayList<>();
 
     ArrayList<String> countrySpinnerList = new ArrayList<>();
@@ -94,8 +96,24 @@ public class AttendanceActivity extends AppCompatActivity {
         //institutionTypeSpinner = layout11.findViewById(R.id.at_spin_institution_type);
         courseSpinner = layout11.findViewById(R.id.at_spin_course);
 
-        courseSpinner = layout11.findViewById(R.id.at_spin_course);
+       // courseSpinner = layout11.findViewById(R.id.at_spin_course);
         organizationSpinner = layout11.findViewById(R.id.at_spin_organization);
+//
+//        stateSpinnerList.add("Select State");
+//        citySpinnerList.add("Select City");
+//       // categorySpinnerList.add("Select Category");
+//        categoryCourseSpinnerList.add("Select Course");
+//        organizationSpinnerList.add("Select Organization");
+//
+//
+//        stateSpinner.setAdapter(new ArrayAdapter<String>
+//                (AttendanceActivity.this, android.R.layout.simple_spinner_dropdown_item, stateSpinnerList));
+//        citySpinner.setAdapter(new ArrayAdapter<String>
+//                (AttendanceActivity.this, android.R.layout.simple_spinner_dropdown_item, citySpinnerList));
+//        courseSpinner.setAdapter(new ArrayAdapter<String>
+//                (AttendanceActivity.this, android.R.layout.simple_spinner_dropdown_item, categoryCourseSpinnerList));
+//        organizationSpinner.setAdapter(new ArrayAdapter<String>
+//                (AttendanceActivity.this, android.R.layout.simple_spinner_dropdown_item, organizationSpinnerList));
 
 
         if(getIntent().getExtras().getString(Constants.USER_ROLE).equalsIgnoreCase(Constants.USER_TYPE_SCHOOL))
@@ -196,7 +214,7 @@ if(isValid())
                    statePosition = i;
                }
 
-               Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
+              // Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
            }
 
            @Override
@@ -225,7 +243,7 @@ if(isValid())
                    }
                    getOrganization(cityIdList.get(i),role);
                    cityPosition = i;
-                   Log.e("SSSSSSSSSS",""+cityIdList.get(i));
+                  // Log.e("SSSSSSSSSS",""+cityIdList.get(i));
                }
            }
 
@@ -304,7 +322,6 @@ if(isValid())
            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                if(!categorySpinner.getSelectedItem().toString().equalsIgnoreCase("Select Course"))
                {
-
                    coursePosition = i;
                }
            }
@@ -314,6 +331,7 @@ if(isValid())
 
            }
        });
+
 
     }
 
@@ -643,20 +661,76 @@ if(isValid())
                                             })
                                             .show();
                                 } else {
-                                    for (int i = 0; i < studentArray.length(); i++) {
-                                        JSONObject attendanceInfo = studentArray.getJSONObject(i);
-                                        String id = attendanceInfo.getString("id");
-                                        String studentId = attendanceInfo.getString("student_id");
-                                        String attendance_status = attendanceInfo.getString("attendance_status");
-                                        JSONObject studentInfo = attendanceInfo.getJSONObject("student");
-                                        String studentRegNumber = studentInfo.getString("serial_no");
-                                        String studentName = studentInfo.getString("name");
-                                        //String studentPymentStatus = studentInfo.getString("payment_info");
-                                        String isPresent = "0";
-                                        studentList.add(new AttendanceData(studentName, studentRegNumber, "", "", isPresent, id, studentId));
+                                    String studentId = "";
+                                    String studentDate = "";
+                                    String studentSerialNumber = "";
+                                    String studentName = "";
+                                    String studentDob = "";
+                                    String studentInstitutionType = "";
+                                    String studentCategory = "";
+                                    String studentOrganization = "";
+                                    String studentPhone = "";
+                                    String studentEmail = "";
+                                    String studentAddress = null;
+                                    String studentCourse = null;
+                                    String studentPaymentStatus= null;
+                                    String studentAttendanceStatus = null;
+                                    String studentLastPaymentStatus = null;
+                                    String studentBalanceAmount = null;
+
+
+                                    for(int i = 0; i< studentArray.length(); i++)
+                                    {
+                                        JSONObject studentObj = studentArray.getJSONObject(i);
+                                        studentId = studentObj.getString("student_id");
+                                        studentAttendanceStatus = studentObj.getString("attendance_status");
+//                                        studentDate = studentObj.getString("date");
+                                        //studentAttendanceStatus = studentDataObject.getString("");
+                                        studentDate="";
+                                        JSONObject studentDataObject = studentObj.getJSONObject("student");
+
+                                        studentSerialNumber = studentDataObject.getString("serial_no");
+                                        studentName = studentDataObject.getString("name");
+                                        studentDob = studentDataObject.getString("dob");
+                                        studentInstitutionType = studentDataObject.getString("instituation_id");
+                                        studentCategory = studentDataObject.getJSONObject("category").getString("category");
+                                        studentOrganization = studentDataObject.getString("organization_id");
+                                        studentPhone = studentDataObject.getString("phone");
+                                        studentEmail = studentDataObject.getString("email");
+                                        studentAddress = studentDataObject.getString("address")+
+                                                ", "+studentDataObject.getJSONObject("city").getString("city")+", "
+                                                +studentDataObject.getJSONObject("state").getString("state")+", "
+                                                +studentDataObject.getJSONObject("country").getString("country");
+                                        studentCourse = ""+studentDataObject.getJSONObject("course").getString("course");
+                                        studentPaymentStatus = studentDataObject.getString("payment_status");
+                                        studentLastPaymentStatus = studentDataObject.getString("last_payment_date");
+                                        studentBalanceAmount = studentDataObject.getString("balance_amount");
+
+
+                                        studentList.add(new StudentAlertData(studentId,studentDate,
+                                                studentSerialNumber,studentName,studentDob,
+                                                studentInstitutionType, studentCategory,
+                                                studentOrganization,studentPhone,studentEmail,
+                                                studentAddress,studentCourse,studentPaymentStatus,
+                                                studentAttendanceStatus,studentLastPaymentStatus,studentBalanceAmount));
                                         StudentAttendanceAdapter dadAdapter = new StudentAttendanceAdapter(studentList);
                                         listViewStudent.setAdapter(dadAdapter);
                                     }
+//                                    for (int i = 0; i < studentArray.length(); i++) {
+//                                        JSONObject attendanceInfo = studentArray.getJSONObject(i);
+//                                        String id = attendanceInfo.getString("id");
+//                                        String studentId = attendanceInfo.getString("student_id");
+//                                        String attendance_status = attendanceInfo.getString("attendance_status");
+//                                        JSONObject studentInfo = attendanceInfo.getJSONObject("student");
+//                                        String studentRegNumber = studentInfo.getString("serial_no");
+//                                        String studentName = studentInfo.getString("name");
+//                                        //last_payment_date   //payment_status   //
+//                                        //String studentPymentStatus = studentInfo.getString("payment_info");
+//                                        String isPresent = "0";
+//                                        studentList.add(new AttendanceData(studentName, studentRegNumber, "", "", isPresent, id, studentId));
+//                                        StudentAttendanceAdapter dadAdapter = new StudentAttendanceAdapter(studentList);
+//                                        listViewStudent.setAdapter(dadAdapter);
+//                                    }
                                 }
                             }
                             else if (status.equalsIgnoreCase(Constants.RESPONSE_FAILED)) {
@@ -713,7 +787,7 @@ if(isValid())
                             {
                                 new AwesomeSuccessDialog(AttendanceActivity.this)
                                         .setTitle("Attendance submitted successfully.")
-                                        .setMessage(""+studentBuilder)
+                                        .setMessage(""+studentRegnumbers)
                                         .setColoredCircle(R.color.colorPrimary)
                                         .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
                                         .setCancelable(true)

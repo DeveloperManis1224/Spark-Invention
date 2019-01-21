@@ -14,6 +14,36 @@ public class StudentAlertData {
     private String studentAddress;
     private String studentCourse;
 
+    private String studentPaymentStatus;
+    private String studentAttendanceStatus;
+    private String studentLastPaymentDate;
+    private String balanceAmount;
+
+
+    public StudentAlertData(String studentId, String studentDate, String studentSerialNumber,
+                            String studentName, String studentDob, String studentInstitutionType,
+                            String studentCategory, String studentOrganization, String studentPhone,
+                            String studentEmail, String studentAddress, String studentCourse,
+                            String studentPaymentStatus, String studentAttendanceStatus,
+                            String studentLastPaymentDate, String balanceAmount) {
+        this.studentId = studentId;
+        this.studentDate = studentDate;
+        this.studentSerialNumber = studentSerialNumber;
+        this.studentName = studentName;
+        this.studentDob = studentDob;
+        this.studentInstitutionType = studentInstitutionType;
+        this.studentCategory = studentCategory;
+        this.studentOrganization = studentOrganization;
+        this.studentPhone = studentPhone;
+        this.studentEmail = studentEmail;
+        this.studentAddress = studentAddress;
+        this.studentCourse = studentCourse;
+        this.studentPaymentStatus = studentPaymentStatus;
+        this.studentAttendanceStatus = studentAttendanceStatus;
+        this.studentLastPaymentDate = studentLastPaymentDate;
+        this.balanceAmount = balanceAmount;
+    }
+
     public StudentAlertData(String studentId, String studentDate, String studentSerialNumber,
                             String studentName, String studentDob, String studentInstitutionType,
                             String studentCategory, String studentOrganization, String studentPhone,
@@ -31,6 +61,7 @@ public class StudentAlertData {
         this.studentAddress = studentAddress;
         this.studentCourse = studentCourse;
     }
+
 
     public String getStudentId() {
         return studentId;
@@ -126,5 +157,37 @@ public class StudentAlertData {
 
     public void setStudentCourse(String studentCourse) {
         this.studentCourse = studentCourse;
+    }
+
+    public String getStudentPaymentStatus() {
+        return studentPaymentStatus;
+    }
+
+    public void setStudentPaymentStatus(String studentPaymentStatus) {
+        this.studentPaymentStatus = studentPaymentStatus;
+    }
+
+    public String getStudentAttendanceStatus() {
+        return studentAttendanceStatus;
+    }
+
+    public void setStudentAttendanceStatus(String studentAttendanceStatus) {
+        this.studentAttendanceStatus = studentAttendanceStatus;
+    }
+
+    public String getStudentLastPaymentDate() {
+        return studentLastPaymentDate;
+    }
+
+    public void setStudentLastPaymentDate(String studentLastPaymentDate) {
+        this.studentLastPaymentDate = studentLastPaymentDate;
+    }
+
+    public String getBalanceAmount() {
+        return balanceAmount;
+    }
+
+    public void setBalanceAmount(String balanceAmount) {
+        this.balanceAmount = balanceAmount;
     }
 }

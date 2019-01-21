@@ -16,8 +16,9 @@
         android:text="Select"/>
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/edt_border"
         android:layout_marginLeft="20dp"
@@ -26,8 +27,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -36,8 +38,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -48,8 +51,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -58,8 +62,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -87,8 +92,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -97,8 +103,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:padding="2dp"
+        android:elevation="1dp"
         android:background="@drawable/edt_border"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
