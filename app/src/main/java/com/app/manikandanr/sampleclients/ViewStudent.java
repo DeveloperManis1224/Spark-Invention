@@ -30,13 +30,14 @@ public class ViewStudent extends AppCompatActivity {
     private TextView mBasicInfo;
     private TextView mOtherInfo;
     private Button btnPayEmi;
+    Students data = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_student);
         //Receive Data
-        Students data=getIntent().getExtras().getParcelable("Students");
+        data = getIntent().getExtras().getParcelable("Students");
 
         mBasicInfo = findViewById(R.id.txt_basic_info);
         mOtherInfo = findViewById(R.id.txt_other_info);
@@ -55,7 +56,7 @@ public class ViewStudent extends AppCompatActivity {
         mBasicInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_BASIC_INFO)+""+details);
         mOtherInfo.setText(getIntent().getExtras().getString(Constants.STUDENT_OTHER_INFO));
 
-        String paidStatus = getIntent().getExtras().getString(Constants.STUDENT_PAYMENT_STATUS);
+        String paidStatus = data.getPaymentStatus(); /*getIntent().getExtras().getString(Constants.STUDENT_PAYMENT_STATUS);*/
 
         if(paidStatus.equalsIgnoreCase("1"))
         {
@@ -96,15 +97,10 @@ public class ViewStudent extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-//                params.put("student_id",""+studId);
-//                params.put("payment_mode",payMode);
-//                params.put("initial_amount",""+initialAmount);
-//                params.put("total_amount",""+totalAmount);
-//                params.put("tenure",""+tenureMonth);
-//                params.put("payment_status",""+paymentStatus);
-//                params.put("tenure_amount",""+tenureAmount);
-//                params.put("balance_amount",""+balanceAmount);
-//                params.put("quotation_id",eBillNumber.getText().toString().trim());
+                params.put("student_id",""+data.getId());
+              //  params.put("payment_mode",data.get);
+              //  params.put("initial_amount",""+initialAmount);
+               // params.put("quotation_id",eBillNumber.getText().toString().trim());
                 return params;
             }
         };
