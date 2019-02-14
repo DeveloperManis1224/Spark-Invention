@@ -34,8 +34,6 @@ public class AddItems extends AppCompatActivity {
 
 
 
-
-
     private AutoCompleteTextView txtCountryName;
     ArrayList<String> countryList = new ArrayList<>();
     ArrayList<String> countryIdList = new ArrayList<>();
