@@ -312,7 +312,7 @@ public class MenuActivity extends AppCompatActivity {
         bMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(MenuActivity.this,MoreMenu.class);
+                Intent in = new Intent(MenuActivity.this,AdmissionProjectActivity.class);
                 startActivity(in);
                 finish();
             }

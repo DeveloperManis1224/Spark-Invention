@@ -25,6 +25,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -77,7 +78,8 @@
             android:stateNotNeeded="true"
             tools:replace="android:screenOrientation" />
         <activity android:name=".WebViewPayment" />
-        <activity android:name=".CompletePayment"></activity>
+        <activity android:name=".CompletePayment" />
+        <activity android:name=".AdmissionProjectActivity"></activity>
     </application>
 
 </manifest>
