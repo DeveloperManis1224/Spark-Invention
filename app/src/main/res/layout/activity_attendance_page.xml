@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp"
+    tools:context=".AttendancePage">
+
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Student"
+        android:onClick="onCLickStudentAdd"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_clr_drawble"/>
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Group"
+        android:onClick="onClickCreateGroup"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_clr_drawble"/>
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Student"
+        android:onClick="onClickViewStudent"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_clr_drawble"/>
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Attendance"
+        android:onClick="onClickViewStudent"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_clr_drawble"/>
+
+
+
+</LinearLayout>

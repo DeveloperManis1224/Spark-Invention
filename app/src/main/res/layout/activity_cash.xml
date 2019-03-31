@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:id="@+id/radio_emi"
+                android:visibility="gone"
                 android:layout_marginLeft="20dp"
                 android:text="EMI"/>
         </RadioGroup>

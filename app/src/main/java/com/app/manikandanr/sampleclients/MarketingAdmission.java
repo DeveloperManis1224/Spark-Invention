@@ -58,6 +58,8 @@ public class MarketingAdmission extends AppCompatActivity {
     final ArrayList<String> eventList = new ArrayList<String>();
     final ArrayList<String> eventIdList = new ArrayList<String>();
 
+
+
     final ArrayList<String> countryIdList = new ArrayList<String>();
     final ArrayList<String> organizationIdList = new ArrayList<String>();
     final ArrayList<String> stateIdList = new ArrayList<String>();

@@ -59,6 +59,45 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18dp"
                     android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lyt_project_program"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:text="Select"/>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="10sp"
+                            android:id="@+id/rad_school"
+                            android:checked="true"
+                            android:text="School"
+                            />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="10sp"
+                            android:id="@+id/rad_clg"
+                            android:text="College"
+                            />
+                    </RadioGroup>
+                </LinearLayout>
+
+
 
                 <EditText
                     android:id="@+id/edt_name"
@@ -158,8 +197,18 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-
                     android:hint="Enter College"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true" />
+                <Spinner
+                    android:id="@+id/edt_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:hint="Enter Department"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:singleLine="true" />
@@ -171,11 +220,22 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-
                     android:hint="Enter Year"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:singleLine="true" />
+                <Spinner
+                    android:id="@+id/edt_department_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:hint="Enter Section"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true" />
+
 
                 <EditText
                     android:id="@+id/edt_address"
@@ -186,7 +246,9 @@
                     android:fontFamily="@font/poppinsmedium"
                     android:maxHeight="200dp"
                     android:hint="Enter Address"
-                    android:inputType="textCapSentences"
+                    android:lines="6"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
                     android:maxLines="3"
                     android:padding="5dp" />
 
@@ -197,7 +259,6 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-
                     android:hint="Enter Course"
                     android:singleLine="true" />
 
@@ -274,6 +335,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="right"
+                    android:visibility="gone"
                     android:padding="5dp"
                     android:text=""
                     android:textColor="@color/colorPrimaryDark"
@@ -286,7 +348,46 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="50dp"
                     android:gravity="center"
+                    android:orientation="vertical"
                     android:padding="5dp">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="10sp"
+                            android:id="@+id/rad_join_now"
+                            android:checked="true"
+                            android:text="Join Now"
+                            />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="10sp"
+                            android:id="@+id/rad_join_later"
+                            android:text="Join Later"
+                            />
+                    </RadioGroup>
+                    <TextView
+                        android:id="@+id/edt_later_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:background="@drawable/edt_border"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:maxHeight="200dp"
+                        android:text="Select Join Date"
+                        android:gravity="top|start"
+                        android:layout_marginBottom="50dp"
+                        android:padding="5dp" />
+
 
                     <Button
                         android:id="@+id/btn_next"

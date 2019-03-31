@@ -61,12 +61,10 @@ public class MenuActivity extends AppCompatActivity {
         double lngDiff = Math.toRadians(lng_b-lng_a);
         double a = Math.sin(latDiff /2) * Math.sin(latDiff /2) +
                 Math.cos(Math.toRadians(lat_a)) * Math.cos(Math.toRadians(lat_b)) *
-                        Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
+                Math.sin(lngDiff /2) * Math.sin(lngDiff /2) ;
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double distance = earthRadius * c;
-
         int meterConversion = 1609;
-
         return new Float(distance * meterConversion).floatValue();
     }
     @Override
@@ -158,7 +156,6 @@ public class MenuActivity extends AppCompatActivity {
                 btnCollege.setAllCaps(false);
 
                 btnProject.setText("Project / Program");
-                btnProject.setVisibility(View.GONE);
                 btnProject.setAllCaps(false);
 
                 btnSchool.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +189,8 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 });
                 deleteDialog.show();
+//                Intent in = new Intent(MenuActivity.this,AdmissionProjectActivity.class);
+//                startActivity(in);
             }
         });
 
@@ -248,54 +247,55 @@ public class MenuActivity extends AppCompatActivity {
         bAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
-                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
-                final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
-                deleteDialog.setView(deleteDialogView);
-                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
-
-                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
-                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
-
-                btnSchool.setText("School");
-                btnSchool.setAllCaps(false);
-
-                btnCollege.setText("College");
-                btnCollege.setAllCaps(false);
-
-
-                btnProject.setText("Project / Program");
-                btnProject.setVisibility(View.GONE);
-                btnProject.setAllCaps(false);
-
-                btnSchool.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, AttendanceActivity.class);
-                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
-                        startActivity(in);
-                    }
-                });
-                btnCollege.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, AttendanceActivity.class);
-                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
-                        startActivity(in);
-                    }
-                });
-                btnProject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteDialog.dismiss();
-                        Intent in = new Intent(MenuActivity.this, AttendanceActivity.class);
-                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_PROJECT);
-                        startActivity(in);
-                    }
-                });
-                deleteDialog.show();
+//                LayoutInflater factory = LayoutInflater.from(MenuActivity.this);
+//                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+//                final AlertDialog deleteDialog = new AlertDialog.Builder(MenuActivity.this).create();
+//                deleteDialog.setView(deleteDialogView);
+//                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+//
+//                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+//                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+//
+//                btnSchool.setText("School");
+//                btnSchool.setAllCaps(false);
+//
+//                btnCollege.setText("College");
+//                btnCollege.setAllCaps(false);
+//
+//                btnProject.setText("Project / Program");
+//                btnProject.setVisibility(View.GONE);
+//                btnProject.setAllCaps(false);
+//
+//                btnSchool.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        deleteDialog.dismiss();
+//                        Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+//                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
+//                        startActivity(in);
+//                    }
+//                });
+//                btnCollege.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        deleteDialog.dismiss();
+//                        Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+//                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
+//                        startActivity(in);
+//                    }
+//                });
+//                btnProject.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        deleteDialog.dismiss();
+//                        Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+//                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_PROJECT);
+//                        startActivity(in);
+//                    }
+//                });
+//                deleteDialog.show();
+                Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+                startActivity(in);
             }
         });
 
@@ -305,20 +305,18 @@ public class MenuActivity extends AppCompatActivity {
                 Intent in = new Intent(MenuActivity.this,AccountsHome.class);
                 startActivity(in);
                 finish();
-
             }
         });
 
         bMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(MenuActivity.this,AdmissionProjectActivity.class);
+                Intent in = new Intent(MenuActivity.this,MoreMenu.class);
                 startActivity(in);
                 finish();
             }
         });
     }
-
 
     @Override
     public void onBackPressed() {

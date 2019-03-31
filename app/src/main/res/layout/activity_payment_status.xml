@@ -92,7 +92,7 @@
                 android:textColor="#000"
                 android:onClick="onClickCash"
                 android:fontFamily="@font/poppinsmedium"
-                android:text="CASH / EMI"/>
+                android:text="CASH"/>
         </LinearLayout>
 
 

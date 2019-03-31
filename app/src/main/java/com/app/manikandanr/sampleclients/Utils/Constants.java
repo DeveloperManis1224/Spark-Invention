@@ -55,12 +55,31 @@ public class Constants {
     public static final String STUDENT_ID = "stud_id";
     public static final String STUDENT_SERIAL_NUMBER = "reg_num";
 
+    public static final String USER_ID = "user_id";
+    public static final String USER_NAME = "user_name";
+    public static  final String USER_MAIL = "user_mail";
+    public static  final  String USER_PHONE = "user_phone";
+    public  static  final  String USER_ROLE_LOGIN = "user_role_login";
+    public static  final  String USER_BRANCH_ID = "branch_id";
+    public static final String STAFF_ROLE = "4";
+
 
     public static boolean isNetworkAvailable(Context cntx) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) cntx.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static String[] getSections()
+    {
+        String[] str = new String[]{"Select Section","A","B","C","D","E","F","G","H","I","J","K"};
+        return str;
+    }
+    public static String[] getYears()
+    {
+        String[] str = new String[]{"Select Year","1 Year","2 Year","3 Year","4 Year","5 Year"};
+        return str;
     }
 
 

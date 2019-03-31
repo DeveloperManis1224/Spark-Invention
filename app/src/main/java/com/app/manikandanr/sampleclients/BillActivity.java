@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Data.BillData;
+import com.app.manikandanr.sampleclients.Data.BillResponseData;
 import com.app.manikandanr.sampleclients.Data.Payment;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
@@ -37,13 +38,14 @@ public class BillActivity extends AppCompatActivity {
     public static int black = 0xFF000000;
     public final static int WIDTH = 500;
     String value = "";
+
     private Button btnSubmit;
     private EditText eBillNumber;
     private String payMode = "";
     private String student_id;
     private String studId, paymentMode, initialAmount, totalAmount, tenureMonth, dueDate, paymentStatus, tenureAmount, balanceAmount;
-
     String serialNumber;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +128,12 @@ public class BillActivity extends AppCompatActivity {
                             message = jobj.getString("message");
                             if (status.equalsIgnoreCase(Constants.RESPONSE_SUCCESS)) {
                                 JSONArray paymentArray = jobj.getJSONArray("payment");
+                                //{"status":1,"message":"Successfully Inserted!","payment":{"student_id":"5","payment_mode":"2","initial_amount":0,"total_amount":"38500.0","tenure":0,"tenure_amount":0,"due_date":"2019-04-27","balance_amount":0,"payment_status":3,"online_transaction_id":null,"quotation_id":"94979467","updated_at":"2019-03-27 00:27:31","created_at":"2019-03-27 00:27:31","id":4}}
 
                                 for (int i = 0; i < paymentArray.length(); i++) {
                                     JSONObject paymentObj = paymentArray.getJSONObject(i);
                                     paymentMethod = paymentObj.getString("payment_mode");
-                                    amountPaid = paymentObj.getString("initial_amount");
+                                    amountPaid = paymentObj.getString("total_amount");
                                     billNumber = paymentObj.getString("quotation_id");
 
                                     JSONObject studentObj = paymentObj.getJSONObject("student");
@@ -147,9 +150,10 @@ public class BillActivity extends AppCompatActivity {
                                     value = "Student Name  : " + studentName + "\n" +
                                             "Serial Number : " + serialNumber + "\n" +
                                             "Bill Number   : " + billNumber + "\n" +
-                                            "Payment Method:  EMI\n" +
+                                            "Payment Method:  CASH\n" +
                                             "Amount Paid   : " + amountPaid;
                                 }
+
 
                                 new AwesomeSuccessDialog(BillActivity.this).setTitle("Admission Status")
                                         .setMessage("Admission Successfull.")
@@ -189,12 +193,16 @@ public class BillActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("student_id", "" + studId);
                 params.put("payment_mode", payMode);// for emi
-                params.put("initial_amount", "" + initialAmount); //
                 params.put("total_amount", "" + totalAmount);
-                params.put("tenure", "" + tenureMonth);
-                params.put("tenure_amount", "" + tenureAmount);
-                params.put("balance_amount", "" + balanceAmount);
+                params.put("balance_amount", "0.0");
                 params.put("quotation_id", eBillNumber.getText().toString().trim());
+                params.put("online_transaction_id","");
+
+                //  params.put("initial_amount", "" + initialAmount); //
+              //  params.put("tenure", "" + tenureMonth);
+             //   params.put("tenure_amount", "" + tenureAmount);
+             //   params.put("balance_amount", "" + balanceAmount);
+               // params.put("quotation_id", eBillNumber.getText().toString().trim());
                 return params;
             }
         };

@@ -13,6 +13,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <RadioGroup
@@ -34,6 +37,12 @@
                     android:padding="5dp"
                     android:id="@+id/rad_college"
                     android:text="College"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:id="@+id/rad_project"
+                    android:text="Project / Program"/>
             </RadioGroup>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,6 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAllCaps="true"
+                        android:maxLength="10"
                         android:inputType="phone"
                         android:id="@+id/txt_phone"
                         android:padding="7dp"
@@ -90,7 +100,6 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_margin="5dp">
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
@@ -130,11 +139,18 @@
                     android:layout_margin="5dp"
                     android:id="@+id/spin_organization"
                     android:background="@drawable/edt_border"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:id="@+id/spin_standard"
+                    android:background="@drawable/edt_border"/>
 
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
+                    android:visibility="gone"
                     android:padding="5dp"
                     android:id="@+id/txt_organization"
                     android:hint="Organization"

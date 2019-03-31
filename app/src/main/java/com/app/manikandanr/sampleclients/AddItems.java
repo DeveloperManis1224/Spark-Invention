@@ -31,6 +31,11 @@ import java.util.Map;
 
 public class AddItems extends AppCompatActivity {
 
+//    I want to spend my lifetime loving you. I want to spend my lifetime making you happy. I want to be with you forever.
+//
+//    You are the woman of my dreams. Happy anniversary my wife!.
+//
+//    You complete me. I love you, happy anniversary to my wife!
 
     private AutoCompleteTextView txtCountryName;
     ArrayList<String> countryList = new ArrayList<>();

@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,9 +29,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.app.manikandanr.sampleclients.Utils.SessionManager;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,23 +55,33 @@ public class AdmissionForm extends AppCompatActivity {
     int state_pos = 0;
     int city_pos = 0;
     int course_pos = 0;
-
     int cost_pos = 0;
     int cat_pos = 0;
+    String joiningSts;
     String BalanceAmount ="";
     String org_dis_type ="";
     String org_dis = "";
     String course_dis_type = "";
     String course_dis = "";
+
+    String programId;
+
+    String sectionId;
     String departmentId;
+    String departmentYear;
+    //for project and program admission only
+    LinearLayout lyt_project_program;
+
+    private RadioButton rad_joinNow, rad_joinLater, radSchool,radCollege;
+
     private String alertDate = "";
     private String sts_joinings = "";
-    private Button nextButton;
-    private TextView tCouseCost,tJoinStatus,tGetOffer, offerAvailable;
-    private String userRole = "";
+    private TextView tCouseCost,tGetOffer, offerAvailable;
     private String userRollNo = "";
+    private String role = "";
     private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
-    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, edtdepartmentYear, aedtCourse ,category_course;
+    private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse
+            ,category_course,aed_department_year, aed_department, aed_section;
     final ArrayList<String> costList = new ArrayList<String>();
     final ArrayList<String> countryList = new ArrayList<String>();
     final ArrayList<String> stateList = new ArrayList<String>();
@@ -81,9 +95,16 @@ public class AdmissionForm extends AppCompatActivity {
     final ArrayList<String> stateIdList = new ArrayList<String>();
     final ArrayList<String> cityIdList = new ArrayList<String>();
     final ArrayList<String> courseCatIdList = new ArrayList<String>();
+    final ArrayList<String> departmentList = new ArrayList<String>();
+    final ArrayList<String> departmentIdList = new ArrayList<String>();
+
+    int department_pos;
+
+
     StringBuilder offerDetails_join = new StringBuilder();
     Calendar myCalendar = Calendar.getInstance();
     ProgressDialog pd = null;
+    TextView laterDate ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,71 +121,69 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCountry = findViewById(R.id.edt_country);
         aedtState = findViewById(R.id.edt_state);
         aedtCity = findViewById(R.id.edt_city);
+        aed_department = findViewById(R.id.edt_department);
+        aed_department_year = findViewById(R.id.edt_department_year);
+        aed_section = findViewById(R.id.edt_department_section);
         aedtCourse = findViewById(R.id.edt_course);
         tCouseCost = findViewById(R.id.txt_course_cost);
-        tJoinStatus = findViewById(R.id.txt_join_status);
         edtAddress = findViewById(R.id.edt_address);
+        rad_joinLater = findViewById(R.id.rad_join_later);
+        radSchool = findViewById(R.id.rad_school);
+        radCollege  = findViewById(R.id.rad_clg);
+        rad_joinNow = findViewById(R.id.rad_join_now);
         offerAvailable = findViewById(R.id.edt_offer_avail);
-        nextButton = findViewById(R.id.btn_next);
+        lyt_project_program = findViewById(R.id.lyt_project_program);
         tGetOffer = findViewById(R.id.txt_get_offer);
         category_course = findViewById(R.id.edt_cat_course);
-        userRole = getIntent().getStringExtra(Constants.USER_ROLE);
         userRollNo = getIntent().getStringExtra(Constants.USER_ROLE_ID);
-        edtdepartmentYear = findViewById(R.id.edt_department_year);
 
-        if(userRollNo.equalsIgnoreCase(Constants.ROLE_SCHOOL))
+        laterDate = findViewById(R.id.edt_later_date);
+
+        if(rad_joinNow.isChecked())
         {
-            String[] departmentList = new String[]{"5th to 9th","10th to 12th"};
-            edtdepartmentYear.setAdapter(new ArrayAdapter<String >(this,
-                    android.R.layout.simple_spinner_dropdown_item,departmentList));
-            edtdepartmentYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    departmentId = ""+(i+1);
-                    Log.e("DEPARTMENT_ID",""+departmentId);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
+            joiningSts = "1";
         }
-        else  if(userRollNo.equalsIgnoreCase(Constants.ROLE_COLLEGE))
+        else
         {
-            String[] departmentList = new String[]{"1st Year","2nd Year", "3rd Year","4th Year"};
-            edtdepartmentYear.setAdapter(new ArrayAdapter<String >(this,
-                    android.R.layout.simple_spinner_dropdown_item,departmentList));
-            edtdepartmentYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    departmentId = ""+(i+1);
-                    Log.e("DEPARTMENT_ID",""+departmentId);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
+            joiningSts = "2";
+            laterDate.setVisibility(View.VISIBLE);
         }
-        else  if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
-        {
-//            String[] departmentList = new String[]{"5th to 9th","10th to 12th"};
-//            edtdepartmentYear.setAdapter(new ArrayAdapter<String >(this,
-//                    android.R.layout.simple_spinner_dropdown_item,departmentList));
-            edtdepartmentYear.setVisibility(View.GONE);
-        }
+
+        rad_joinNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                joiningSts = "1";
+                laterDate.setVisibility(View.GONE);
+            }
+        });
+        rad_joinLater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                joiningSts = "2";
+                laterDate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        startInitalize();
+        //getDepartments(userRollNo);
 
         Log.e("DEPARTMENT_ID",""+departmentId);
         pd = new ProgressDialog(AdmissionForm.this);
-
         offerDetails_join.append("Applied Offer! \n");
         pd.setMessage("Loading");
         getCountry();
-
-
         getCatgories();
+
+        laterDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               int yy =  myCalendar.get(Calendar.YEAR);
+               int mm =  myCalendar.get(Calendar.MONTH);
+                int dd =  myCalendar.get(Calendar.DAY_OF_MONTH);
+                new DatePickerDialog(AdmissionForm.this, dateLater, yy, mm,
+                        dd).show();
+            }
+        });
         edtDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,20 +231,19 @@ public class AdmissionForm extends AppCompatActivity {
         aedtCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
-                {
-                    edtCollege.setVisibility(View.GONE);
-                    ((TextView)findViewById(R.id.txt_get_offer)).setVisibility(View.GONE);
-                }
-                else
-                {
+//                if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
+//                {
+//                    ((TextView)findViewById(R.id.txt_get_offer)).setVisibility(View.GONE);
+//                }
+//                else
+//                {
                     if(!aedtCity.getSelectedItem().toString().equalsIgnoreCase("Select City"))
                     {
                         getOrganization(cityIdList.get(i));
                         city_pos = i;
                         Log.e("SSSSSSSSSS",""+cityIdList.get(i));
                     }
-                }
+//                }
 
 
             }
@@ -237,8 +255,12 @@ public class AdmissionForm extends AppCompatActivity {
         edtCollege.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!edtCollege.getSelectedItem().toString().equalsIgnoreCase("Select Organization"))
+                {
+                    orgPosition = i+1;
 
-                orgPosition = i;
+                }
+
             }
 
             @Override
@@ -266,29 +288,40 @@ public class AdmissionForm extends AppCompatActivity {
         category_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-try {
-    course_pos = i;
-    cost_pos = i;
-    Log.e("BALANCE_AMT", courseCatList.get(i) + "///" + courseCatIdList.get(i) + "///" + i + "///" + BalanceAmount);
-    try {
-        BalanceAmount = costList.get(i);
-    } catch (IndexOutOfBoundsException ex) {
-        ex.printStackTrace();
-    }
-    for (int ij = 0; i < costList.size(); i++) {
-        Log.e("BALANCE_AMT" + i, costList.get(ij));
-    }
 
-    Log.e("BALANCE_AMT", "" + BalanceAmount);
-}catch (Exception ex)
-{
-    Log.e("EXCEPTION",""+ex.getMessage());
-}
+                try {
+                    course_pos = i;
+                    cost_pos = i;
+                    Log.e("BALANCE_AMT", courseCatList.get(i) + "///" + courseCatIdList.get(i) + "///" + i + "///" + BalanceAmount);
+                    try {
+                        BalanceAmount = costList.get(i);
+                    } catch (IndexOutOfBoundsException ex) {
+                        ex.printStackTrace();
+                    }
+                    for (int ij = 0; i < costList.size(); i++) {
+                        Log.e("BALANCE_AMT" + i, costList.get(ij));
+                    }
+
+                    Log.e("BALANCE_AMT", "" + BalanceAmount);
+                }catch (Exception ex)
+                {
+                    Log.e("EXCEPTION",""+ex.getMessage());
+                }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        aed_department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                department_pos = i+1;
+                Log.e("SECTION_ID",""+departmentId);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
@@ -311,16 +344,210 @@ try {
         category_course.setAdapter(adapter4);
     }
 
+
+
+    private void startInitalize()
+    {
+        if(userRollNo.equalsIgnoreCase(Constants.ROLE_SCHOOL))
+        {
+            aed_section.setAdapter(new ArrayAdapter<String >(this,
+                    android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+            aed_department_year.setVisibility(View.GONE);
+            programId = "0";
+            departmentYear ="0";
+            getDepartments(userRollNo);
+            role = Constants.ROLE_SCHOOL;
+            aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    sectionId = ""+(i+1);
+                    Log.e("SECTION_ID",""+sectionId);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+        }
+        else  if(userRollNo.equalsIgnoreCase(Constants.ROLE_COLLEGE))
+        {
+            aed_department_year.setAdapter(new ArrayAdapter<String >(this,
+                    android.R.layout.simple_spinner_dropdown_item,Constants.getYears()));
+            programId = "0";
+            getDepartments(userRollNo);
+            aed_department_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    departmentYear = ""+(i+1);
+                    Log.e("DEPARTMENT_YEAR",""+departmentYear);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+            aed_section.setAdapter(new ArrayAdapter<String >(this,
+                    android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+
+            role = Constants.ROLE_COLLEGE;
+            aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    sectionId = ""+(i+1);
+                    Log.e("SECTION_ID",""+sectionId);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+        }
+        else  if(userRollNo.equalsIgnoreCase(Constants.ROLE_PROJECT))
+        {
+            programId = "1";
+            lyt_project_program.setVisibility(View.VISIBLE);
+            if(radSchool.isChecked())
+            {
+                getDepartments(Constants.ROLE_SCHOOL);
+                aed_department_year.setVisibility(View.GONE);
+                aed_department_year.setVisibility(View.GONE);
+                role = Constants.ROLE_SCHOOL;
+                aed_section.setAdapter(new ArrayAdapter<String >(AdmissionForm.this,
+                        android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+                aed_department_year.setVisibility(View.GONE);
+                programId = "0";
+                departmentYear ="0";
+                role = Constants.ROLE_SCHOOL;
+                aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        sectionId = ""+(i+1);
+                        Log.e("SECTION_ID",""+sectionId);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+            }
+            else
+            {
+                getDepartments(Constants.ROLE_COLLEGE);
+
+                aed_department_year.setVisibility(View.VISIBLE);
+                role = Constants.ROLE_COLLEGE;
+                aed_department_year.setAdapter(new ArrayAdapter<String >(AdmissionForm.this,
+                        android.R.layout.simple_spinner_dropdown_item,Constants.getYears()));
+                programId = "0";
+
+                aed_department_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        departmentYear = ""+(i+1);
+                        Log.e("DEPARTMENT_YEAR",""+departmentYear);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+                aed_section.setAdapter(new ArrayAdapter<String >(AdmissionForm.this,
+                        android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+
+                role = Constants.ROLE_COLLEGE;
+                aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        sectionId = ""+(i+1);
+                        Log.e("SECTION_ID",""+sectionId);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+            }
+
+            radSchool.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getDepartments(Constants.ROLE_SCHOOL);
+                    aed_department_year.setVisibility(View.GONE);
+                    role = Constants.ROLE_SCHOOL;
+                    aed_section.setAdapter(new ArrayAdapter<String >(AdmissionForm.this,
+                            android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+                    aed_department_year.setVisibility(View.GONE);
+                    programId = "0";
+                    departmentYear ="0";
+                    role = Constants.ROLE_SCHOOL;
+                    aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            sectionId = ""+(i+1);
+                            Log.e("SECTION_ID",""+sectionId);
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                }
+            });
+            radCollege.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getDepartments(Constants.ROLE_COLLEGE);
+                    aed_department_year.setVisibility(View.VISIBLE);
+                    role = Constants.ROLE_COLLEGE;
+                    aed_department_year.setAdapter(new ArrayAdapter<String >(AdmissionForm.this,
+                            android.R.layout.simple_spinner_dropdown_item,Constants.getYears()));
+                    programId = "0";
+
+                    aed_department_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            departmentYear = ""+(i+1);
+                            Log.e("DEPARTMENT_YEAR",""+departmentYear);
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    aed_section.setAdapter(new ArrayAdapter<String >(AdmissionForm.this,
+                            android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+
+                    role = Constants.ROLE_COLLEGE;
+                    aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            sectionId = ""+(i+1);
+                            Log.e("SECTION_ID",""+sectionId);
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-            // TODO Auto-generated method stub
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateLabel();
+        }
+
+    };
+    DatePickerDialog.OnDateSetListener dateLater = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            String myFormat = "MM/dd/yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            laterDate.setText(sdf.format(myCalendar.getTime()));
         }
 
     };
@@ -333,82 +560,84 @@ try {
 
     public void onNextClick(View view) {
         if(isValid()) {
-            if (nextButton.getText().toString().trim().equalsIgnoreCase("Next")) {
-                LayoutInflater factory = LayoutInflater.from(AdmissionForm.this);
-                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
-                final AlertDialog deleteDialog = new AlertDialog.Builder(
-                        AdmissionForm.this).create();
-                deleteDialog.setView(deleteDialogView);
 
-                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
-                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
-                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
-
-                btnSchool.setText("Join Now");
-                btnSchool.setAllCaps(false);
-
-                btnCollege.setText("Later");
-                btnCollege.setAllCaps(false);
-
-                btnProject.setText("Project / Program");
-                btnProject.setVisibility(View.GONE);
-
-                btnSchool.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteDialog.dismiss();
-                        Toast.makeText(AdmissionForm.this, "You are selecting Join now",
-                                Toast.LENGTH_SHORT).show();
-                        nextButton.setText("Submit");
-                        sts_joinings = "now";
-                    }
-                });
-                btnCollege.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteDialog.dismiss();
-                        int mYear, mMonth, mDay;
-                        final Calendar c = Calendar.getInstance();
-                        mYear = c.get(Calendar.YEAR);
-                        mMonth = c.get(Calendar.MONTH);
-                        mDay = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                                AdmissionForm.this,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year,
-                                                          int monthOfYear, int dayOfMonth) {
-                                        Toast.makeText(AdmissionForm.this,
-                                                "" + dayOfMonth + "-" +
-                                                        (monthOfYear + 1) + "-" + year,
-                                                Toast.LENGTH_SHORT).show();
-                                        alertDate = "" + dayOfMonth + "-" +
-                                                (monthOfYear + 1) + "-" + year;
-                                        nextButton.setText("Set Alert");
-                                    }
-                                }, mYear, mMonth, mDay);
-                        datePickerDialog.show();
-                        Toast.makeText(AdmissionForm.this, "You are selecting Later",
-                                Toast.LENGTH_SHORT).show();
-                        sts_joinings = "later";
-                        nextButton.setText("Set Alert");
-
-                    }
-                });
-
-                deleteDialog.show();
-            } else if (nextButton.getText().toString().trim().
-                    equalsIgnoreCase("Set Alert")) {
-                if (isValid()) {
-                    setStudentAlert();
-                }
-            } else
-                if (sts_joinings.equalsIgnoreCase("now")) {
-                    if (isValid()) {
-                        uploadStudentInfo();
-                    }
-
-            }
+            uploadStudentInfo();
+//            if (nextButton.getText().toString().trim().equalsIgnoreCase("Next")) {
+//                LayoutInflater factory = LayoutInflater.from(AdmissionForm.this);
+//                final View deleteDialogView = factory.inflate(R.layout.mylayout, null);
+//                final AlertDialog deleteDialog = new AlertDialog.Builder(
+//                        AdmissionForm.this).create();
+//                deleteDialog.setView(deleteDialogView);
+//
+//                Button btnSchool = (Button) deleteDialogView.findViewById(R.id.btn_yes);
+//                Button btnCollege = (Button) deleteDialogView.findViewById(R.id.btn_no);
+//                Button btnProject = (Button) deleteDialogView.findViewById(R.id.btn_none);
+//
+//                btnSchool.setText("Join Now");
+//                btnSchool.setAllCaps(false);
+//
+//                btnCollege.setText("Later");
+//                btnCollege.setAllCaps(false);
+//
+//                btnProject.setText("Project / Program");
+//                btnProject.setVisibility(View.GONE);
+//
+//                btnSchool.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        deleteDialog.dismiss();
+//                        Toast.makeText(AdmissionForm.this, "You are selecting Join now",
+//                                Toast.LENGTH_SHORT).show();
+//                        nextButton.setText("Submit");
+//                        sts_joinings = "now";
+//                    }
+//                });
+//                btnCollege.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        deleteDialog.dismiss();
+//                        int mYear, mMonth, mDay;
+//                        final Calendar c = Calendar.getInstance();
+//                        mYear = c.get(Calendar.YEAR);
+//                        mMonth = c.get(Calendar.MONTH);
+//                        mDay = c.get(Calendar.DAY_OF_MONTH);
+//                        DatePickerDialog datePickerDialog = new DatePickerDialog(
+//                                AdmissionForm.this,
+//                                new DatePickerDialog.OnDateSetListener() {
+//                                    @Override
+//                                    public void onDateSet(DatePicker view, int year,
+//                                                          int monthOfYear, int dayOfMonth) {
+//                                        Toast.makeText(AdmissionForm.this,
+//                                                "" + dayOfMonth + "-" +
+//                                                        (monthOfYear + 1) + "-" + year,
+//                                                Toast.LENGTH_SHORT).show();
+//                                        alertDate = "" + dayOfMonth + "-" +
+//                                                (monthOfYear + 1) + "-" + year;
+//                                        nextButton.setText("Set Alert");
+//                                    }
+//                                }, mYear, mMonth, mDay);
+//                        datePickerDialog.show();
+//                        Toast.makeText(AdmissionForm.this, "You are selecting Later",
+//                                Toast.LENGTH_SHORT).show();
+//                        sts_joinings = "later";
+//                        nextButton.setText("Set Alert");
+//
+//                    }
+//                });
+//
+//                deleteDialog.show();
+//            } else if (nextButton.getText().toString().trim().
+//                    equalsIgnoreCase("Set Alert")) {
+//                if (isValid()) {
+//                    setStudentAlert();
+//                }
+//            } else
+//                if (sts_joinings.equalsIgnoreCase("now")) {
+//                    if (isValid()) {
+//                        uploadStudentInfo();
+//                    }
+//
+//            }
         }
     }
 
@@ -454,6 +683,15 @@ try {
         if (aedtCourse.getSelectedItem().toString().trim().isEmpty()) {
             Toast.makeText(this, "Select one Course", Toast.LENGTH_SHORT).show();
             val = false;
+        }
+
+        if(rad_joinLater.isChecked())
+        {
+            if(laterDate.getText().toString().equalsIgnoreCase("Select Join Date"))
+            {
+                val = false;
+                laterDate.setError("Select Date");
+            }
         }
         return val;
     }
@@ -503,7 +741,7 @@ try {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("city_id",cityId);
-                params.put("role", userRollNo);
+                params.put("role", role);
                 return  params;
             }
         };
@@ -609,6 +847,55 @@ try {
         queue.add(stringRequest);
     }
 
+    private void getDepartments(final String institutionId) {
+        departmentList.clear();
+        departmentIdList.clear();
+        departmentList.add("Select");
+        departmentIdList.add("0");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Constants.BASE_URL+"api/institute-department";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("departments");
+                            for (int i = 0; i < jary.length(); i++) {
+                                JSONObject jobj1 = jary.getJSONObject(i);
+                                departmentList.add(jobj1.getString("department"));
+                                departmentIdList.add(jobj1.getString("id"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, departmentList);
+                        aed_department.setAdapter(adapter);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("instituation_id", institutionId);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+    }
+
     private void getCountry() {
         countryIdList.clear();
         countryList.clear();
@@ -679,14 +966,40 @@ try {
                                         Toast.LENGTH_SHORT).show();
                                 JSONObject jobj =jsonObject.getJSONObject("student");
                                 String studentId = jobj.getString("id");
-                                Intent in = new Intent(AdmissionForm.this,
-                                        PaymentStatus.class);
-                                in.putExtra("cost", BalanceAmount);
-                                in.putExtra("stud_id",studentId);
+                                if(rad_joinNow.isChecked()) {
 
-                                Log.e("RESPONSE111", studentId+"" +  tCouseCost.getText().toString().trim());
-                                startActivity(in);
-                                finish();
+                                    Intent in = new Intent(AdmissionForm.this,
+                                            PaymentStatus.class);
+                                    in.putExtra("cost", BalanceAmount);
+                                    in.putExtra("stud_id", studentId);
+
+                                    Log.e("RESPONSE111", studentId + "" + tCouseCost.getText().toString().trim());
+                                    startActivity(in);
+                                    finish();
+                                }
+                                else
+                                {
+                                    new AwesomeNoticeDialog(AdmissionForm.this)
+                                            .setTitle("Success!")
+                                            .setMessage("Alert Saved Successfully")
+                                            .setColoredCircle(R.color.colorPrimaryDark)
+                                            .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                            .setCancelable(true)
+                                            .setButtonText("Ok")
+                                            .setButtonBackgroundColor(R.color.black)
+                                            .setNoticeButtonClick(new Closure() {
+                                                @Override
+                                                public void exec() {
+                                                    Intent in =new Intent( AdmissionForm.this, MenuActivity.class);
+                                                    startActivity(in);
+                                                    finish();
+                                                }
+                                            })
+                                            .show();
+                                }
+
+
+
 
                             } else {
                                 Toast.makeText(AdmissionForm.this, "Submition failed",
@@ -709,6 +1022,7 @@ try {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id",new SessionManager().getPreferences(AdmissionForm.this,Constants.USER_ID));
                 params.put("name", edtName.getText().toString().trim());
                 params.put("dob", edtDob.getText().toString().trim());
                 params.put("instituation_id",getIntent().getExtras().getString(Constants.USER_ROLE_ID));
@@ -720,17 +1034,24 @@ try {
                 params.put("city_id", cityIdList.get(city_pos));
                 params.put("address", edtAddress.getText().toString().trim());
                 params.put("course_id", courseCatIdList.get(course_pos));
-                params.put("status", sts_joinings);
-                params.put("department_id",departmentId);
-                params.put("alert_date", alertDate);
-                params.put("join_status", "1");
+                params.put("department_section_id",sectionId);
+                params.put("department_year_id",departmentYear);
+//                params.put("status", sts_joinings);
+                params.put("department_id",departmentIdList.get(department_pos));
+                params.put("alert_date", laterDate.getText().toString().trim());
+                params.put("join_status", joiningSts);
                 params.put("role", userRollNo);
                 params.put("category_id",categoryIdList.get(cat_pos));
-                params.put("org_discount_type",""+org_dis_type);
-                params.put("org_discount",""+org_dis);
-                params.put("course_discount_type",""+course_dis_type);
-                params.put("course_discount",""+ course_dis);
-                params.put("calc_amount",BalanceAmount);
+
+                Log.e("DDDDD","Ins "+getIntent().getExtras().getString(Constants.USER_ROLE_ID)+
+                        " org_ "+collegeIdList.get(orgPosition)+" course "+courseCatIdList.get(course_pos)+
+                " departent "+departmentId+ " join_sts "+joiningSts+" role"+userRollNo+" cate_id "+categoryIdList.get(cat_pos));
+//                params.put("org_discount_type",""+org_dis_type);
+//                params.put("org_discount",""+org_dis);
+//                params.put("course_discount_type",""+course_dis_type);
+//                params.put("course_discount",""+ course_dis);
+//                params.put("calc_amount",BalanceAmount);
+                params.put("program_id",programId);
                 return params;
                 //1 - percentage...
                 //2 - ruppess...
@@ -935,70 +1256,85 @@ try {
                             if(sts.equalsIgnoreCase("1"))
                             {
                                 JSONObject jobjCourse = jobj.getJSONObject("course");
-                                JSONObject jobjOrg = jobj.getJSONObject("organization");
-
-
-                                    String courseName = jobjCourse.getString("course");
+                                JSONObject jobjOffer = jobj.getJSONObject("offer");
+                                String courseName = jobjCourse.getString("course");
                                     String courseOfferType = jobjCourse.getString("offer_type");
                                     String courseOffer = jobjCourse.getString("offer");
                                     String courseAmount = jobjCourse.getString("amount");
 
-                                    String OrgName = jobjOrg.getString("name");
-                                    String OrgOfferType = jobjOrg.getString("offer_type");
-                                    String OrgOffer = jobjOrg.getString("offer");
-                                    String orgAmount = jobjCourse.getString("amount");
+                                String totalAmount = jobjOffer.getString("TotalAmount");
+                                String offertaxAmount = jobjOffer.getString("offerTaxAmount");
+                                String orgOfferAmount = jobjOffer.getString("organizationTaxAmount");
+                                String overallDiscount = jobjOffer.getString("overallDiscount");
+                                String amountToPay = jobjOffer.getString("netTotalAmount");
 
-                                org_dis_type =OrgOfferType;
-                                org_dis =OrgOffer;
-                                course_dis_type = courseOfferType;
-                                course_dis = courseOffer;
-                                Double balAmount =0.0;
-                                double balance;
-                                double orgbalance =0.0;
-                                double coursebalance = 0.0;
-                               if(!courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
-                                {
-                                    String type = "Rs";
-                                    if(courseOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
-                                        type = "%";
-                                        balAmount = (Double.valueOf(courseOffer) / 100.f) * Double.valueOf(courseAmount);
-                                        offerDetails_join.append("" + courseName + "    " + courseOffer + "" + type + "\n");
-                                    }
-                                    else {
-                                        balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseOffer);
-                                        offerDetails_join.append("" + courseName + "    " + type + "" + courseOffer + "\n");
-                                    }
-                                }
-                                coursebalance = balAmount;
-                                if(!OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
-                                {
-                                    String type = "Rs";
-                                    if(OrgOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
-                                        type = "%";
-                                        balAmount = (Double.valueOf(OrgOffer)/100.f) * Double.valueOf(orgAmount);
-                                        offerDetails_join.append(""+OrgName+"      "+OrgOffer+" "+type+"\n");
-                                    }
-                                    else {
-                                        balAmount = balAmount - Double.valueOf(OrgOffer);
-                                        offerDetails_join.append(""+OrgName+"      "+type+" "+OrgOffer+"\n");
-                                    }
+                                offerDetails_join.append(" Total Amount : "+totalAmount+"\n");
+                                offerDetails_join.append(" Offer : "+offertaxAmount +"\n");
+                                offerDetails_join.append(" Organization Offer : "+orgOfferAmount+"\n");
+                                offerDetails_join.append(" OverallDiscount : "+overallDiscount+"\n");
 
-                                }
-                                orgbalance = balAmount;
-                                if(OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE)&&
-                                        courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
-                                {
-                                    offerDetails_join.append("Sorry, Currently no offers");
-                                    balAmount =0.0;
-                                    orgbalance = 0.0;
-                                    coursebalance = 0.0;
-                                }
 
-                                Log.e("BALANCE_CECEC",orgbalance+"////"+coursebalance);
-                                balance =Double.valueOf(courseAmount) - ( orgbalance + coursebalance) ;
-                               offerAvailable.setText(""+offerDetails_join+"\n \nAmount Payable : Rs "+balance );
+//                                    String courseName = jobjCourse.getString("course");
+//                                    String courseOfferType = jobjCourse.getString("offer_type");
+//                                    String courseOffer = jobjCourse.getString("offer");
+//                                    String courseAmount = jobjCourse.getString("amount");
+//
+//                                    String OrgName = jobjOrg.getString("name");
+//                                    String OrgOfferType = jobjOrg.getString("offer_type");
+//                                    String OrgOffer = jobjOrg.getString("offer");
+//                                    String orgAmount = jobjCourse.getString("amount");
+//
+//                                org_dis_type =OrgOfferType;
+//                                org_dis =OrgOffer;
+//                                course_dis_type = courseOfferType;
+//                                course_dis = courseOffer;
+//                                Double balAmount =0.0;
+//                                double balance;
+//                                double orgbalance =0.0;
+//                                double coursebalance = 0.0;
+//                               if(!courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
+//                                {
+//                                    String type = "Rs";
+//                                    if(courseOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
+//                                        type = "%";
+//                                        balAmount = (Double.valueOf(courseOffer) / 100.f) * Double.valueOf(courseAmount);
+//                                        offerDetails_join.append("" + courseName + "    " + courseOffer + "" + type + "\n");
+//                                    }
+//                                    else {
+//                                        balAmount = Double.valueOf(courseAmount) - Double.valueOf(courseOffer);
+//                                        offerDetails_join.append("" + courseName + "    " + type + "" + courseOffer + "\n");
+//                                    }
+//                                }
+//                                coursebalance = balAmount;
+//                                if(!OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
+//                                {
+//                                    String type = "Rs";
+//                                    if(OrgOfferType.equalsIgnoreCase(Constants.OFFER_PERCENTAGE)) {
+//                                        type = "%";
+//                                        balAmount = (Double.valueOf(OrgOffer)/100.f) * Double.valueOf(orgAmount);
+//                                        offerDetails_join.append(""+OrgName+"      "+OrgOffer+" "+type+"\n");
+//                                    }
+//                                    else {
+//                                        balAmount = balAmount - Double.valueOf(OrgOffer);
+//                                        offerDetails_join.append(""+OrgName+"      "+type+" "+OrgOffer+"\n");
+//                                    }
+//
+//                                }
+//                                orgbalance = balAmount;
+//                                if(OrgOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE)&&
+//                                        courseOffer.equalsIgnoreCase(Constants.OFFER_NOT_AVAILABLE))
+//                                {
+//                                    offerDetails_join.append("Sorry, Currently no offers");
+//                                    balAmount =0.0;
+//                                    orgbalance = 0.0;
+//                                    coursebalance = 0.0;
+//                                }
+//
+//                                Log.e("BALANCE_CECEC",orgbalance+"////"+coursebalance);
+//                                balance =Double.valueOf(courseAmount) - ( orgbalance + coursebalance) ;
+                               offerAvailable.setText(""+offerDetails_join+"\n \nAmount Payable : Rs "+amountToPay );
                                offerAvailable.setVisibility(View.VISIBLE);
-                               BalanceAmount = String.valueOf(balance);
+                               BalanceAmount = String.valueOf(amountToPay);
                             }
                             else
                             {
@@ -1022,7 +1358,6 @@ try {
                 params.put("organization_id",collegeIdList.get(orgPosition));
                 params.put("role",userRollNo);
                 return params;
-
             }
         };
 

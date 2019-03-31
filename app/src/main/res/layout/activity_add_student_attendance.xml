@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.AddStudentAttendance">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="10sp"
+                    android:id="@+id/rad_school"
+                    android:checked="true"
+                    android:text="School"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="10sp"
+                    android:id="@+id/rad_college"
+                    android:text="College"
+                    />
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapCharacters"
+                    android:textAllCaps="true"
+                    android:padding="7dp"
+                    android:id="@+id/txt_name"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:hint="Name"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:id="@+id/txt_dob"
+                    android:inputType="number"
+                    android:padding="7dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:hint="Date of Birth"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:maxLength="10"
+                    android:inputType="phone"
+                    android:id="@+id/txt_phone"
+                    android:padding="7dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:hint="Phone"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:id="@+id/txt_email"
+                    android:inputType="textEmailAddress"
+                    android:padding="7dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:hint="Email"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_country"
+                android:background="@drawable/edt_border"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_state"
+                android:background="@drawable/edt_border"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_city"
+                android:background="@drawable/edt_border"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_organization"
+                android:background="@drawable/edt_border"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_standard"
+                android:background="@drawable/edt_border"/>
+
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:padding="5dp"
+                android:id="@+id/txt_organization"
+                android:hint="Organization"
+                android:background="@drawable/edt_border"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_department"
+                android:background="@drawable/edt_border"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_department_year"
+                android:background="@drawable/edt_border"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_section"
+                android:background="@drawable/edt_border"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:ems="10"
+                android:id="@+id/txt_address"
+                android:lines="5"
+                android:padding="5dp"
+                android:gravity="left|top"
+                android:background="@drawable/edt_border"
+                android:inputType="textMultiLine"
+                android:hint="Address"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_category"
+                android:background="@drawable/edt_border"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:id="@+id/spin_course"
+                android:background="@drawable/edt_border"/>
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Student"
+                android:textAllCaps="false"
+                android:onClick="onClickAddStudentAttendance"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_clr_drawble"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

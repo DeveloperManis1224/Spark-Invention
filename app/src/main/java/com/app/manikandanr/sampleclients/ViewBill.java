@@ -55,6 +55,7 @@ public class ViewBill extends AppCompatActivity {
             Log.e("ERROR_MSG",""+ex.getMessage());
             ex.printStackTrace();
         }
+
         invoiceNumber = getIntent().getStringExtra("detail");
         studentId = getIntent().getExtras().getString("stud_id");
         imgView = findViewById(R.id.img_bill);

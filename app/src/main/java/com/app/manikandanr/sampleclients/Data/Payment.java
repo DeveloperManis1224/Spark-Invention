@@ -1,11 +1,14 @@
 
 package com.app.manikandanr.sampleclients.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Payment {
+public class Payment implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -52,6 +55,38 @@ public class Payment {
     @SerializedName("student")
     @Expose
     private Student student;
+
+    protected Payment(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        studentId = in.readString();
+        paymentMode = in.readString();
+        initialAmount = in.readString();
+        totalAmount = in.readString();
+        tenure = in.readString();
+        tenureAmount = in.readString();
+        dueDate = in.readString();
+        balanceAmount = in.readString();
+        paymentStatus = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        quotationId = in.readString();
+    }
+
+    public static final Creator<Payment> CREATOR = new Creator<Payment>() {
+        @Override
+        public Payment createFromParcel(Parcel in) {
+            return new Payment(in);
+        }
+
+        @Override
+        public Payment[] newArray(int size) {
+            return new Payment[size];
+        }
+    };
 
     public Integer getId() {
         return id;
@@ -178,4 +213,30 @@ public class Payment {
         return new ToStringBuilder(this).append("id", id).append("studentId", studentId).append("paymentMode", paymentMode).append("initialAmount", initialAmount).append("totalAmount", totalAmount).append("tenure", tenure).append("tenureAmount", tenureAmount).append("dueDate", dueDate).append("balanceAmount", balanceAmount).append("paymentStatus", paymentStatus).append("createdAt", createdAt).append("updatedAt", updatedAt).append("quotationId", quotationId).append("onlineTransactionId", onlineTransactionId).append("student", student).toString();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(id);
+        }
+        parcel.writeString(studentId);
+        parcel.writeString(paymentMode);
+        parcel.writeString(initialAmount);
+        parcel.writeString(totalAmount);
+        parcel.writeString(tenure);
+        parcel.writeString(tenureAmount);
+        parcel.writeString(dueDate);
+        parcel.writeString(balanceAmount);
+        parcel.writeString(paymentStatus);
+        parcel.writeString(createdAt);
+        parcel.writeString(updatedAt);
+        parcel.writeString(quotationId);
+    }
 }

@@ -79,7 +79,11 @@
             tools:replace="android:screenOrientation" />
         <activity android:name=".WebViewPayment" />
         <activity android:name=".CompletePayment" />
-        <activity android:name=".AdmissionProjectActivity"></activity>
+        <activity android:name=".AdmissionProjectActivity" />
+        <activity android:name=".AttendancePage" />
+        <activity android:name=".Activities.AddStudentAttendance" />
+        <activity android:name=".Activities.CreateGroupPage" />
+        <activity android:name=".Activities.AttendancePage"></activity>
     </application>
 
 </manifest>
