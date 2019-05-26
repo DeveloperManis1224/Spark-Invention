@@ -43,6 +43,14 @@ public class StudentGroupCreateAdapter  extends RecyclerView.Adapter<StudentGrou
         return new StudentGroupCreateAdapter.MyViewHolder(contentView);
     }
 
+    public static ArrayList<Student> getObj_arr() {
+        return obj_arr;
+    }
+
+    public static void setObj_arr(ArrayList<Student> obj_arr) {
+        StudentGroupCreateAdapter.obj_arr = obj_arr;
+    }
+
     @Override
     public void onBindViewHolder(final StudentGroupCreateAdapter.MyViewHolder holder, final int position) {
         try {
@@ -53,18 +61,18 @@ public class StudentGroupCreateAdapter  extends RecyclerView.Adapter<StudentGrou
             holder.checkStudent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(holder.checkStudent.isChecked())
-                    {
+                    if (holder.checkStudent.isChecked()) {
+                        obj_arr.get(position).setPresent(true);
                         checkedStudentNames.add(obj_arr.get(position).getName());
-                        checkedStudentIds.add(""+obj_arr.get(position).getId());
-                        Log.e("ADD", "" + obj_arr.get(position).getName()+"---"+obj_arr.get(position).getId());
-                    }
-                    else
-                    {
-                        Log.e("ADD", "" + obj_arr.get(position).getName()+"---"+obj_arr.get(position).getId());
+                        checkedStudentIds.add("" + obj_arr.get(position).getId());
+                        Log.e("ADD", "" + obj_arr.get(position).getName() + "---" + obj_arr.get(position).getId());
+                    } else {
+                        obj_arr.get(position).setPresent(false);
+
+                        Log.e("ADD", "" + obj_arr.get(position).getName() + "---" + obj_arr.get(position).getId());
                         checkedStudentNames.remove(obj_arr.get(position).getName());
-                        checkedStudentIds.remove(""+obj_arr.get(position).getId());
-                       // Log.e("ADD", "" + obj_arr.get(position).getName()+"---"+obj_arr.get(position).getId());
+                        checkedStudentIds.remove("" + obj_arr.get(position).getId());
+                        // Log.e("ADD", "" + obj_arr.get(position).getName()+"---"+obj_arr.get(position).getId());
                     }
                 }
             });
@@ -77,6 +85,18 @@ public class StudentGroupCreateAdapter  extends RecyclerView.Adapter<StudentGrou
     @Override
     public int getItemCount() {
         return obj_arr.size();
+    }
+
+
+    public void addItem(Student data, int position) {
+        obj_arr.add(position, data);
+        notifyItemInserted(position);
+    }
+
+    public void deleteItem(int index)
+    {
+        obj_arr.remove(index);
+        notifyItemRemoved(index);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

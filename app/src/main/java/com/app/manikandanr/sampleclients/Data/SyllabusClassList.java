@@ -4,17 +4,23 @@ package com.app.manikandanr.sampleclients.Data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Country {
+public class SyllabusClassList {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("country")
+    @SerializedName("syllabi_id")
     @Expose
-    private String country;
+    private Integer syllabiId;
+    @SerializedName("class")
+    @Expose
+    private String _class;
+    @SerializedName("hours")
+    @Expose
+    private Integer hours;
     @SerializedName("status")
     @Expose
-    private String status;
+    private Integer status;
     @SerializedName("created_at")
     @Expose
     private Object createdAt;
@@ -30,19 +36,35 @@ public class Country {
         this.id = id;
     }
 
-    public String getCountry() {
-        return country;
+    public Integer getSyllabiId() {
+        return syllabiId;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setSyllabiId(Integer syllabiId) {
+        this.syllabiId = syllabiId;
     }
 
-    public String getStatus() {
+    public String getClass_() {
+        return _class;
+    }
+
+    public void setClass_(String _class) {
+        this._class = _class;
+    }
+
+    public Integer getHours() {
+        return hours;
+    }
+
+    public void setHours(Integer hours) {
+        this.hours = hours;
+    }
+
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

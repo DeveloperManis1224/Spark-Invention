@@ -1,6 +1,7 @@
 package com.app.manikandanr.sampleclients.Data;
 
 public class StudentAlertData {
+    private String id;
     private String studentId;
     private String studentDate ;
     private  String studentSerialNumber;
@@ -44,7 +45,7 @@ public class StudentAlertData {
         this.balanceAmount = balanceAmount;
     }
 
-    public StudentAlertData(String studentId, String studentDate, String studentSerialNumber,
+    public StudentAlertData(String id,String studentId, String studentDate, String studentSerialNumber,
                             String studentName, String studentDob, String studentInstitutionType,
                             String studentCategory, String studentOrganization, String studentPhone,
                             String studentEmail, String studentAddress, String studentCourse) {
@@ -60,8 +61,17 @@ public class StudentAlertData {
         this.studentEmail = studentEmail;
         this.studentAddress = studentAddress;
         this.studentCourse = studentCourse;
+        this.id = id;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getStudentId() {
         return studentId;

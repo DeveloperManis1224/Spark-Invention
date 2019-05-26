@@ -14,10 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,8 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Adapters.StudentAttendanceAdapter;
-import com.app.manikandanr.sampleclients.Adapters.StudentGroupCreateAdapter;
-import com.app.manikandanr.sampleclients.AdmissionForm;
+import com.app.manikandanr.sampleclients.Adapters.StudentGroupViewAdapter;
 import com.app.manikandanr.sampleclients.Data.AttendancePresentData;
 import com.app.manikandanr.sampleclients.Data.GetStudentFilter;
 import com.app.manikandanr.sampleclients.Data.GetStudentFilterClass;
@@ -39,7 +36,6 @@ import com.app.manikandanr.sampleclients.Data.SyllabusClassList;
 import com.app.manikandanr.sampleclients.Data.SyllabusList;
 import com.app.manikandanr.sampleclients.MenuActivity;
 import com.app.manikandanr.sampleclients.R;
-import com.app.manikandanr.sampleclients.SplashScreen;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.app.manikandanr.sampleclients.Utils.SessionManager;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
@@ -52,16 +48,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-public class AttendancePage extends AppCompatActivity {
-
+public class ViewGroupActivity extends AppCompatActivity {
     private Spinner spinSyallabus, spinClass, spinCategory, spinDepartment, spinOrganization, spinYear, spinSection;
     private int syallabus_pos, class_pos, category_pos, department_pos, organization_pos, year_pos, section_pos;
 
     private String instituation_id;
-    private SessionManager sessionManager;
+    private SessionManager sessionManager = new SessionManager();
     private RadioButton radioSchool, radioCollege;
     private RecyclerView listStudents;
     private RecyclerView.LayoutManager lytMgr;
@@ -87,12 +81,12 @@ public class AttendancePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attendance_page_student);
-
+        setContentView(R.layout.activity_view_group);
         initComponent();
-        showFilterAlert();
-
+       // showFilterAlert();
+        getAllStudentList();
     }
+
 
     private void showFilterAlert() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -105,7 +99,6 @@ public class AttendancePage extends AppCompatActivity {
         spinSection = layout11.findViewById(R.id.spinner_section);
         radioSchool = layout11.findViewById(R.id.radio_school);
         radioCollege = layout11.findViewById(R.id.radio_college);
-        sessionManager = new SessionManager();
         instituation_id = Constants.ROLE_SCHOOL;
 
         getCatgories();
@@ -114,7 +107,7 @@ public class AttendancePage extends AppCompatActivity {
         yearList = Constants.getYears();
         sectionList = Constants.getSections();
 
-        spinSection.setAdapter(new ArrayAdapter<String >(AttendancePage.this,
+        spinSection.setAdapter(new ArrayAdapter<String >(ViewGroupActivity.this,
                 android.R.layout.simple_spinner_dropdown_item,sectionList));
         spinYear.setVisibility(View.GONE);
 
@@ -128,7 +121,7 @@ public class AttendancePage extends AppCompatActivity {
                 instituation_id = Constants.ROLE_SCHOOL;
                 getDepartments(instituation_id);
                 getBranchOrganization();
-                spinSection.setAdapter(new ArrayAdapter<String >(AttendancePage.this,
+                spinSection.setAdapter(new ArrayAdapter<String >(ViewGroupActivity.this,
                         android.R.layout.simple_spinner_dropdown_item,sectionList));
                 spinYear.setVisibility(View.GONE);
                 year_pos = 0;
@@ -155,7 +148,7 @@ public class AttendancePage extends AppCompatActivity {
                 getDepartments(instituation_id);
                 spinYear.setVisibility(View.VISIBLE);
                 getBranchOrganization();
-                spinYear.setAdapter(new ArrayAdapter<String >(AttendancePage.this,
+                spinYear.setAdapter(new ArrayAdapter<String >(ViewGroupActivity.this,
                         android.R.layout.simple_spinner_dropdown_item,yearList));
                 spinYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -167,7 +160,7 @@ public class AttendancePage extends AppCompatActivity {
                     public void onNothingSelected(AdapterView<?> adapterView) {
                     }
                 });
-                spinSection.setAdapter(new ArrayAdapter<String >(AttendancePage.this,
+                spinSection.setAdapter(new ArrayAdapter<String >(ViewGroupActivity.this,
                         android.R.layout.simple_spinner_dropdown_item,sectionList));
 
                 spinSection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -222,7 +215,7 @@ public class AttendancePage extends AppCompatActivity {
             }
         });
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(AttendancePage.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ViewGroupActivity.this);
         builder.setView(layout11);
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
@@ -292,6 +285,8 @@ public class AttendancePage extends AppCompatActivity {
         });
     }
 
+
+
     private void getCatgories() {
         categoryIdList.clear();
         categoryList.clear();
@@ -315,13 +310,13 @@ public class AttendancePage extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AttendancePage.this, android.R.layout.simple_spinner_dropdown_item, categoryList);
+                                (ViewGroupActivity.this, android.R.layout.simple_spinner_dropdown_item, categoryList);
                         spinCategory.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AttendancePage.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
         queue.add(stringRequest);
@@ -351,20 +346,20 @@ public class AttendancePage extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AttendancePage.this, android.R.layout.simple_spinner_dropdown_item, branchList);
+                                (ViewGroupActivity.this, android.R.layout.simple_spinner_dropdown_item, branchList);
                         spinOrganization.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AttendancePage.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         })
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("user_id",sessionManager.getPreferences(AttendancePage.this,Constants.USER_ID));
+                params.put("user_id",sessionManager.getPreferences(ViewGroupActivity.this,Constants.USER_ID));
                 params.put("instituation_id",instituation_id);
                 return params;
             }
@@ -396,14 +391,14 @@ public class AttendancePage extends AppCompatActivity {
                         }
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AttendancePage.this, android.R.layout.simple_spinner_dropdown_item, departmentList);
+                                (ViewGroupActivity.this, android.R.layout.simple_spinner_dropdown_item, departmentList);
                         spinDepartment.setAdapter(adapter);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AttendancePage.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -426,77 +421,88 @@ public class AttendancePage extends AppCompatActivity {
         syallabusIdList.add("0");
         syallabusList.add("Select Syallabus");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL+"api/attendance-student-lists";
+        String url = Constants.BASE_URL+"api/attendance-students";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.e("RESPONSE_DATA",""+response);
                         GetStudentFilter studentFilter = new Gson().fromJson(response,GetStudentFilter.class);
-                        if(studentFilter.getStudents().size() == 0)
-                        {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(AttendancePage.this);
-                            builder.setPositiveButton("New Search", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    showFilterAlert();
-                                   dialogInterface.dismiss();
-                                }
-                            });
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                            final AlertDialog dialog = builder.create();
-                            dialog.setMessage("No Students Found for this search");
-                            dialog.setTitle("Student not found");
-                            dialog.setCancelable(true);
-                            dialog.show();
-                            Toast.makeText(AttendancePage.this, "No Students found", Toast.LENGTH_SHORT).show();
+                        if(studentFilter.getStudents().size() == 0) {
+                            Toast.makeText(ViewGroupActivity.this, "No Students", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            StudentAttendanceAdapter adapter = new StudentAttendanceAdapter(studentFilter.getStudents(), "0");
+
+                            StudentGroupViewAdapter adapter = new StudentGroupViewAdapter(studentFilter.getStudents(), Constants.PAGE_FROM_GROUP);
                             listStudents.setAdapter(adapter);
-                            for (SyllabusList str : studentFilter.getSyllabusLists()) {
-                                syallabusList.add(str.getName());
-                                syallabusIdList.add("" + str.getId());
-                            }
-                            spinSyallabus.setAdapter(new ArrayAdapter<String>(AttendancePage.this, android.R.layout.simple_spinner_dropdown_item,
-                                    syallabusList));
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AttendancePage.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id",sessionManager.getPreferences(AttendancePage.this,Constants.USER_ID));
+                params.put("user_id",sessionManager.getPreferences(ViewGroupActivity.this,Constants.USER_ID));
                 params.put("category_id",categoryIdList.get(category_pos));
                 params.put("institude_id",instituation_id);
                 params.put("organization_id",branchIdList.get(organization_pos));
                 params.put("department_id",departmentIdList.get(department_pos));
                 params.put("department_year_id", ""+year_pos);
                 params.put("department_section_id", ""+section_pos);
-
-
-                //USERID 3name JANU dob11/24/90 phone 9484644648 email manshsusjsnsn@hsjsns. contry1 stateid 22 city 27 address trichfhdndbdb ins 1 org9 dep 1 cate 1yeesr : 0 section id :2
-
-
                 Log.e("DeatilsTTTT","catId "+categoryIdList.get(category_pos)+" insId "+instituation_id+" orgId "+branchIdList.get(organization_pos)+
-                " depaId "+departmentIdList.get(department_pos)+" depYear "+year_pos+" sectionId "+section_pos);
-//                params.put("user_id",sessionManager.getPreferences(AttendanceMenuPage.this,Constants.USER_ID));
-//                params.put("category_id","1");
-//                params.put("institude_id","2");
-//                params.put("organization_id","2");
-//                params.put("department_id","1");
-//                params.put("department_year_id", "1");
-//                params.put("department_section_id", "1");
+                        " depaId "+departmentIdList.get(department_pos)+" depYear "+year_pos+" sectionId "+section_pos);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+    }
+
+    private void getAllStudentList() {
+        syallabusIdList.clear();
+        syallabusList.clear();
+        syallabusIdList.add("0");
+        syallabusList.add("Select Syallabus");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Constants.BASE_URL+"api/attendance-students";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE_DATA",""+response);
+                        GetStudentFilter studentFilter = new Gson().fromJson(response,GetStudentFilter.class);
+                        if(studentFilter.getStudents().size() == 0) {
+                            Toast.makeText(ViewGroupActivity.this, "No Students", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            StudentGroupViewAdapter adapter = new StudentGroupViewAdapter(studentFilter.getStudents(), Constants.PAGE_FROM_GROUP);
+                            listStudents.setAdapter(adapter);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE_DATA_ERROR",""+error.getMessage());
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id",sessionManager.getPreferences(ViewGroupActivity.this,Constants.USER_ID));
+                params.put("category_id","0");
+                params.put("institude_id","0");
+                params.put("organization_id","0");
+                params.put("department_id","0");
+                params.put("department_year_id", "0");
+                params.put("department_section_id", "0");
                 return params;
             }
         };
@@ -527,19 +533,19 @@ public class AttendancePage extends AppCompatActivity {
                             classList.add(str.getClass_());
                             classIdList.add(""+str.getId());
                         }
-                        spinClass.setAdapter(new ArrayAdapter<String>(AttendancePage.this,android.R.layout.simple_spinner_dropdown_item,
+                        spinClass.setAdapter(new ArrayAdapter<String>(ViewGroupActivity.this,android.R.layout.simple_spinner_dropdown_item,
                                 classList ));
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AttendancePage.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id",sessionManager.getPreferences(AttendancePage.this,Constants.USER_ID));
+                params.put("user_id",sessionManager.getPreferences(ViewGroupActivity.this,Constants.USER_ID));
                 params.put("category_id",categoryIdList.get(category_pos));
                 params.put("institude_id",instituation_id);
                 params.put("organization_id",branchIdList.get(organization_pos));
@@ -576,7 +582,7 @@ public class AttendancePage extends AppCompatActivity {
                                 student_lists.delete(0,student_lists.length());
                                 studentIds = new StringBuilder();
                                 student_lists = new StringBuilder();
-                                new AwesomeNoticeDialog(AttendancePage.this)
+                                new AwesomeNoticeDialog(ViewGroupActivity.this)
                                         .setTitle("Success!")
                                         .setMessage("Attendance Successfully")
                                         .setColoredCircle(R.color.colorPrimaryDark)
@@ -587,7 +593,7 @@ public class AttendancePage extends AppCompatActivity {
                                         .setNoticeButtonClick(new Closure() {
                                             @Override
                                             public void exec() {
-                                                Intent in =new Intent( AttendancePage.this, MenuActivity.class);
+                                                Intent in =new Intent( ViewGroupActivity.this, MenuActivity.class);
                                                 startActivity(in);
                                                 finish();
                                             }
@@ -596,7 +602,7 @@ public class AttendancePage extends AppCompatActivity {
                             }
                             else
                             {
-                                Toast.makeText(AttendancePage.this, "asda"+data.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ViewGroupActivity.this, "asda"+data.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             Log.v("TTTTTTTTTTT","t "+ e.getMessage());
@@ -607,13 +613,13 @@ public class AttendancePage extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AttendancePage.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id",sessionManager.getPreferences(AttendancePage.this,Constants.USER_ID));
+                params.put("user_id",sessionManager.getPreferences(ViewGroupActivity.this,Constants.USER_ID));
                 params.put("category_id",categoryIdList.get(category_pos));
                 params.put("instituation_id",instituation_id);
                 params.put("organization_id",branchIdList.get(organization_pos));
@@ -633,6 +639,4 @@ public class AttendancePage extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
-
 }
-

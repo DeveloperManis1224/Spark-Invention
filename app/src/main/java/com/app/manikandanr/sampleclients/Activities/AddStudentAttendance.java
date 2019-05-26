@@ -58,7 +58,6 @@ public class AddStudentAttendance extends AppCompatActivity {
     String departmentId;
     String sectionId = "";
     String departmentYear = "";
-
     ArrayList<String> countryList = new ArrayList<>();
     ArrayList<String> countryIdList = new ArrayList<>();
     ArrayList<String> stateList = new ArrayList<>();
@@ -89,8 +88,6 @@ public class AddStudentAttendance extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_student_attendance);
-
-
          sessionManager = new SessionManager();
 //         userRole = getIntent().getExtras().getString(Constants.USER_ROLE_ID);
          school_radio = findViewById(R.id.rad_school);
@@ -100,20 +97,19 @@ public class AddStudentAttendance extends AppCompatActivity {
          phone = findViewById(R.id.txt_phone);
          email = findViewById(R.id.txt_email);
          address = findViewById(R.id.txt_address);
-
          spin_Country = findViewById(R.id.spin_country);
          spin_State = findViewById(R.id.spin_state);
          spin_City = findViewById(R.id.spin_city);
          spin_category = findViewById(R.id.spin_category);
          spin_course = findViewById(R.id.spin_course);
          spin_organization = findViewById(R.id.spin_organization);
-//         spin_standard = findViewById(R.id.spin_standard);
-
          aed_department = findViewById(R.id.spin_department);
          aed_department_year = findViewById(R.id.spin_department_year);
          aed_section  = findViewById(R.id.spin_section);
 
-
+         spin_Country.setVisibility(View.GONE);
+         spin_City.setVisibility(View.GONE);
+         spin_State.setVisibility(View.GONE);
 
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,58 +118,31 @@ public class AddStudentAttendance extends AppCompatActivity {
                         mday).show();
             }
         });
+
         getCountry();
         getCatgories();
-        if(school_radio.isChecked())
-        {
-            departmentList.clear();
-            departmentIdList.clear();
+
+        if(school_radio.isChecked()) {
             getDepartments(Constants.ROLE_SCHOOL);
-            aed_section.setAdapter(new ArrayAdapter<String >(this,
-                    android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+            ArrayList<String> sectionsList = new ArrayList<>();
+            sectionsList.clear();
+            sectionsList = Constants.getSections();
+            aed_section.setAdapter(new ArrayAdapter<String >(this,android.R.layout.simple_spinner_dropdown_item,sectionsList));
             aed_department_year.setVisibility(View.GONE);
-userRole =Constants.ROLE_SCHOOL;
-            departmentYear ="0";
-            getDepartments(Constants.ROLE_SCHOOL);
-
-            aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    sectionId = ""+(i+1);
-                    Log.e("SECTION_ID",""+sectionId);
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
-
-        }
-        else
-        {
-            getDepartments(Constants.ROLE_COLLEGE);
             userRole =Constants.ROLE_SCHOOL;
-            aed_department_year.setAdapter(new ArrayAdapter<String >(this,
-                    android.R.layout.simple_spinner_dropdown_item,Constants.getYears()));
-            aed_department_year.setVisibility(View.VISIBLE);
-            getDepartments(Constants.ROLE_COLLEGE);
-            aed_department_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    departmentYear = ""+(i+1);
-                    Log.e("DEPARTMENT_YEAR",""+departmentYear);
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
-            aed_section.setAdapter(new ArrayAdapter<String >(this,
-                    android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
-
+            organizationList.clear();
+            organizationIdList.clear();
+            getBranchOrganization(userRole);
+            departmentYear ="0";
+            final ArrayList<String> finalSectionsList = sectionsList;
             aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    sectionId = ""+(i+1);
-                    Log.e("SECTION_ID",""+sectionId);
+                    if(!aed_section.getSelectedItem().toString().equalsIgnoreCase(finalSectionsList.get(0)))
+                    {
+                        sectionId = ""+(i-1);
+                        Log.e("SECTION_ID",""+sectionId);
+                    }
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
@@ -185,17 +154,27 @@ userRole =Constants.ROLE_SCHOOL;
             @Override
             public void onClick(View view) {
                 getDepartments(Constants.ROLE_SCHOOL);
+                ArrayList<String> sectionsList = new ArrayList<>();
+                sectionsList.clear();
+                sectionsList = Constants.getSections();
                 aed_section.setAdapter(new ArrayAdapter<String >(AddStudentAttendance.this,
-                        android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
+                        android.R.layout.simple_spinner_dropdown_item,sectionsList));
                 aed_department_year.setVisibility(View.GONE);
                 departmentYear ="0";
-                getDepartments(Constants.ROLE_SCHOOL);
                 userRole =Constants.ROLE_SCHOOL;
+                organizationList.clear();
+                organizationIdList.clear();
+                getBranchOrganization(userRole);
+                final ArrayList<String> finalSectionsList = sectionsList;
                 aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        sectionId = ""+(i+1);
-                        Log.e("SECTION_ID",""+sectionId);
+                        Toast.makeText(AddStudentAttendance.this, "section "+i, Toast.LENGTH_SHORT).show();
+                        if(!aed_section.getSelectedItem().toString().equalsIgnoreCase(finalSectionsList.get(0)))
+                        {
+                            sectionId = ""+(i-1);
+                            Log.e("SECTION_ID",""+sectionId);
+                        }
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -207,29 +186,47 @@ userRole =Constants.ROLE_SCHOOL;
             @Override
             public void onClick(View view) {
                 aed_department_year.setVisibility(View.VISIBLE);
+                departmentList.clear();
+                departmentIdList.clear();
                 getDepartments(Constants.ROLE_COLLEGE);
+                ArrayList<String> sectionsList = new ArrayList<>();
+                ArrayList<String> yearList = new ArrayList<>();
+                sectionsList.clear();
+                yearList.clear();
+                sectionsList = Constants.getSections();
+                yearList = Constants.getYears();
                 aed_department_year.setAdapter(new ArrayAdapter<String >(AddStudentAttendance.this,
-                        android.R.layout.simple_spinner_dropdown_item,Constants.getYears()));
-                userRole =Constants.ROLE_SCHOOL;
-                getDepartments(Constants.ROLE_COLLEGE);
+                        android.R.layout.simple_spinner_dropdown_item,yearList));
+                userRole = Constants.ROLE_COLLEGE;
+                organizationList.clear();
+                organizationIdList.clear();
+                getBranchOrganization(userRole);
+                final ArrayList<String> finalyearList = yearList;
                 aed_department_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        departmentYear = ""+(i+1);
-                        Log.e("DEPARTMENT_YEAR",""+departmentYear);
+                        Toast.makeText(AddStudentAttendance.this, "year "+i, Toast.LENGTH_SHORT).show();
+                        if(!aed_section.getSelectedItem().toString().equalsIgnoreCase(finalyearList.get(0))) {
+                            departmentYear = "";
+                            Log.e("DEPARTMENT_YEAR", "" + departmentYear);
+                        }
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
                     }
                 });
                 aed_section.setAdapter(new ArrayAdapter<String >(AddStudentAttendance.this,
-                        android.R.layout.simple_spinner_dropdown_item,Constants.getSections()));
-
+                        android.R.layout.simple_spinner_dropdown_item,sectionsList));
+                final ArrayList<String> finalSectionsList = sectionsList;
                 aed_section.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        sectionId = ""+(i+1);
-                        Log.e("SECTION_ID",""+sectionId);
+
+                        Toast.makeText(AddStudentAttendance.this, "section "+i, Toast.LENGTH_SHORT).show();
+                        if(!aed_section.getSelectedItem().toString().equalsIgnoreCase(finalSectionsList.get(0))) {
+                            sectionId = "" + (i - 1);
+                            Log.e("SECTION_ID", "" + sectionId);
+                        }
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -237,7 +234,6 @@ userRole =Constants.ROLE_SCHOOL;
                 });
             }
         });
-
         spin_Country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -260,7 +256,6 @@ userRole =Constants.ROLE_SCHOOL;
                     getCity(stateIdList.get(i));
                     state_pos = i;
                 }
-
                 // Log.e("SASASASA", "State ID :   " + stateIdList.get(i));
             }
             @Override
@@ -271,16 +266,12 @@ userRole =Constants.ROLE_SCHOOL;
         spin_City.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                     if(!spin_City.getSelectedItem().toString().equalsIgnoreCase("Select City"))
                     {
-                        getOrganization(cityIdList.get(i));
+                        getBranchOrganization(userRole);
                         city_pos = i;
                         Log.e("SSSSSSSSSS",""+cityIdList.get(i));
                     }
-
-
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -290,92 +281,58 @@ userRole =Constants.ROLE_SCHOOL;
         spin_organization.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!spin_organization.getSelectedItem().toString().equalsIgnoreCase("Select Category"))
+                {
+                  organization_pos = i;
 
-                organization_pos = i;
+                }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
         spin_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!spin_category.getSelectedItem().toString().equalsIgnoreCase("Select Category"))
                 {
-                    getCategoryCourse(categoryIdList.get(i));
-                    category_pos = i;
-
+                    getCategoryCourse (categoryIdList.get(i)) ;
+                    category_pos = i ;
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
         spin_course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                    course_pos = i;
-//                    cost_pos = i;
-//                    Log.e("BALANCE_AMT", courseCatList.get(i) + "///" + courseCatIdList.get(i) + "///" + i + "///" + BalanceAmount);
-//                    try {
-//                        BalanceAmount = costList.get(i);
-//                    } catch (IndexOutOfBoundsException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                    for (int ij = 0; i < costList.size(); i++) {
-//                        Log.e("BALANCE_AMT" + i, costList.get(ij));
-//                    }
-
-                  //  Log.e("BALANCE_AMT", "" + BalanceAmount);
+                    course_pos = i ;
                 }catch (Exception ex)
                 {
                     Log.e("EXCEPTION",""+ex.getMessage());
                 }
             }
-
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
         aed_department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                department_pos = i+1;
-                Log.e("SECTION_ID",""+departmentId);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l){
+                department_pos = i  ;
+                Log.e ("SECTION_ID",""+departmentId);
             }
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> adapterView){
             }
         });
 
-
-
-//        spin_standard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                departmentId = ""+i;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
         cityList.add("Select City");
         stateList.add("Select State");
-        organizationList.add("Select Organization");
+       // organizationList.add("Select Organization");
         courseList.add("Select Course");
-        departmentList.add("Select Department");
-
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                 (AddStudentAttendance.this, android.R.layout.simple_spinner_dropdown_item, cityList);
         spin_City.setAdapter(adapter1);
@@ -388,12 +345,9 @@ userRole =Constants.ROLE_SCHOOL;
         ArrayAdapter<String> adapter4 = new ArrayAdapter<String>
                 (AddStudentAttendance.this, android.R.layout.simple_spinner_dropdown_item, courseList);
         spin_course.setAdapter(adapter4);
-
         ArrayAdapter<String> adapter5 = new ArrayAdapter<String>
                 (AddStudentAttendance.this, android.R.layout.simple_spinner_dropdown_item, departmentList);
         aed_department.setAdapter(adapter5);
-
-
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -415,9 +369,7 @@ userRole =Constants.ROLE_SCHOOL;
         dob.setText(sdf.format(myCalendar.getTime()));
     }
 
-
-    private void createStudent()
-    {
+    private void createStudent(){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/syallabus-student";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -425,12 +377,10 @@ userRole =Constants.ROLE_SCHOOL;
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.v("TTTTTTTTTTT","jghj "+response);
                             LoginResponseData data = new Gson().fromJson(response, LoginResponseData.class);
-                            if(data.getStatus().toString().equalsIgnoreCase(Constants.RESPONSE_SUCCESS))
-                            {
-//                                Calendar c = Calendar.getInstance();
-//                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//                                final String strDate = sdf.format(c.getTime());
+                            Log.v("TTTTTTTTTTT","jghj "+response);
+                            if(data.getStatus().toString().equalsIgnoreCase(Constants.RESPONSE_SUCCESS)){
                                 new AwesomeNoticeDialog(AddStudentAttendance.this)
                                         .setTitle("Success!")
                                         .setMessage("Student added Successfully")
@@ -448,10 +398,8 @@ userRole =Constants.ROLE_SCHOOL;
                                             }
                                         })
                                         .show();
-                                Log.v("TTTTTTTTTTT","jghj   "+response);
                             }
-                            else
-                            {
+                            else{
                                 Toast.makeText(AddStudentAttendance.this, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
@@ -470,19 +418,18 @@ userRole =Constants.ROLE_SCHOOL;
             protected Map<String, String> getParams() throws AuthFailureError {
                 //http://spark.candyrestaurant.com/api/syallabus-student
                 Map<String, String> params = new HashMap<String, String>();
-                Log.e("TTT","USERID "+sessionManager.getPreferences(AddStudentAttendance.this,Constants.USER_ID)+
+                Log.e("DeatilsTTTT","USERID "+sessionManager.getPreferences(AddStudentAttendance.this,Constants.USER_ID)+
                 "name "+name.getText().toString().trim()+" dob"+dob.getText().toString().trim()+" phone "+phone.getText().toString().trim()+
-                " email "+email.getText().toString().trim()+" contry" +countryIdList.get(country_pos)+" stateid "+stateIdList.get(state_pos)+
-                        " cirty "+cityIdList.get(city_pos)+ " address "+address.getText().toString().trim()+" ins "+userRole+" org"+organizationIdList.get(organization_pos)+
-                        " dep "+departmentId+" cate "+categoryIdList.get(category_pos));
+                " email "+email.getText().toString().trim()+" address "+address.getText().toString().trim()+" ins "+userRole+" org"+organizationIdList.get(organization_pos)+
+                        " dep "+departmentIdList.get(department_pos)+" cate "+categoryIdList.get(category_pos)+"yeesr : "+departmentYear+" section id :"+sectionId);
                 params.put("user_id",sessionManager.getPreferences(AddStudentAttendance.this,Constants.USER_ID));
                 params.put("name",name.getText().toString().trim());
                 params.put("dob",dob.getText().toString().trim());
                 params.put("phone",phone.getText().toString().trim());
                 params.put("email",email.getText().toString().trim());
-                params.put("country_id",countryIdList.get(country_pos));
-                params.put("state_id",stateIdList.get(state_pos));
-                params.put("city_id",cityIdList.get(city_pos));
+                params.put("country_id","0");
+                params.put("state_id","0");
+                params.put("city_id","0");
                 params.put("address",address.getText().toString().trim());
                 params.put("instituation_id",userRole);
                 params.put("organization_id",organizationIdList.get(organization_pos));
@@ -491,9 +438,13 @@ userRole =Constants.ROLE_SCHOOL;
                 params.put("department_year_id",departmentYear);
                 params.put("category_id",categoryIdList.get(category_pos));
 
+
+
                 //USERID 2name UVAN dob11/24/90 phone 9865888555 email manisuvan@gmfjm.com contry1
                 // stateid 22 cirty 27 address teggggjbb ins 1 org9 dep null cate 1
-                //
+
+               // USERID 3name ANDREW dob11/07/90 phone 9787845464 email Andrew@Gmail.com contry1 stateid 22 city 27 address Trichy ins 1 org0 dep 2 cate 1
+                //"data":{"instituation_id":"1","organization_id":"9","department_id":"1","department_year_id":"0","department_section_id":"0","category_id":"1","branch_id":"2"}
                 return params;
             }
         };
@@ -503,66 +454,105 @@ userRole =Constants.ROLE_SCHOOL;
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
+    private boolean isValid()
+    {
+        dob.setError(null);
+        boolean val = true;
+        if(name.getText().toString().trim().isEmpty())
+        {
+            val =false;
+            name.setError("Invalid");
+        }
+        else if(dob.getText().toString().trim().isEmpty())
+        {
+            val = false;
+            dob.setError("Invalid");
+        }
+        else if(phone.getText().toString().trim().isEmpty())
+        {
+            val =false;
+            phone.setError("Invalid");
+        }
+        else if(email.getText().toString().trim().isEmpty())
+        {
+            val =false;
+            email.setError("Invalid");
+        }
+        else if(address.getText().toString().trim().isEmpty())
+        {
+            val =false;
+            address.setError("Invalid");
+        }
+        else if(organizationIdList.get(organization_pos).isEmpty() || organizationIdList.get(organization_pos) == null)
+        {
+            val =false;
+            Toast.makeText(this, "Invalid organization", Toast.LENGTH_SHORT).show();
+        }
+        else if(departmentIdList.get(department_pos).isEmpty() || departmentIdList.get(department_pos) == null)
+        {
+            val = false;
+            Toast.makeText(this, "Invalid department", Toast.LENGTH_SHORT).show();
+        }
+        return val;
+    }
 
     public void onClickAddStudentAttendance(View view) {
-        createStudent();
-    }
-
-    private void getOrganization(final String cityId) {
-        organizationIdList.clear();
-        organizationList.clear();
-        organizationList.add("Select Organization");
-        organizationIdList.add("0");
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL+"api/role-organization-lists";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("SSSSS",""+response);
-                        try {
-                            JSONObject jobj = new JSONObject(response);
-                            JSONArray jary = jobj.getJSONArray("organization");
-                            for (int i = 0; i < jary.length(); i++) {
-                                JSONObject jobj1 = jary.getJSONObject(i);
-                                organizationList.add(jobj1.getString("name"));
-                                organizationIdList.add(jobj1.getString("id"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (AddStudentAttendance.this, android.R.layout.simple_spinner_dropdown_item, organizationList);
-                        spin_organization.setAdapter(adapter);
-
-                    }
-
-
-                }, new Response.ErrorListener() {
-
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("EEEEEEE",""+error.getMessage());
-                Toast.makeText(AddStudentAttendance.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
-        })
+        if(isValid())
         {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("city_id",cityId);
-                params.put("role", userRole);
-                return  params;
-            }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(stringRequest);
+            createStudent();
+//            Log.e("TTT","USERID "+sessionManager.getPreferences(AddStudentAttendance.this,Constants.USER_ID)+
+//                    "name "+name.getText().toString().trim()+" dob"+dob.getText().toString().trim()+" phone "+phone.getText().toString().trim()+
+//                    " email "+email.getText().toString().trim()+" contry" +countryIdList.get(country_pos)+" stateid "+stateIdList.get(state_pos)+
+//                    " city "+cityIdList.get(city_pos)+ " address "+address.getText().toString().trim()+" ins "+userRole+" org"+organizationIdList.get(organization_pos)+
+//                    " dep "+departmentIdList.get(department_pos)+" cate "+categoryIdList.get(category_pos));
+        }
+
     }
+
+    private void getBranchOrganization(final String insId) {
+    organizationList.clear();
+    organizationIdList.clear();
+    organizationList.add("Select Organization");
+    organizationIdList.add("0");
+    RequestQueue queue = Volley.newRequestQueue(this);
+    String url = Constants.BASE_URL+"api/branch-organization";
+    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        Log.e("RESPONSE_LIST11","jbjbjkkbk "+response);
+                        JSONObject jobj = new JSONObject(response);
+                        JSONArray jary = jobj.getJSONArray("organizations");
+                        for (int i = 0; i < jary.length(); i++) {
+                            JSONObject jobj1 = jary.getJSONObject(i);
+                            organizationList.add(jobj1.getString("name"));
+                            organizationIdList.add(jobj1.getString("id"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                            (AddStudentAttendance.this, android.R.layout.simple_spinner_dropdown_item, organizationList);
+                    spin_organization.setAdapter(adapter);
+                }
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(AddStudentAttendance.this, "" + error, Toast.LENGTH_SHORT).show();
+        }
+    })
+    {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String, String> params = new HashMap<>();
+            params.put("user_id",sessionManager.getPreferences(AddStudentAttendance.this,Constants.USER_ID));
+            params.put("instituation_id",insId);
+            return params;
+        }
+    };
+    queue.add(stringRequest);
+}
 
     private void getCity(final String stateId) {
         cityList.clear();
@@ -800,8 +790,7 @@ userRole =Constants.ROLE_SCHOOL;
     private void getDepartments(final String institutionId) {
         departmentList.clear();
         departmentIdList.clear();
-        departmentList.add("Select");
-        departmentIdList.add("0");
+
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/institute-department";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -809,12 +798,14 @@ userRole =Constants.ROLE_SCHOOL;
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.v("DepartmentsTTT",""+ response);
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("departments");
                             for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 departmentList.add(jobj1.getString("department"));
                                 departmentIdList.add(jobj1.getString("id"));
+                                Log.v("DepartmentsTTTT",jobj1.getString("department")+""+jobj1.getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -845,6 +836,5 @@ userRole =Constants.ROLE_SCHOOL;
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
-
 
 }

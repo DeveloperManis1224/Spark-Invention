@@ -48,13 +48,10 @@ public class AlertActivity extends AppCompatActivity {
     }
 
     private void getAlertDetails() {
-
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Wait");
         progressDialog.setMessage("Please wait.......");
-
         progressDialog.show();
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/alert";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -63,6 +60,7 @@ public class AlertActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             Log.v("TTTTTTTTTTT",""+ response);
+                            String id = "";
                             String studentId = "";
                             String studentDate = "";
                             String studentSerialNumber = "";
@@ -82,8 +80,11 @@ public class AlertActivity extends AppCompatActivity {
                             for(int i = 0; i< studentArray.length(); i++)
                             {
                                 JSONObject studentObj = studentArray.getJSONObject(i);
+
                                 studentId = studentObj.getString("student_id");
                                 studentDate = studentObj.getString("date");
+                                id = studentObj.getString("id");
+
                                 JSONObject studentDataObject = studentObj.getJSONObject("student");
 
                                 studentSerialNumber = studentDataObject.getString("serial_no");
@@ -100,15 +101,11 @@ public class AlertActivity extends AppCompatActivity {
                                         +studentDataObject.getJSONObject("country").getString("country");
                                 studentCourse = ""+studentDataObject.getJSONObject("course").getString("course");
 
-                                studentDataList.add(new StudentAlertData(studentId,studentDate,studentSerialNumber,studentName,studentDob,studentInstitutionType,
+                                studentDataList.add(new StudentAlertData(id,studentId,studentDate,studentSerialNumber,studentName,studentDob,studentInstitutionType,
                                         studentCategory,studentOrganization,studentPhone,studentEmail,studentAddress,studentCourse));
-
                             }
-
                             JSONArray marketingsList=jobj.getJSONArray("marketings");
-
                             for (int i = 0; i < marketingsList.length(); i++) {
-
                                 JSONObject data = marketingsList.getJSONObject(i);
                                 String instituation_id = data.getJSONObject("organization").getString("name");
                                 String organization_id = data.getString("organization_id");
@@ -183,5 +180,9 @@ public class AlertActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

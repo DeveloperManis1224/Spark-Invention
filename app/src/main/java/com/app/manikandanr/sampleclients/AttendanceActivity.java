@@ -293,6 +293,7 @@ if(isValid())
            @Override
            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                organizationPosition = i;
+               Toast.makeText(AttendanceActivity.this, ""+organizationSpinnerList.get(organizationPosition), Toast.LENGTH_SHORT).show();
            }
 
            @Override
@@ -713,8 +714,8 @@ if(isValid())
                                                 studentOrganization,studentPhone,studentEmail,
                                                 studentAddress,studentCourse,studentPaymentStatus,
                                                 studentAttendanceStatus,studentLastPaymentStatus,studentBalanceAmount));
-                                        StudentAttendanceAdapter dadAdapter = new StudentAttendanceAdapter(studentList);
-                                        listViewStudent.setAdapter(dadAdapter);
+//                                        StudentAttendanceAdapter dadAdapter = new StudentAttendanceAdapter(studentList);
+//                                        listViewStudent.setAdapter(dadAdapter);
                                     }
 //                                    for (int i = 0; i < studentArray.length(); i++) {
 //                                        JSONObject attendanceInfo = studentArray.getJSONObject(i);

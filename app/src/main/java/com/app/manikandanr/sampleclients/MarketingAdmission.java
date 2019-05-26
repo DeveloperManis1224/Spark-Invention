@@ -9,7 +9,9 @@ import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.app.manikandanr.sampleclients.Utils.SessionManager;
 import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeNoticeDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
@@ -39,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -47,7 +53,8 @@ import java.util.Map;
 public class MarketingAdmission extends AppCompatActivity {
 
     String yearSelected;
-    private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eStrength, eInsLandline,eInsAddress, eWebsite;
+    private EditText eInsName,eStaffName,eStaffPhone,eInsMail,eStrength, eInsLandline,eInsAddress,
+            ePrincipalAoName, ePrincipalAoDetails, eOtherDetails, eWebsite;
     private Spinner aeCountry,aeState,aeCity, aeOrganization , aeYear;
     private Spinner sEvent;
     int event_pos =0;
@@ -58,6 +65,8 @@ public class MarketingAdmission extends AppCompatActivity {
     final ArrayList<String> eventList = new ArrayList<String>();
     final ArrayList<String> eventIdList = new ArrayList<String>();
 
+    final ArrayList<String> departmentList = new ArrayList<String>();
+    final ArrayList<String> departmentIdList = new ArrayList<String>();
 
 
     final ArrayList<String> countryIdList = new ArrayList<String>();
@@ -77,6 +86,9 @@ public class MarketingAdmission extends AppCompatActivity {
     ProgressDialog pd = null;
     ArrayList<String> yearlist = new ArrayList<>();
     GpsTracker gpsTracker;
+    private String kmsFromBranch = "";
+
+    SessionManager sessionManager = new SessionManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +96,32 @@ public class MarketingAdmission extends AppCompatActivity {
         setContentView(R.layout.activity_marketing_admission);
        // getDistance();
         initD();
+    }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        double kmInDec = Double.parseDouble(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Toast.makeText(MarketingAdmission.this, "fhgfhfhg "+km, Toast.LENGTH_SHORT).show();
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+        kmsFromBranch = String.valueOf(kmInDec);
+        return Radius * c;
     }
 
     private void initD()
@@ -97,6 +135,9 @@ public class MarketingAdmission extends AppCompatActivity {
         eStaffPhone = findViewById(R.id.edt_staff_phone);
         eInsMail = findViewById(R.id.edt_ins_mail);
         eWebsite = findViewById(R.id.edt_ins_website);
+        ePrincipalAoName = findViewById(R.id.edt_principal_ao_name);
+        ePrincipalAoDetails = findViewById(R.id.edt_principal_ao_details);
+        eOtherDetails = findViewById(R.id.edt_other_details);
         eInsLandline = findViewById(R.id.edt_landline);
         eInsAddress = findViewById(R.id.edt_ins_address);
         aeCountry = findViewById(R.id.edt_country);
@@ -109,6 +150,10 @@ public class MarketingAdmission extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next_marketing);
         userRole = getIntent().getStringExtra("role");
         userRollNo = getIntent().getStringExtra("role_id");
+
+        aeCountry.setVisibility(View.GONE);
+        aeState.setVisibility(View.GONE);
+        aeCity.setVisibility(View.GONE);
         pd = new ProgressDialog(MarketingAdmission.this);
         pd.setMessage("loading");
 
@@ -249,6 +294,9 @@ public class MarketingAdmission extends AppCompatActivity {
                         lat = String.valueOf(location.latitude);
                         lon = String.valueOf(location.longitude);
                         Log.d("Locationasdasd", "my location is Current " + lat+"   "+lon);
+
+                        CalculationByDistance(new LatLng(13.7037843,80.236423),
+                                new LatLng(location.latitude,location.longitude));
                     }
                 });
 
@@ -272,7 +320,7 @@ public class MarketingAdmission extends AppCompatActivity {
         organizationList.add("Select Organization");
         organizationIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL+"api/role-organization-lists";
+        String url = Constants.BASE_URL+"api/branch-organization";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -280,7 +328,7 @@ public class MarketingAdmission extends AppCompatActivity {
                         Log.e("SSSSS",""+response);
                         try {
                             JSONObject jobj = new JSONObject(response);
-                            JSONArray jary = jobj.getJSONArray("organization");
+                            JSONArray jary = jobj.getJSONArray("organizations");
                             for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 organizationList.add(jobj1.getString("name"));
@@ -306,8 +354,11 @@ public class MarketingAdmission extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("city_id",cityId);
-                params.put("role", userRollNo);
+//                params.put("city_id",cityId);
+//                params.put("role", userRollNo);
+                params.put("instituation_id",userRole);
+                params.put("user_id",sessionManager.getPreferences(MarketingAdmission.this,
+                        Constants.USER_ID));
                 return  params;
             }
         };
@@ -318,6 +369,28 @@ public class MarketingAdmission extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    public void setAlertDate(View v)
+    {
+        int mYear, mMonth, mDay;
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MarketingAdmission.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        alertDate = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                        ((TextView)findViewById(R.id.alert_date)).setText("Selected date is "+alertDate+".(Click to change)");
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+        Toast.makeText(MarketingAdmission.this, "Event Confirmed.", Toast.LENGTH_SHORT).show();
+        btnNext.setText("Submit");
+        sts_joinings = "now";
+    }
     public void onMarketingSubmit(View v)
     {
         if(isValid())
@@ -345,32 +418,13 @@ public class MarketingAdmission extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-                        int mYear, mMonth, mDay;
-                        final Calendar c = Calendar.getInstance();
-                        mYear = c.get(Calendar.YEAR);
-                        mMonth = c.get(Calendar.MONTH);
-                        mDay = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(MarketingAdmission.this,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year,
-                                                          int monthOfYear, int dayOfMonth) {
-                                        Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
-                                                (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
-                                        alertDate = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                    }
-                                }, mYear, mMonth, mDay);
-                        datePickerDialog.show();
-                        Toast.makeText(MarketingAdmission.this, "Event Confirmed.", Toast.LENGTH_SHORT).show();
-                        btnNext.setText("Submit");
-                        sts_joinings = "now";
+                        setAlertDate(v);
                     }
                 });
                 btnCollege.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         deleteDialog.dismiss();
-
                         int mYear, mMonth, mDay;
                         final Calendar c = Calendar.getInstance();
                         mYear = c.get(Calendar.YEAR);
@@ -381,8 +435,8 @@ public class MarketingAdmission extends AppCompatActivity {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,
                                                           int monthOfYear, int dayOfMonth) {
-                                        Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
-                                                (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(MarketingAdmission.this, "" + dayOfMonth + "-" +
+//                                                (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
                                         alertDate = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                                     }
                                 }, mYear, mMonth, mDay);
@@ -431,40 +485,25 @@ public class MarketingAdmission extends AppCompatActivity {
                 final AlertDialog dialog = builder.create();
                 dialog.setCancelable(false);
                 dialog.show();
-//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
-//                final EditText et = new EditText(MarketingAdmission.this);
-//                et.setHint("Remarks");
-//
-//                alertDialogBuilder.setView(et);
-//
-//                alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        if(!et.getText().toString().trim().isEmpty())
-//                        {
-//                            insDescrption =et.getText().toString().trim();
-//                            if (isValid()) {
-//                                setInstituationDetails();
-//                            }
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(MarketingAdmission.this, "Please enter remarks...", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//                AlertDialog alertDialog = alertDialogBuilder.create();
-//                alertDialog.show();
             }
             else
                 if (sts_joinings.equalsIgnoreCase("now")) {
                     if (isValid()) {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarketingAdmission.this);
-                        final EditText et = new EditText(MarketingAdmission.this);
-                        et.setHint("Remarks");
 
-                        alertDialogBuilder.setView(et);
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                        final View layout11 = inflater.inflate(R.layout.dialog_admission_alert, null);
+                        final EditText et  = layout11.findViewById(R.id.edt_txt_remarks);
+                        final TextView txtTitle = layout11.findViewById(R.id.title_txt);
+                        final TextView txtMessage = layout11.findViewById(R.id.messga_txt);
+                        txtTitle.setText("Confirmation");
+                        txtMessage.setText("Are you sure want to Submit?\nSchedule Date is : "+alertDate+"\n(Remarks is optional)");
+                        if(layout11.getParent() != null) {
+                            ((ViewGroup)layout11.getParent()).removeView(layout11); // <- fix
+                        }
 
-                        alertDialogBuilder.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                        alertDialog.setView(layout11);
+                        alertDialog.setCancelable(false).setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 if(!et.getText().toString().trim().isEmpty())
                                 {
@@ -478,30 +517,34 @@ public class MarketingAdmission extends AppCompatActivity {
                                 }
                             }
                         });
-                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        alertDialog.setCancelable(true);
                         alertDialog.show();
-
                     }
                 }
-
         }
 
     }
 
-    private float distanceBetween(LatLng latLng1, LatLng latLng2) {
-
-        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
-        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
-
-        loc1.setLatitude(latLng1.latitude);
-        loc1.setLongitude(latLng1.longitude);
-
-        loc2.setLatitude(latLng2.latitude);
-        loc2.setLongitude(latLng2.longitude);
-
-
-        return loc1.distanceTo(loc2);
-    }
+//    private float distanceBetween(LatLng latLng1, LatLng latLng2) {
+//
+//        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+//        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+//
+//        loc1.setLatitude(latLng1.latitude);
+//        loc1.setLongitude(latLng1.longitude);
+//
+//        loc2.setLatitude(latLng2.latitude);
+//        loc2.setLongitude(latLng2.longitude);
+//
+//
+//        return loc1.distanceTo(loc2);
+//    }
 
     private void getCity(final String stateId) {
         cityList.clear();
@@ -692,6 +735,55 @@ public class MarketingAdmission extends AppCompatActivity {
         return locationA.distanceTo(locationB);
     }
 
+    private void getDepartments(final String institutionId) {
+        departmentList.clear();
+        departmentIdList.clear();
+        departmentList.add("Select");
+        departmentIdList.add("0");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Constants.BASE_URL+"api/institute-department";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            JSONArray jary = jobj.getJSONArray("departments");
+                            for (int i = 0; i < jary.length(); i++) {
+                                JSONObject jobj1 = jary.getJSONObject(i);
+                                departmentList.add(jobj1.getString("department"));
+                                departmentIdList.add(jobj1.getString("id"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v("TTTTTTTTTTT",""+ e.getMessage());
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (MarketingAdmission.this, android.R.layout.simple_spinner_dropdown_item, departmentList);
+                        //aed_department.setAdapter(adapter);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MarketingAdmission.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("instituation_id", institutionId);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+    }
+
     private double getAccurateDistance(double latA,double lngA, double latB, double lngB)
     {
         double disVal = 0;
@@ -792,33 +884,44 @@ public class MarketingAdmission extends AppCompatActivity {
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("instituation", eInsName.getText().toString().trim());
-                params.put("instituation_id", userRollNo);
-                params.put("serial_no", "1");
-                params.put("staff_name", eStaffName.getText().toString().trim());
-                params.put("phone", eStaffPhone.getText().toString().trim());
-                params.put("email", eInsMail.getText().toString().trim());
-                params.put("country_id", "1");
-                params.put("state_id", stateIdList.get(state_pos));
-                params.put("city_id", cityIdList.get(city_pos));
-                params.put("organization_id",eInsName.getText().toString().trim());
-//              params.put("organization_id",organizationIdList.get(org_pos));
-                params.put("year", yearSelected);
-                params.put("strength", ""+eStrength.getText().toString().trim());
-                params.put("address", eInsAddress.getText().toString().trim());
-                params.put("landline", eInsLandline.getText().toString().trim());
-                params.put("event_id", eventIdList.get(event_pos));
-                params.put("status", userRollNo);
-                params.put("set_date",alertDate);
-                params.put("next_date",alertDate);
-                params.put("description",insDescrption);
-                params.put("website",eWebsite.getText().toString().trim());
-                params.put("distance","50");
-                params.put("latitude",""+lat);
-                params.put("longitude",""+lon);
-                params.put("join_status","2");
 
+                Map<String, String> params = new HashMap<String, String>();
+                try {
+                    params.put("instituation", eInsName.getText().toString().trim());
+                    params.put("instituation_id", userRollNo);
+                    params.put("serial_no", "1");
+                    params.put("staff_name", eStaffName.getText().toString().trim());
+                    params.put("phone", eStaffPhone.getText().toString().trim());
+                    params.put("email", eInsMail.getText().toString().trim());
+                    params.put("country_id", "0");
+                    params.put("state_id", "0");
+                    params.put("city_id", "0");
+                    params.put("organization_id", eInsName.getText().toString().trim());
+//              params.put("organization_id",organizationIdList.get(org_pos));
+                    params.put("year", yearSelected);
+                    params.put("strength", "" + eStrength.getText().toString().trim());
+                    params.put("address", eInsAddress.getText().toString().trim());
+                    params.put("landline", eInsLandline.getText().toString().trim());
+                    params.put("event_id", eventIdList.get(event_pos));
+                    params.put("status", userRollNo);
+                    params.put("set_date", alertDate);
+                    params.put("demo_date", alertDate);
+                    params.put("next_date", alertDate);
+                    params.put("description", insDescrption);
+                    params.put("website", eWebsite.getText().toString().trim());
+                    params.put("distance", kmsFromBranch);
+                    params.put("latitude", "" + lat);
+                    params.put("longitude", "" + lon);
+                    params.put("join_status", "2");
+                    params.put("department_id", "1");
+                    params.put("principal_ao_name", ePrincipalAoName.getText().toString().trim());
+                    params.put("principal_ao_details", ePrincipalAoDetails.getText().toString().trim());
+                    params.put("other_details", eOtherDetails.getText().toString().trim());
+                    params.put("user_id", sessionManager.getPreferences(MarketingAdmission.this, Constants.USER_ID));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    Log.e("ERROR_MARKETING",""+ex.getMessage());
+                }
                 return params;
 
             }
@@ -838,13 +941,10 @@ public class MarketingAdmission extends AppCompatActivity {
                         try {
                             pd.dismiss();
                             Log.e("RESPONSE111", "" + response);
-
                             JSONObject jsonObject = new JSONObject(response);
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
-                                //Toast.makeText(MarketingAdmission.this, "" + msg, Toast.LENGTH_SHORT).show();
-
                                 new AwesomeNoticeDialog(MarketingAdmission.this)
                                         .setTitle("Success")
                                         .setMessage("Instituation Added Successfully")
@@ -863,18 +963,6 @@ public class MarketingAdmission extends AppCompatActivity {
                                             }
                                         })
                                         .show();
-//                                new AwesomeInfoDialog(getApplicationContext())
-//                                    .setTitle("Success")
-//                                    .setMessage("Instituation Added Successfully")
-//                                    .setColoredCircle(R.color.colorPrimary)
-//                                    .setDialogIconAndColor(R.drawable.ic_success,
-//                                       R.color.white)
-//                                     .setCancelable(true)
-//                                     .show();
-//                                Intent in = new Intent(MarketingAdmission.this,MenuActivity.class);
-//                                startActivity(in);
-//                                finish();
-
                             } else {
                                 Toast.makeText(MarketingAdmission.this, "Submition failed", Toast.LENGTH_SHORT).show();
                             }
@@ -895,29 +983,43 @@ public class MarketingAdmission extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("instituation", eInsName.getText().toString().trim());
-                params.put("instituation_id", userRollNo);
-                params.put("staff_name", eStaffName.getText().toString().trim());
-                params.put("phone", eStaffPhone.getText().toString().trim());
-                params.put("email", eInsMail.getText().toString().trim());
-                params.put("country_id", "1");
-                params.put("state_id", stateIdList.get(state_pos));
-                params.put("city_id", cityIdList.get(city_pos));
-                params.put("organization_id",organizationIdList.get(org_pos));
-                params.put("year", yearSelected);
-                params.put("strength", eStrength.getText().toString().trim());
-                params.put("address", eInsAddress.getText().toString().trim());
-                params.put("landline", eInsLandline.getText().toString().trim());
-                params.put("event_id",eventIdList.get(event_pos));
-                params.put("status", userRollNo);
-                params.put("set_date",alertDate);
-                params.put("next_date",alertDate);
-                params.put("description",insDescrption);
-                params.put("website",eWebsite.getText().toString().trim());
-                params.put("distance","33");
-                params.put("latitude",""+lat);
-                params.put("longitude",""+lon);
-                params.put("join_status","1");
+                try {
+                    params.put("instituation", eInsName.getText().toString().trim());
+                    params.put("instituation_id", userRollNo);
+                    params.put("staff_name", eStaffName.getText().toString().trim());
+                    params.put("phone", eStaffPhone.getText().toString().trim());
+                    params.put("email", eInsMail.getText().toString().trim());
+                    params.put("country_id", "0");
+                    params.put("state_id", "0");
+                    params.put("city_id", "0");
+                    params.put("organization_id",  eInsName.getText().toString().trim());
+                   // params.put("organization_id", organizationIdList.get(org_pos));
+                    params.put("year", yearSelected);
+                    params.put("strength", eStrength.getText().toString().trim());
+                    params.put("address", eInsAddress.getText().toString().trim());
+                    params.put("landline", eInsLandline.getText().toString().trim());
+                    params.put("event_id", eventIdList.get(event_pos));
+                    params.put("status", userRollNo);
+                    params.put("set_date", alertDate);
+                    params.put("demo_date", alertDate);
+                    params.put("next_date", alertDate);
+                    params.put("description", insDescrption);
+                    params.put("website", eWebsite.getText().toString().trim());
+                    params.put("distance", "33");
+                    params.put("latitude", "" + lat);
+                    params.put("longitude", "" + lon);
+                    params.put("join_status", "1");
+                    params.put("department_id", "1");
+                    params.put("principal_ao_name", ePrincipalAoName.getText().toString().trim());
+                    params.put("principal_ao_details", ePrincipalAoDetails.getText().toString().trim());
+                    params.put("other_details", eOtherDetails.getText().toString().trim());
+                    params.put("user_id", sessionManager.getPreferences(MarketingAdmission.this, Constants.USER_ID));
+
+                }catch ( Exception ex)
+                {
+                    ex.printStackTrace();
+                    Log.e("ERROR_MSG",""+ex.getMessage());
+                }
                 return params;
             }
         };
@@ -934,6 +1036,18 @@ public class MarketingAdmission extends AppCompatActivity {
         }
         if (eStaffName.getText().toString().trim().isEmpty()) {
             eStaffName.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
+        if (ePrincipalAoName.getText().toString().trim().isEmpty()) {
+            ePrincipalAoName.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
+        if (ePrincipalAoDetails.getText().toString().trim().isEmpty()) {
+            ePrincipalAoDetails.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
+        if (eOtherDetails.getText().toString().trim().isEmpty()) {
+            eOtherDetails.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
         if (eStaffPhone.getText().toString().trim().isEmpty()) {
@@ -960,18 +1074,18 @@ public class MarketingAdmission extends AppCompatActivity {
             eInsLandline.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
-        if (aeCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")) {
-            Toast.makeText(this, "Invalid Country", Toast.LENGTH_SHORT).show();
-            val = false;
-        }
-        if (aeState.getSelectedItem().toString().equalsIgnoreCase("Select State")) {
-            Toast.makeText(this, "Invalid State", Toast.LENGTH_SHORT).show();
-            val = false;
-        }
-        if (aeCity.getSelectedItem().toString().equalsIgnoreCase("Select City")) {
-            Toast.makeText(this, "Invalid City", Toast.LENGTH_SHORT).show();
-            val = false;
-        }
+//        if (aeCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")) {
+//            Toast.makeText(this, "Invalid Country", Toast.LENGTH_SHORT).show();
+//            val = false;
+//        }
+//        if (aeState.getSelectedItem().toString().equalsIgnoreCase("Select State")) {
+//            Toast.makeText(this, "Invalid State", Toast.LENGTH_SHORT).show();
+//            val = false;
+//        }
+//        if (aeCity.getSelectedItem().toString().equalsIgnoreCase("Select City")) {
+//            Toast.makeText(this, "Invalid City", Toast.LENGTH_SHORT).show();
+//            val = false;
+//        }
         if (sEvent.getSelectedItem().toString().isEmpty()) {
             Toast.makeText(this, "Select one Event", Toast.LENGTH_SHORT).show();
             val = false;

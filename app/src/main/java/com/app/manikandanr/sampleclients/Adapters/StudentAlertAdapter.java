@@ -11,29 +11,47 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.AddItems;
 import com.app.manikandanr.sampleclients.AttendanceActivity;
+import com.app.manikandanr.sampleclients.Data.Alert;
 import com.app.manikandanr.sampleclients.Data.StudentAlertData;
 import com.app.manikandanr.sampleclients.R;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapter.MyViewHolder> {
 
     public static List<StudentAlertData> obj_arr = new ArrayList<>();
+    private String selectedDate = "";
 
     public StudentAlertAdapter(List<StudentAlertData> objs) {
         this.obj_arr = objs;
@@ -68,17 +86,42 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
                     }
                 });
 
+                holder.btnFeedback.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+                        LayoutInflater inflater = (LayoutInflater) holder.lyt_students.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        final View layout11 = inflater.inflate(R.layout.dialog_feed_back,
+                                (ViewGroup) holder.lyt_students.findViewById(R.id.layout_root));
+                       final EditText edtFeedBack = layout11.findViewById(R.id.edt_feedback);
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(holder.lyt_students.getContext());
+                        builder.setView(layout11);
+                        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                if(!edtFeedBack.getText().toString().isEmpty()){
+
+                                }
+                                else {
+                                    Toast.makeText(view.getContext(), "Feedback is Empty!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        final AlertDialog dialog = builder.create();
+                        dialog.setCancelable(false);
+                        dialog.show();
+                    }
+                });
                 holder.lyt_students.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                            LayoutInflater inflater = (LayoutInflater) holder.lyt_students.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                            final View layout11 = inflater.inflate(R.layout.dialog_student_info,
-                                    (ViewGroup) holder.lyt_students.findViewById(R.id.layout_root));
-                            final TextView txtStudentInfo = layout11.findViewById(R.id.student_info);
+                        LayoutInflater inflater = (LayoutInflater) holder.lyt_students.getContext()
+                                .getSystemService(LAYOUT_INFLATER_SERVICE);
+                        final View layout11 = inflater.inflate(R.layout.dialog_student_info,
+                                (ViewGroup) holder.lyt_students.findViewById(R.id.layout_root));
+                        final TextView txtStudentInfo = layout11.findViewById(R.id.student_info);
                         final TextView header = layout11.findViewById(R.id.header);
                         header.setText("Student Details");
-
                         String styledText ="Name :"+obj_arr.get(position).getStudentName()+",<br>"+
                                 "Date of Birth :"+obj_arr.get(position).getStudentDob()+",<br>"+
                                 "Phone :"+obj_arr.get(position).getStudentPhone()+",<br>"+
@@ -101,12 +144,58 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
                             final AlertDialog dialog = builder.create();
                             dialog.setCancelable(false);
                             dialog.show();
-
                     }
                 });
 
+                holder.btnAdmission.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setPositiveButton("Yes,Add to Admission", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                addAction(view,obj_arr.get(position).getId(),"",Constants.STATUS_ADMISSION,"Nothing");
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
 
-
+                            }
+                        });
+                        final AlertDialog dialog = builder.create();
+                        dialog.setCancelable(false);
+                        dialog.setTitle("Confirmation");
+                        dialog.setMessage("Are you sure want to add this student to admission?");
+                        dialog.show();
+                    }
+                });
+                holder.btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setPositiveButton("Yes, Remove", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                addAction(view,obj_arr.get(position).getId(),"",Constants.STATUS_CANCEL,"Nothing");
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        final AlertDialog dialog = builder.create();
+                        dialog.setCancelable(false);
+                        dialog.setTitle("Confirmation");
+                        dialog.setMessage("Are you sure want to remove this student from alert?");
+                        dialog.show();
+                    }
+                });
         } catch (Exception ex) {
             Log.e("ERROR_RECENT", "" + ex.getMessage());
             ex.printStackTrace();
@@ -122,6 +211,7 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
         TextView studentName, studentPhone, studentEmail, studentDate;
         LinearLayout lyt_students;
         ImageButton imgCall ;
+        Button btnFeedback, btnAdmission, btnCancel;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -131,12 +221,61 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
             studentDate = itemView.findViewById(R.id.lyt_txt_date);
             lyt_students = itemView.findViewById(R.id.lyt_student_alert);
             imgCall = itemView.findViewById(R.id.lyt_img_phone);
+            btnFeedback = itemView.findViewById(R.id.btn_feedback);
+            btnAdmission = itemView.findViewById(R.id.btn_admission);
+            btnCancel = itemView.findViewById(R.id.btn_cancel);
         }
     }
 
     public static String getIndianRupee(String value) {
         Format format = NumberFormat.getCurrencyInstance(new Locale("en", "in"));
         return format.format(new BigDecimal(value));
+    }
+
+    private void addAction(final View v, final String alert_student_id, final String date, final String status,
+                            final String description) {
+        RequestQueue queue = Volley.newRequestQueue(v.getContext());
+        String url = Constants.BASE_URL+"api/alert-status";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jobj = new JSONObject(response);
+                            String status = jobj.getString("status");
+                            String msg = jobj.getString("message");
+                            if(status.equalsIgnoreCase("1")){
+                                Toast.makeText(v.getContext(),  msg, Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(v.getContext(), ""+msg, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(v.getContext(), "" + error, Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("join_alert_id",alert_student_id);
+                params.put("date",date);
+                params.put("status",status);
+                params.put("description",description);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
     }
 }
 

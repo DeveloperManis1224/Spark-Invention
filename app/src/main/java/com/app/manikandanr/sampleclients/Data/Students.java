@@ -1,15 +1,11 @@
 
 package com.app.manikandanr.sampleclients.Data;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Students implements Parcelable {
+public class Students {
 
     @SerializedName("id")
     @Expose
@@ -97,19 +93,49 @@ public class Students implements Parcelable {
     private String lastPaymentDate;
     @SerializedName("balance_amount")
     @Expose
-    private String balanceAmount;
+    private Object balanceAmount;
     @SerializedName("deleted_at")
     @Expose
     private Object deletedAt;
-    @SerializedName("payment")
+    @SerializedName("department_section_id")
     @Expose
-    private List<Object> payment = null;
+    private String departmentSectionId;
+    @SerializedName("department_year_id")
+    @Expose
+    private String departmentYearId;
+    @SerializedName("program_id")
+    @Expose
+    private String programId;
+    @SerializedName("user_id")
+    @Expose
+    private String userId;
+    @SerializedName("parent_name")
+    @Expose
+    private String parentName;
+    @SerializedName("parent_occupation")
+    @Expose
+    private String parentOccupation;
+    @SerializedName("parent_phone")
+    @Expose
+    private String parentPhone;
+    @SerializedName("student_image")
+    @Expose
+    private String studentImage;
+    @SerializedName("bill_no")
+    @Expose
+    private String billNo;
     @SerializedName("course")
     @Expose
     private Course course;
+    @SerializedName("category")
+    @Expose
+    private Category category;
     @SerializedName("alert")
     @Expose
-    private Alert alert;
+    private Object alert;
+    @SerializedName("payment")
+    @Expose
+    private List<Object> payment = null;
     @SerializedName("city")
     @Expose
     private City city;
@@ -119,97 +145,18 @@ public class Students implements Parcelable {
     @SerializedName("country")
     @Expose
     private Country country;
-
-    protected Students(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readInt();
-        }
-        serialNo = in.readString();
-        name = in.readString();
-        dob = in.readString();
-        instituationId = in.readString();
-        organizationId = in.readString();
-        categoryId = in.readString();
-        phone = in.readString();
-        email = in.readString();
-        countryId = in.readString();
-        stateId = in.readString();
-        cityId = in.readString();
-        address = in.readString();
-        courseId = in.readString();
-        role = in.readString();
-        joinStatus = in.readString();
-        orgDiscountType = in.readString();
-        orgDiscount = in.readString();
-        courseDiscountType = in.readString();
-        courseDiscount = in.readString();
-        overallDiscount = in.readString();
-        calcAmount = in.readString();
-        status = in.readString();
-        createdAt = in.readString();
-        updatedAt = in.readString();
-        departmentId = in.readString();
-        paymentStatus = in.readString();
-        lastPaymentDate = in.readString();
-        balanceAmount = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(id);
-        }
-        dest.writeString(serialNo);
-        dest.writeString(name);
-        dest.writeString(dob);
-        dest.writeString(instituationId);
-        dest.writeString(organizationId);
-        dest.writeString(categoryId);
-        dest.writeString(phone);
-        dest.writeString(email);
-        dest.writeString(countryId);
-        dest.writeString(stateId);
-        dest.writeString(cityId);
-        dest.writeString(address);
-        dest.writeString(courseId);
-        dest.writeString(role);
-        dest.writeString(joinStatus);
-        dest.writeString(orgDiscountType);
-        dest.writeString(orgDiscount);
-        dest.writeString(courseDiscountType);
-        dest.writeString(courseDiscount);
-        dest.writeString(overallDiscount);
-        dest.writeString(calcAmount);
-        dest.writeString(status);
-        dest.writeString(createdAt);
-        dest.writeString(updatedAt);
-        dest.writeString(departmentId);
-        dest.writeString(paymentStatus);
-        dest.writeString(lastPaymentDate);
-        dest.writeString(balanceAmount);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Students> CREATOR = new Creator<Students>() {
-        @Override
-        public Students createFromParcel(Parcel in) {
-            return new Students(in);
-        }
-
-        @Override
-        public Students[] newArray(int size) {
-            return new Students[size];
-        }
-    };
+    @SerializedName("organization")
+    @Expose
+    private Organization organization;
+    @SerializedName("department")
+    @Expose
+    private Department department;
+    @SerializedName("branch")
+    @Expose
+    private Object branch;
+    @SerializedName("user")
+    @Expose
+    private User user;
 
     public Integer getId() {
         return id;
@@ -435,11 +382,11 @@ public class Students implements Parcelable {
         this.lastPaymentDate = lastPaymentDate;
     }
 
-    public String getBalanceAmount() {
+    public Object getBalanceAmount() {
         return balanceAmount;
     }
 
-    public void setBalanceAmount(String balanceAmount) {
+    public void setBalanceAmount(Object balanceAmount) {
         this.balanceAmount = balanceAmount;
     }
 
@@ -451,12 +398,76 @@ public class Students implements Parcelable {
         this.deletedAt = deletedAt;
     }
 
-    public List<Object> getPayment() {
-        return payment;
+    public String getDepartmentSectionId() {
+        return departmentSectionId;
     }
 
-    public void setPayment(List<Object> payment) {
-        this.payment = payment;
+    public void setDepartmentSectionId(String departmentSectionId) {
+        this.departmentSectionId = departmentSectionId;
+    }
+
+    public String getDepartmentYearId() {
+        return departmentYearId;
+    }
+
+    public void setDepartmentYearId(String departmentYearId) {
+        this.departmentYearId = departmentYearId;
+    }
+
+    public String getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(String programId) {
+        this.programId = programId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public String getParentOccupation() {
+        return parentOccupation;
+    }
+
+    public void setParentOccupation(String parentOccupation) {
+        this.parentOccupation = parentOccupation;
+    }
+
+    public String getParentPhone() {
+        return parentPhone;
+    }
+
+    public void setParentPhone(String parentPhone) {
+        this.parentPhone = parentPhone;
+    }
+
+    public String getStudentImage() {
+        return studentImage;
+    }
+
+    public void setStudentImage(String studentImage) {
+        this.studentImage = studentImage;
+    }
+
+    public String getBillNo() {
+        return billNo;
+    }
+
+    public void setBillNo(String billNo) {
+        this.billNo = billNo;
     }
 
     public Course getCourse() {
@@ -467,12 +478,28 @@ public class Students implements Parcelable {
         this.course = course;
     }
 
-    public Alert getAlert() {
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Object getAlert() {
         return alert;
     }
 
-    public void setAlert(Alert alert) {
+    public void setAlert(Object alert) {
         this.alert = alert;
+    }
+
+    public List<Object> getPayment() {
+        return payment;
+    }
+
+    public void setPayment(List<Object> payment) {
+        this.payment = payment;
     }
 
     public City getCity() {
@@ -499,9 +526,36 @@ public class Students implements Parcelable {
         this.country = country;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("serialNo", serialNo).append("name", name).append("dob", dob).append("instituationId", instituationId).append("organizationId", organizationId).append("categoryId", categoryId).append("phone", phone).append("email", email).append("countryId", countryId).append("stateId", stateId).append("cityId", cityId).append("address", address).append("courseId", courseId).append("role", role).append("joinStatus", joinStatus).append("orgDiscountType", orgDiscountType).append("orgDiscount", orgDiscount).append("courseDiscountType", courseDiscountType).append("courseDiscount", courseDiscount).append("overallDiscount", overallDiscount).append("calcAmount", calcAmount).append("status", status).append("createdAt", createdAt).append("updatedAt", updatedAt).append("departmentId", departmentId).append("paymentStatus", paymentStatus).append("lastPaymentDate", lastPaymentDate).append("balanceAmount", balanceAmount).append("deletedAt", deletedAt).append("payment", payment).append("course", course).append("alert", alert).append("city", city).append("state", state).append("country", country).toString();
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Object getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Object branch) {
+        this.branch = branch;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

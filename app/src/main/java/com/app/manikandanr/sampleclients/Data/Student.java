@@ -1,9 +1,12 @@
+
 package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Student {
+
+    private boolean isPresent=false;
 
     @SerializedName("id")
     @Expose
@@ -25,46 +28,46 @@ public class Student {
     private String email;
     @SerializedName("country_id")
     @Expose
-    private String countryId;
+    private Integer countryId;
     @SerializedName("state_id")
     @Expose
-    private String stateId;
+    private Integer stateId;
     @SerializedName("city_id")
     @Expose
-    private String cityId;
+    private Integer cityId;
     @SerializedName("address")
     @Expose
     private String address;
     @SerializedName("instituation_id")
     @Expose
-    private String instituationId;
+    private Integer instituationId;
     @SerializedName("organization_id")
     @Expose
-    private String organizationId;
+    private Integer organizationId;
     @SerializedName("department_id")
     @Expose
-    private String departmentId;
+    private Integer departmentId;
     @SerializedName("category_id")
     @Expose
-    private String categoryId;
+    private Integer categoryId;
     @SerializedName("branch_id")
     @Expose
-    private String branchId;
+    private Integer branchId;
     @SerializedName("payment")
     @Expose
-    private String payment;
+    private Integer payment;
     @SerializedName("payment_status")
     @Expose
-    private String paymentStatus;
+    private Integer paymentStatus;
     @SerializedName("status")
     @Expose
-    private String status;
+    private Integer status;
     @SerializedName("department_section_id")
     @Expose
-    private String departmentSectionId;
+    private Integer departmentSectionId;
     @SerializedName("department_year_id")
     @Expose
-    private String departmentYearId;
+    private Integer departmentYearId;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -74,6 +77,15 @@ public class Student {
     @SerializedName("category")
     @Expose
     private Category category;
+    @SerializedName("department")
+    @Expose
+    private Department department;
+    @SerializedName("organization")
+    @Expose
+    private Organization organization;
+    @SerializedName("branch")
+    @Expose
+    private Branch branch;
     @SerializedName("city")
     @Expose
     private City city;
@@ -83,15 +95,6 @@ public class Student {
     @SerializedName("country")
     @Expose
     private Country country;
-    @SerializedName("organization")
-    @Expose
-    private Organization organization;
-    @SerializedName("department")
-    @Expose
-    private Department department;
-    @SerializedName("branch")
-    @Expose
-    private Branch branch;
 
     public Integer getId() {
         return id;
@@ -141,27 +144,27 @@ public class Student {
         this.email = email;
     }
 
-    public String getCountryId() {
+    public Integer getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(String countryId) {
+    public void setCountryId(Integer countryId) {
         this.countryId = countryId;
     }
 
-    public String getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
-    public void setStateId(String stateId) {
+    public void setStateId(Integer stateId) {
         this.stateId = stateId;
     }
 
-    public String getCityId() {
+    public Integer getCityId() {
         return cityId;
     }
 
-    public void setCityId(String cityId) {
+    public void setCityId(Integer cityId) {
         this.cityId = cityId;
     }
 
@@ -173,83 +176,83 @@ public class Student {
         this.address = address;
     }
 
-    public String getInstituationId() {
+    public Integer getInstituationId() {
         return instituationId;
     }
 
-    public void setInstituationId(String instituationId) {
+    public void setInstituationId(Integer instituationId) {
         this.instituationId = instituationId;
     }
 
-    public String getOrganizationId() {
+    public Integer getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(String organizationId) {
+    public void setOrganizationId(Integer organizationId) {
         this.organizationId = organizationId;
     }
 
-    public String getDepartmentId() {
+    public Integer getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(String departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
 
-    public String getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
-    public String getBranchId() {
+    public Integer getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(String branchId) {
+    public void setBranchId(Integer branchId) {
         this.branchId = branchId;
     }
 
-    public String getPayment() {
+    public Integer getPayment() {
         return payment;
     }
 
-    public void setPayment(String payment) {
+    public void setPayment(Integer payment) {
         this.payment = payment;
     }
 
-    public String getPaymentStatus() {
+    public Integer getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(Integer paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public String getDepartmentSectionId() {
+    public Integer getDepartmentSectionId() {
         return departmentSectionId;
     }
 
-    public void setDepartmentSectionId(String departmentSectionId) {
+    public void setDepartmentSectionId(Integer departmentSectionId) {
         this.departmentSectionId = departmentSectionId;
     }
 
-    public String getDepartmentYearId() {
+    public Integer getDepartmentYearId() {
         return departmentYearId;
     }
 
-    public void setDepartmentYearId(String departmentYearId) {
+    public void setDepartmentYearId(Integer departmentYearId) {
         this.departmentYearId = departmentYearId;
     }
 
@@ -277,6 +280,30 @@ public class Student {
         this.category = category;
     }
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
     public City getCity() {
         return city;
     }
@@ -301,27 +328,11 @@ public class Student {
         this.country = country;
     }
 
-    public Organization getOrganization() {
-        return organization;
+    public boolean isPresent() {
+        return isPresent;
     }
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public Branch getBranch() {
-        return branch;
-    }
-
-    public void setBranch(Branch branch) {
-        this.branch = branch;
+    public void setPresent(boolean present) {
+        isPresent = present;
     }
 }

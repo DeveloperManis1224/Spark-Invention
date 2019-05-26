@@ -52,7 +52,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
                     android:fontFamily="@font/poppinsmedium"
                     android:padding="10dp"
                     android:text="Student Information"
@@ -63,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/lyt_project_program"
-                    android:layout_marginBottom="10dp"
+
                     android:visibility="gone"
                     android:orientation="vertical">
                     <TextView
@@ -97,13 +96,20 @@
                     </RadioGroup>
                 </LinearLayout>
 
-
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/edt_border"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/image_icon"
+                    android:id="@+id/img_profile"/>
 
                 <EditText
                     android:id="@+id/edt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edt_border"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppinsmedium"
                     android:hint="Enter Name"
                     android:imeOptions="actionNext"
@@ -120,7 +126,6 @@
                     android:clickable="true"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/poppinsmedium"
-
                     android:hint="Enter Date of Birth"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
@@ -135,7 +140,6 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-
                     android:hint="Enter Phone"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
@@ -155,7 +159,45 @@
                     android:inputType="textEmailAddress"
                     android:padding="5dp"
                     android:singleLine="true" />
-
+                <EditText
+                    android:id="@+id/edt_parent_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:hint="Enter Parent Name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
+                    android:maxLength="20"
+                    android:padding="5dp"
+                    android:singleLine="true" />
+                <EditText
+                    android:id="@+id/edt_parent_occupation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="20"
+                    android:background="@drawable/edt_border"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:hint="Enter Parent Occupation"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
+                    android:padding="5dp"
+                    android:singleLine="true" />
+                <EditText
+                    android:id="@+id/edt_parent_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edt_border"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:hint="Enter Parent Phone"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:padding="5dp"
+                    android:singleLine="true" />
                 <Spinner
                     android:id="@+id/edt_country"
                     android:layout_width="match_parent"
@@ -185,11 +227,27 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edt_border"
                     android:fontFamily="@font/poppinsmedium"
-
                     android:hint="Enter City"
                     android:inputType="textCapSentences"
                     android:singleLine="true" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:gravity="right"
+
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="14sp"
+                        android:onClick="onClickAddOrganization"
+                        android:text="Add Organization"/>
+                </LinearLayout>
                 <Spinner
                     android:id="@+id/edt_college"
                     android:layout_width="match_parent"
@@ -323,8 +381,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="right"
+                    android:visibility="gone"
                     android:padding="5dp"
-                    android:text=""
+                    android:text="HHHHHHHH"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -388,7 +447,6 @@
                         android:layout_marginBottom="50dp"
                         android:padding="5dp" />
 
-
                     <Button
                         android:id="@+id/btn_next"
                         android:layout_width="match_parent"
@@ -397,7 +455,7 @@
                         android:drawableRight="@drawable/next_arrow"
                         android:elevation="2dp"
                         android:fontFamily="@font/poppinsmedium"
-                        android:onClick="onNextClick"
+
                         android:padding="10dp"
                         android:text="Next"
                         android:textAllCaps="false"

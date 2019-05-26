@@ -1,9 +1,11 @@
+
 package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Department {
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -70,4 +72,5 @@ public class Department {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

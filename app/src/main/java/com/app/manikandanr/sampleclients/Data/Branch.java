@@ -1,9 +1,11 @@
+
 package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Branch {
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -12,7 +14,7 @@ public class Branch {
     private String name;
     @SerializedName("status")
     @Expose
-    private String status;
+    private Integer status;
     @SerializedName("created_at")
     @Expose
     private Object createdAt;
@@ -36,11 +38,11 @@ public class Branch {
         this.name = name;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -59,4 +61,5 @@ public class Branch {
     public void setUpdatedAt(Object updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

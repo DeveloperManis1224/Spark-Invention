@@ -1,11 +1,19 @@
 package com.app.manikandanr.sampleclients;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -39,6 +48,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,14 +73,16 @@ public class AdmissionForm extends AppCompatActivity {
     String org_dis = "";
     String course_dis_type = "";
     String course_dis = "";
-
+    SessionManager sessionManager = new SessionManager();
     String programId;
-
+    String imageData = "";
     String sectionId;
     String departmentId;
     String departmentYear;
     //for project and program admission only
     LinearLayout lyt_project_program;
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
     private RadioButton rad_joinNow, rad_joinLater, radSchool,radCollege;
 
@@ -79,7 +91,8 @@ public class AdmissionForm extends AppCompatActivity {
     private TextView tCouseCost,tGetOffer, offerAvailable;
     private String userRollNo = "";
     private String role = "";
-    private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress;
+    private EditText edtName, edtDob, edtPhone, edtEmail, edtAddress , edtParentName, edtParentPhone,
+            edtParentOccupation;
     private Spinner aedtCountry, aedtState, aedtCity,edtCollege, aedtCourse
             ,category_course,aed_department_year, aed_department, aed_section;
     final ArrayList<String> costList = new ArrayList<String>();
@@ -97,14 +110,15 @@ public class AdmissionForm extends AppCompatActivity {
     final ArrayList<String> courseCatIdList = new ArrayList<String>();
     final ArrayList<String> departmentList = new ArrayList<String>();
     final ArrayList<String> departmentIdList = new ArrayList<String>();
-
+    ImageView imgProfile;
     int department_pos;
-
-
     StringBuilder offerDetails_join = new StringBuilder();
     Calendar myCalendar = Calendar.getInstance();
+    Calendar myCalendar1 = Calendar.getInstance();
     ProgressDialog pd = null;
     TextView laterDate ;
+    private Button btnNext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,9 +132,15 @@ public class AdmissionForm extends AppCompatActivity {
         edtPhone = findViewById(R.id.edt_phone);
         edtCollege = findViewById(R.id.edt_college);
         edtEmail = findViewById(R.id.edt_email);
+        edtParentName = findViewById(R.id.edt_parent_name);
+        edtParentOccupation = findViewById(R.id.edt_parent_occupation);
+        edtParentPhone = findViewById(R.id.edt_parent_phone);
         aedtCountry = findViewById(R.id.edt_country);
         aedtState = findViewById(R.id.edt_state);
         aedtCity = findViewById(R.id.edt_city);
+        aedtCountry.setVisibility(View.GONE);
+        aedtState.setVisibility(View.GONE);
+        aedtCity.setVisibility(View.GONE);
         aed_department = findViewById(R.id.edt_department);
         aed_department_year = findViewById(R.id.edt_department_year);
         aed_section = findViewById(R.id.edt_department_section);
@@ -135,9 +155,35 @@ public class AdmissionForm extends AppCompatActivity {
         lyt_project_program = findViewById(R.id.lyt_project_program);
         tGetOffer = findViewById(R.id.txt_get_offer);
         category_course = findViewById(R.id.edt_cat_course);
+        btnNext = findViewById(R.id.btn_next);
         userRollNo = getIntent().getStringExtra(Constants.USER_ROLE_ID);
 
         laterDate = findViewById(R.id.edt_later_date);
+
+        imgProfile = findViewById(R.id.img_profile);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNextClick();
+            }
+        });
+
+        imgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                    {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                    }
+                    else
+                    {
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    }
+                }
+            }
+        });
 
         if(rad_joinNow.isChecked())
         {
@@ -177,9 +223,9 @@ public class AdmissionForm extends AppCompatActivity {
         laterDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               int yy =  myCalendar.get(Calendar.YEAR);
-               int mm =  myCalendar.get(Calendar.MONTH);
-                int dd =  myCalendar.get(Calendar.DAY_OF_MONTH);
+               int yy =  myCalendar1.get(Calendar.YEAR);
+               int mm =  myCalendar1.get(Calendar.MONTH);
+                int dd =  myCalendar1.get(Calendar.DAY_OF_MONTH);
                 new DatePickerDialog(AdmissionForm.this, dateLater, yy, mm,
                         dd).show();
             }
@@ -194,6 +240,7 @@ public class AdmissionForm extends AppCompatActivity {
         tGetOffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 getOffers();
             }
         });
@@ -239,13 +286,11 @@ public class AdmissionForm extends AppCompatActivity {
 //                {
                     if(!aedtCity.getSelectedItem().toString().equalsIgnoreCase("Select City"))
                     {
-                        getOrganization(cityIdList.get(i));
+                        //getOrganization(cityIdList.get(i));
                         city_pos = i;
                         Log.e("SSSSSSSSSS",""+cityIdList.get(i));
                     }
 //                }
-
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -257,7 +302,8 @@ public class AdmissionForm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!edtCollege.getSelectedItem().toString().equalsIgnoreCase("Select Organization"))
                 {
-                    orgPosition = i+1;
+                    orgPosition = i;
+                    //Toast.makeText(AdmissionForm.this, ""+collegeList.get(orgPosition), Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -327,7 +373,7 @@ public class AdmissionForm extends AppCompatActivity {
 
         cityList.add("Select City");
         stateList.add("Select State");
-        collegeList.add("Select Organization");
+        //collegeList.add("Select Organization");
         courseCatList.add("Select Course");
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
@@ -345,6 +391,39 @@ public class AdmissionForm extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_PERMISSION_CODE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+            else
+            {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK)
+        {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            imgProfile.setImageBitmap(photo);
+            imageData  = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
+    }
 
     private void startInitalize()
     {
@@ -484,6 +563,7 @@ public class AdmissionForm extends AppCompatActivity {
                         public void onNothingSelected(AdapterView<?> adapterView) {
                         }
                     });
+                    getOrganization("string");
                 }
             });
             radCollege.setOnClickListener(new View.OnClickListener() {
@@ -520,9 +600,12 @@ public class AdmissionForm extends AppCompatActivity {
                         public void onNothingSelected(AdapterView<?> adapterView) {
                         }
                     });
+                    getOrganization("string");
                 }
             });
         }
+
+        getOrganization("string");
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -556,9 +639,10 @@ public class AdmissionForm extends AppCompatActivity {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         edtDob.setText(sdf.format(myCalendar.getTime()));
+        edtDob.setError(null);
     }
 
-    public void onNextClick(View view) {
+    public void onNextClick() {
         if(isValid()) {
 
             uploadStudentInfo();
@@ -657,6 +741,18 @@ public class AdmissionForm extends AppCompatActivity {
             edtDob.setError(getResources().getString(R.string.error_msg));
             val = false;
         }
+        if (edtParentName.getText().toString().trim().isEmpty()) {
+            edtParentName.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
+        if (edtParentOccupation.getText().toString().trim().isEmpty()) {
+            edtParentOccupation.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
+        if (edtParentPhone.getText().toString().trim().isEmpty()) {
+            edtParentPhone.setError(getResources().getString(R.string.error_msg));
+            val = false;
+        }
         if (edtPhone.getText().toString().trim().isEmpty()) {
             edtPhone.setError(getResources().getString(R.string.error_msg));
             val = false;
@@ -693,6 +789,12 @@ public class AdmissionForm extends AppCompatActivity {
                 laterDate.setError("Select Date");
             }
         }
+        
+        if(imageData.isEmpty() || imageData.equalsIgnoreCase(""))
+        {
+            val = false;
+            Toast.makeText(AdmissionForm.this, "Invalid student Image", Toast.LENGTH_SHORT).show();
+        }
         return val;
     }
 
@@ -702,7 +804,8 @@ public class AdmissionForm extends AppCompatActivity {
         collegeList.add("Select Organization");
         collegeIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL+"api/role-organization-lists";
+       // String url = Constants.BASE_URL+"api/role-organization-lists";
+        String url = Constants.BASE_URL+"api/branch-organization";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -710,7 +813,7 @@ public class AdmissionForm extends AppCompatActivity {
                         Log.e("SSSSS",""+response);
                         try {
                             JSONObject jobj = new JSONObject(response);
-                            JSONArray jary = jobj.getJSONArray("organization");
+                            JSONArray jary = jobj.getJSONArray("organizations");
                             for (int i = 0; i < jary.length(); i++) {
                                 JSONObject jobj1 = jary.getJSONObject(i);
                                 collegeList.add(jobj1.getString("name"));
@@ -740,8 +843,10 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("city_id",cityId);
-                params.put("role", role);
+//                params.put("city_id",cityId);
+//                params.put("role", role);
+                params.put("instituation_id", role);
+                params.put("user_id",sessionManager.getPreferences(AdmissionForm.this,Constants.USER_ID));
                 return  params;
             }
         };
@@ -919,16 +1024,10 @@ public class AdmissionForm extends AppCompatActivity {
                                 countryList.add(cuntry);
                                 countryIdList.add(id);
                             }
-
                         } catch (JSONException e) {
                             Log.v("TTTTTTTTTTT",""+ e.getMessage());
                             e.printStackTrace();
                         }
-
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                                (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, courseList);
-//                        aedtCourse.setAdapter(adapter);
-
                         ArrayAdapter<String> countryAdapt = new ArrayAdapter<String>
                 (AdmissionForm.this, android.R.layout.simple_spinner_dropdown_item, countryList);
         aedtCountry.setAdapter(countryAdapt);
@@ -946,7 +1045,7 @@ public class AdmissionForm extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    //Join Now
+    String value = "";
     private void uploadStudentInfo() {
         pd.show();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -962,20 +1061,41 @@ public class AdmissionForm extends AppCompatActivity {
                             String sts = jsonObject.getString("status");
                             String msg = jsonObject.getString("message");
                             if (sts.equalsIgnoreCase("1")) {
-                                Toast.makeText(AdmissionForm.this, "" + msg,
-                                        Toast.LENGTH_SHORT).show();
-                                JSONObject jobj =jsonObject.getJSONObject("student");
-                                String studentId = jobj.getString("id");
+
+                                JSONObject jobj = jsonObject.getJSONObject("student");
+
+                                String studentName = jobj.getString("name");
+                                final String serialNumber = jobj.getString("serial_no");
+                                String billNumber = jobj.getString("bill_no");
+                                String amountPaid = jobj.getString("calc_amount");
+
+                                value = "Student Name  : " + studentName + "\n" +
+                                        "Serial Number : " + serialNumber + "\n" +
+                                        "Bill Number   : " + billNumber + "\n" +
+//                                        "Payment Method:  CASH\n" +
+                                        "Amount Paid   : " + amountPaid;
+                                final String studentId = jobj.getString("id");
                                 if(rad_joinNow.isChecked()) {
-
-                                    Intent in = new Intent(AdmissionForm.this,
-                                            PaymentStatus.class);
-                                    in.putExtra("cost", BalanceAmount);
-                                    in.putExtra("stud_id", studentId);
-
-                                    Log.e("RESPONSE111", studentId + "" + tCouseCost.getText().toString().trim());
-                                    startActivity(in);
-                                    finish();
+                                    new AwesomeNoticeDialog(AdmissionForm.this)
+                                            .setTitle("Success!")
+                                            .setMessage(msg)
+                                            .setColoredCircle(R.color.colorPrimaryDark)
+                                            .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                                            .setCancelable(true)
+                                            .setButtonText("Ok")
+                                            .setButtonBackgroundColor(R.color.black)
+                                            .setNoticeButtonClick(new Closure() {
+                                                @Override
+                                                public void exec() {
+                                                    Intent in =new Intent( AdmissionForm.this, ViewBill.class);
+                                                    in.putExtra("detail", "" + value);
+                                                    in.putExtra("stud_id", studentId);
+                                                    in.putExtra("reg_num", serialNumber);
+                                                    startActivity(in);
+                                                    finish();
+                                                }
+                                            })
+                                            .show();
                                 }
                                 else
                                 {
@@ -997,13 +1117,15 @@ public class AdmissionForm extends AppCompatActivity {
                                             })
                                             .show();
                                 }
-
-
-
-
                             } else {
-                                Toast.makeText(AdmissionForm.this, "Submition failed",
-                                        Toast.LENGTH_SHORT).show();
+                                if(msg.equalsIgnoreCase("Already Inserted"))
+                                {
+                                    Toast.makeText(AdmissionForm.this, ""+msg, Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(AdmissionForm.this, "Submition failed ",
+                                            Toast.LENGTH_SHORT).show();
+                                }
                             }
 
 
@@ -1015,138 +1137,53 @@ public class AdmissionForm extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pd.dismiss();
-                Toast.makeText(AdmissionForm.this, "" + error,
+                Toast.makeText(AdmissionForm.this, "Couldn't connect to server" ,
                         Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id",new SessionManager().getPreferences(AdmissionForm.this,Constants.USER_ID));
+                params.put("user_id",sessionManager.getPreferences(AdmissionForm.this,Constants.USER_ID));
+                params.put("parent_name",edtParentName.getText().toString().trim());
+                params.put("parent_occupation",edtParentOccupation.getText().toString().trim());
+                params.put("parent_phone",edtParentPhone.getText().toString().trim());
+                params.put("student_image",imageData);
                 params.put("name", edtName.getText().toString().trim());
                 params.put("dob", edtDob.getText().toString().trim());
                 params.put("instituation_id",getIntent().getExtras().getString(Constants.USER_ROLE_ID));
                 params.put("organization_id", collegeIdList.get(orgPosition));
                 params.put("phone", edtPhone.getText().toString().trim());
                 params.put("email", edtEmail.getText().toString().trim());
-                params.put("country_id", countryIdList.get(country_pos));
-                params.put("state_id", stateIdList.get(state_pos));
-                params.put("city_id", cityIdList.get(city_pos));
+                params.put("country_id", "0");
+                params.put("state_id", "0");
+                params.put("city_id", "0");
                 params.put("address", edtAddress.getText().toString().trim());
                 params.put("course_id", courseCatIdList.get(course_pos));
                 params.put("department_section_id",sectionId);
                 params.put("department_year_id",departmentYear);
-//                params.put("status", sts_joinings);
                 params.put("department_id",departmentIdList.get(department_pos));
                 params.put("alert_date", laterDate.getText().toString().trim());
                 params.put("join_status", joiningSts);
                 params.put("role", userRollNo);
                 params.put("category_id",categoryIdList.get(cat_pos));
 
+
                 Log.e("DDDDD","Ins "+getIntent().getExtras().getString(Constants.USER_ROLE_ID)+
                         " org_ "+collegeIdList.get(orgPosition)+" course "+courseCatIdList.get(course_pos)+
                 " departent "+departmentId+ " join_sts "+joiningSts+" role"+userRollNo+" cate_id "+categoryIdList.get(cat_pos));
-//                params.put("org_discount_type",""+org_dis_type);
-//                params.put("org_discount",""+org_dis);
-//                params.put("course_discount_type",""+course_dis_type);
-//                params.put("course_discount",""+ course_dis);
-//                params.put("calc_amount",BalanceAmount);
+
                 params.put("program_id",programId);
                 return params;
-                //1 - percentage...
-                //2 - ruppess...
             }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
+                15000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
-    // Join Later
-    private void setStudentAlert() {
-        pd.show();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL + "api/student";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            pd.dismiss();
-                            Log.e("RESPONSE111", "" + response);
-                            JSONObject jsonObject = new JSONObject(response);
-                            String sts = jsonObject.getString("status");
-                            String msg = jsonObject.getString("message");
-                            if (sts.equalsIgnoreCase("1")) {
-                                new AwesomeNoticeDialog(AdmissionForm.this)
-                                        .setTitle("Success!")
-                                        .setMessage("Alert Saved Successfully")
-                                        .setColoredCircle(R.color.colorPrimaryDark)
-                                        .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
-                                        .setCancelable(true)
-                                        .setButtonText("Ok")
-                                        .setButtonBackgroundColor(R.color.black)
-                                        .setButtonText("Ok")
-                                        .setNoticeButtonClick(new Closure() {
-                                            @Override
-                                            public void exec() {
-                                                Intent in =new Intent( AdmissionForm.this, MenuActivity.class);
-                                                startActivity(in);
-                                                finish();
-                                            }
-                                        })
-                                        .show();
-                            } else {
-                                Toast.makeText(AdmissionForm.this, "Submition failed", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pd.dismiss();
-                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("name", edtName.getText().toString().trim());
-                params.put("dob", edtDob.getText().toString().trim());
-                params.put("instituation_id",getIntent().getExtras().getString(Constants.USER_ROLE_ID));
-                params.put("organization_id", collegeIdList.get(orgPosition));
-                params.put("phone", edtPhone.getText().toString().trim());
-                params.put("email", edtEmail.getText().toString().trim());
-                params.put("country_id", countryIdList.get(country_pos));
-                params.put("state_id", stateIdList.get(state_pos));
-                params.put("city_id", cityIdList.get(city_pos));
-                params.put("address", edtAddress.getText().toString().trim());
-                params.put("course_id", courseCatIdList.get(course_pos));
-                params.put("status", sts_joinings);
-                params.put("alert_date", alertDate);
-                params.put("department_id",departmentId);
-                params.put("join_status", "2");
-                params.put("role", userRollNo);
-                params.put("category_id",categoryIdList.get(cat_pos));
-                params.put("org_discount_type",""+org_dis_type);
-                params.put("org_discount",""+org_dis);
-                params.put("course_discount_type",""+course_dis_type);
-                params.put("course_discount",""+ course_dis);
-                params.put("calc_amount","0.0");
-                return params;
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(stringRequest);
-    }
 
     private void getCatgories() {
         categoryIdList.clear();
@@ -1348,7 +1385,7 @@ public class AdmissionForm extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AdmissionForm.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdmissionForm.this, "Please fill all details..." , Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -1392,6 +1429,11 @@ public class AdmissionForm extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    public void onClickAddOrganization(View view) {
+        Intent in = new Intent(AdmissionForm.this,AddItems.class);
+        startActivity(in);
     }
 
 }

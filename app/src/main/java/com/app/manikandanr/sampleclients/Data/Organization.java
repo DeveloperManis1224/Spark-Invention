@@ -1,9 +1,11 @@
+
 package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Organization {
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -31,6 +33,12 @@ public class Organization {
     @SerializedName("role")
     @Expose
     private String role;
+    @SerializedName("branch_id")
+    @Expose
+    private String branchId;
+    @SerializedName("user_id")
+    @Expose
+    private String userId;
 
     public Integer getId() {
         return id;
@@ -103,4 +111,21 @@ public class Organization {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 }

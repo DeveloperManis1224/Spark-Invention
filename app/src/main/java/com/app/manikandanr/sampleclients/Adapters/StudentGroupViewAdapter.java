@@ -12,13 +12,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.app.manikandanr.sampleclients.AttendanceActivity;
-import com.app.manikandanr.sampleclients.Data.AttendanceData;
 import com.app.manikandanr.sampleclients.Data.AttendancePresentData;
 import com.app.manikandanr.sampleclients.Data.Student;
-import com.app.manikandanr.sampleclients.Data.StudentAlertData;
 import com.app.manikandanr.sampleclients.R;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 
@@ -26,41 +22,35 @@ import java.math.BigDecimal;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAttendanceAdapter.MyViewHolder> {
+public class StudentGroupViewAdapter extends RecyclerView.Adapter<StudentGroupViewAdapter.MyViewHolder> {
     public static ArrayList<Student> obj_arr=new ArrayList<>();
     String pfrom;
     public static ArrayList<AttendancePresentData> attedanceData = new ArrayList<>();
-    public StudentAttendanceAdapter(ArrayList<Student> objs, String pageFrom) {
+    public StudentGroupViewAdapter(ArrayList<Student> objs, String pageFrom) {
         this.obj_arr =objs;
         this.pfrom = pageFrom;
     }
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View contentView= LayoutInflater.from(parent.getContext()).inflate(R.layout.student_attendance_lyt,parent,false);
+    public StudentGroupViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View contentView= LayoutInflater.from(parent.getContext()).inflate(R.layout.student_group_view_lyt,parent,false);
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             }
         });
-        return new MyViewHolder(contentView);
+        return new StudentGroupViewAdapter.MyViewHolder(contentView);
     }
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final StudentGroupViewAdapter.MyViewHolder holder, final int position) {
         try {
 
             attedanceData.add(new AttendancePresentData(""+obj_arr.get(position).getId(),
-                    obj_arr.get(position).getName(),Constants.ATTENDANCE_ABSENT));
+                    obj_arr.get(position).getName(), Constants.ATTENDANCE_ABSENT));
             String PaymentStatus = "";
-            if(pfrom.equalsIgnoreCase(Constants.PAGE_FROM_GROUP))
-            {
-                holder.attendance_present.setVisibility(View.GONE);
-            }
             if(obj_arr.get(position).getPaymentStatus() == 0)
             {
                 PaymentStatus = "Not Paid";
@@ -75,27 +65,8 @@ public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAtten
             }
             holder.studentName.setText(obj_arr.get(position).getName());
             holder.studentRegNumber.setText(obj_arr.get(position).getSerialNo());
-
-            holder.attendance_present.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos =position;
-                    if(holder.attendance_present.isChecked())
-                    {
-                        attedanceData.set(pos,new AttendancePresentData(""+obj_arr.get(pos).getId(),
-                                obj_arr.get(pos).getName(),Constants.ATTENDANCE_PRESENT));
-                       // Toast.makeText(holder.lyt_students.getContext(), "is Checked", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        attedanceData.set(pos,new AttendancePresentData(""+obj_arr.get(pos).getId(),
-                                obj_arr.get(pos).getName(),Constants.ATTENDANCE_ABSENT));
-                        //Toast.makeText(holder.lyt_students.getContext(), "is Unchecked", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-            holder.studentAttendanceStatus.setVisibility(View.GONE);
+            holder.studentOtherDetails.setText(Html.fromHtml(obj_arr.get(position).getCategory().getCategory()+",<br>"+
+                    obj_arr.get(position).getOrganization().getName()+""), TextView.BufferType.SPANNABLE);
 
             final String finalPaymentStatus = PaymentStatus;
             holder.lyt_students.setOnClickListener(new View.OnClickListener() {
@@ -145,9 +116,9 @@ public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAtten
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
-       TextView studentName, studentRegNumber, studentPaymentStatus, studentAttendanceStatus;
-       CheckBox attendance_present;
-       LinearLayout lyt_students;
+        TextView studentName, studentRegNumber, studentPaymentStatus, studentOtherDetails;
+
+        LinearLayout lyt_students;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -155,8 +126,7 @@ public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAtten
             studentName = itemView.findViewById(R.id.lyt_txt_name);
             studentRegNumber = itemView.findViewById(R.id.lyt_txt_regnumber);
             studentPaymentStatus = itemView.findViewById(R.id.lyt_txt_payment_status);
-            studentAttendanceStatus = itemView.findViewById(R.id.lyt_txt_attendance_sts);
-            attendance_present = itemView.findViewById(R.id.checkbox_student);
+            studentOtherDetails = itemView.findViewById(R.id.lyt_stu_view_details);
             lyt_students = itemView.findViewById(R.id.lyt_layout_student);
 
         }
@@ -165,4 +135,5 @@ public class StudentAttendanceAdapter  extends RecyclerView.Adapter<StudentAtten
         Format format = NumberFormat.getCurrencyInstance(new Locale("en", "in"));
         return format.format(new BigDecimal(value));
     }
+
 }

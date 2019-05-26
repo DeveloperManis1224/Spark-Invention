@@ -3,7 +3,6 @@ package com.app.manikandanr.sampleclients.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class City {
 
@@ -61,11 +60,6 @@ public class City {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("stateId", stateId).append("city", city).append("createdAt", createdAt).append("updatedAt", updatedAt).toString();
     }
 
 }

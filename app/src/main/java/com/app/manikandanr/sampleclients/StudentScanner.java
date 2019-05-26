@@ -2,6 +2,7 @@ package com.app.manikandanr.sampleclients;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Data.StudentData;
+import com.app.manikandanr.sampleclients.Data.StudentInfoData;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -32,6 +34,7 @@ public class StudentScanner extends AppCompatActivity {
     private TextView txtResult;
     String regNumber;
     EditText mRegNumber;
+    public  static StudentInfoData studentData;
 
     public void onCLickStudentRegQr(View v)
     {
@@ -64,7 +67,7 @@ public class StudentScanner extends AppCompatActivity {
         progressDialog.setMessage("Please wait.......");
         progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL+"api/emi";
+        String url = Constants.BASE_URL+"api/student-info";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -72,29 +75,10 @@ public class StudentScanner extends AppCompatActivity {
                         try {
                             Log.v("TTTTTTTTTTT",""+ response);
                             Gson gson = new Gson();
-                            StudentData studentData = gson.fromJson(response,StudentData.class);
-                            StringBuilder basicData = new StringBuilder();
-                            basicData.append("Register No: "+studentData.getStudents().getSerialNo()+"\n");
-                            basicData.append("Name : "+studentData.getStudents().getName()+"\n");
-                            basicData.append("Phone No : "+studentData.getStudents().getPhone()+"\n");
-                            basicData.append("Email : "+studentData.getStudents().getEmail()+"\n");
-                            basicData.append("Country : "+studentData.getStudents().getCountry().getCountry()+"\n");
-                            basicData.append("State : "+studentData.getStudents().getState().getState()+"\n");
-                            basicData.append("City : "+studentData.getStudents().getCity().getCity()+"\n");
-                            basicData.append("Category : "+studentData.getStudents().getCategoryId()+"\n");
-                            basicData.append("Course : "+studentData.getStudents().getCourse().getCourse()+"\n");
-                            basicData.append("Type : "+studentData.getStudents().getRole()+"\n");
-                            basicData.append("Organization : "+studentData.getStudents().getOrganizationId()+"\n");
-                            basicData.append("Address : "+studentData.getStudents().getAddress()+"\n");
-                            StringBuilder otherData = new StringBuilder();
-//                            otherData.append(studentData.getStudents().getCourse().getCourse()+"\n");
-//                            otherData.append(studentData.getStudents().getOrganizationId());
+                            ViewStudent.data = gson.fromJson(response,StudentInfoData.class);
 
                             Intent n = new Intent(StudentScanner.this,ViewStudent.class);
-                            n.putExtra(Constants.STUDENT_BASIC_INFO,""+basicData);
-                            n.putExtra(Constants.STUDENT_OTHER_INFO,""+otherData);
-                            n.putExtra(Constants.STUDENT_PAYMENT_STATUS,"1");
-                            n.putExtra("Students",studentData.getStudents());
+                            //n.putExtra("Students_data", (Parcelable) studentData.getStudents());
                             startActivity(n);
                         } catch (Exception e) {
                             Log.v("TTTTTTTTTTT",""+ e.getMessage());

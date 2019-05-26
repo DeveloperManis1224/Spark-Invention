@@ -78,12 +78,15 @@
             android:stateNotNeeded="true"
             tools:replace="android:screenOrientation" />
         <activity android:name=".WebViewPayment" />
-        <activity android:name=".CompletePayment" />
+        <activity
+            android:name=".CompletePayment"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AdmissionProjectActivity" />
-        <activity android:name=".AttendancePage" />
+        <activity android:name=".AttendanceMenuPage" />
         <activity android:name=".Activities.AddStudentAttendance" />
         <activity android:name=".Activities.CreateGroupPage" />
-        <activity android:name=".Activities.AttendancePage"></activity>
+        <activity android:name=".Activities.AttendancePage" />
+        <activity android:name=".Activities.ViewGroupActivity"></activity>
     </application>
 
 </manifest>

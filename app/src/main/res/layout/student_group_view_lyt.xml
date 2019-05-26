@@ -43,29 +43,19 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="18sp"
+                android:visibility="gone"
                 android:id="@+id/lyt_txt_payment_status"
                 android:text="Payment Status"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textColor="@color/colorAccent"
-                android:id="@+id/lyt_txt_attendance_sts"
-                android:text="Present / Absent Status"/>
+                android:id="@+id/lyt_stu_view_details"
+                android:text="Student details"/>
 
         </LinearLayout>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/checkbox_student"
-            android:padding="10dp" />
+
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </android.support.v7.widget.CardView>

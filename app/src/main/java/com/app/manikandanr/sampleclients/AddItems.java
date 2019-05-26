@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.app.manikandanr.sampleclients.Utils.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,25 +31,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddItems extends AppCompatActivity {
-
-//    I want to spend my lifetime loving you. I want to spend my lifetime making you happy. I want to be with you forever.
-//
-//    You are the woman of my dreams. Happy anniversary my wife!.
-//
-//    You complete me. I love you, happy anniversary to my wife!
-
-    private AutoCompleteTextView txtCountryName;
-    ArrayList<String> countryList = new ArrayList<>();
+    private Spinner mCountry, mColCountry, txtColStateName, txtColCityName;
+    private AutoCompleteTextView txtStateName, txtCityName, txtClgSchool ;
     ArrayList<String> countryIdList = new ArrayList<>();
+    ArrayList<String> countryList = new ArrayList<>();
+    private AutoCompleteTextView txtCountryName;
+    SessionManager session = new SessionManager();
+    private RadioButton mSchool, mCollege;
+    private String userRollNo;
     int country_pos = 0;
     int state_pos = 0;
     int city_pos = 0;
-    private Spinner mCountry, mColCountry, txtColStateName, txtColCityName;
-    private AutoCompleteTextView txtStateName, txtCityName, txtClgSchool ;
-
-    private RadioButton mSchool, mCollege;
-
-    private String userRollNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +53,7 @@ public class AddItems extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        moveTaskToBack(true);
+
     }
 
     private void init()
@@ -155,10 +148,6 @@ public class AddItems extends AppCompatActivity {
         });
     }
 
-    //../organization
-    // city_name
-    //organization
-    //role 1-school 2 college
 
     private void getCountry() {
         countryIdList.clear();
@@ -410,8 +399,7 @@ public class AddItems extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void onClickAddCountry(View v)
-    {
+    public void onClickAddCountry(View v){
         if(!txtCountryName.getText().toString().isEmpty())
         {
             addCountry(txtCountryName.getText().toString().trim());
@@ -422,8 +410,7 @@ public class AddItems extends AppCompatActivity {
         }
     }
 
-    public void onClickAddCityState(View v)
-    {
+    public void onClickAddCityState(View v){
         if(!mCountry.getSelectedItem().toString().equalsIgnoreCase("Select Country")||
                 !txtStateName.getText().toString().isEmpty() &&
                         !txtCityName.getText().toString().isEmpty())
@@ -437,8 +424,7 @@ public class AddItems extends AppCompatActivity {
     }
 
 
-    public void onClickAddOrg(View v)
-    {
+    public void onClickAddOrg(View v){
         if(!txtColCityName.getSelectedItem().toString().equalsIgnoreCase("Select City")||
                 !txtClgSchool.getText().toString().isEmpty() &&
                         !userRollNo.isEmpty())
@@ -498,7 +484,6 @@ public class AddItems extends AppCompatActivity {
     }
 
     private void addStateandCity(final String stateName, final String cityName) {
-
         Log.e("STATE_CITY",countryIdList.get(country_pos)+"///"+stateName+"///"+cityName);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/state-city-create";
@@ -516,7 +501,7 @@ public class AddItems extends AppCompatActivity {
                                 Toast.makeText(AddItems.this, "State and City Added", Toast.LENGTH_SHORT).show();
                                 txtCityName.setText("");
                                 txtStateName.setText("");
-                                onBackPressed();
+
                             }
                             else
                             {
@@ -550,10 +535,7 @@ public class AddItems extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
     private void addOrganization() {
-
-       // Log.e("STATE_CITY",countryIdList.get(country_pos)+"///"+stateName+"///"+cityName);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Constants.BASE_URL+"api/organization";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -567,9 +549,7 @@ public class AddItems extends AppCompatActivity {
                             String msg = jobj.getString("message");
                             if(status.equalsIgnoreCase("1"))
                             {
-                                Toast.makeText(AddItems.this, "Organization Added.", Toast.LENGTH_SHORT).show();
-
-                                onBackPressed();
+                                Toast.makeText(AddItems.this, "Organization added successfully.", Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
@@ -591,6 +571,7 @@ public class AddItems extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("city_id",cityIdList.get(city_pos));
                 params.put("organization",txtClgSchool.getText().toString().trim());
+                params.put("user_id",session.getPreferences(AddItems.this,Constants.USER_ID));
                 params.put("role",userRollNo);
                 return params;
             }

@@ -13,16 +13,15 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="7dp"
         android:layout_marginLeft="20dp"
-        android:text="Pay Emi"
-        android:id="@+id/btn_pay_emi"
-        android:visibility="gone"
+        android:text="Back to Menu"
+        android:onClick="onCLickBack"
+        android:visibility="visible"
         android:textStyle="bold"
         android:textSize="14sp"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:layout_marginRight="20dp"
-        android:background="@drawable/btn_clr_drawble"
-        />
+        android:background="@drawable/btn_clr_drawble"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,13 +33,23 @@
             android:layout_height="wrap_content"
             android:elevation="4dp"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:id="@+id/header_tab"
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:onClick="onCLickBack"
+                        android:layout_margin="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_back"/>
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -51,17 +60,17 @@
                     android:textColor="@color/clr_white"
                     android:textSize="20sp"
                     android:fontFamily="@font/poppinsmedium"
-                    android:text="Show student Information"/>
+                    android:text="Student Information"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="-140dp"
+                android:layout_marginTop="-150dp"
                 android:elevation="3dp"
                 android:layout_below="@+id/header_tab"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="70dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="#f9f8f8"
@@ -71,11 +80,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:id="@+id/search_hint"
                     android:textColor="#000"
+                    android:visibility="visible"
                     android:layout_marginTop="12dp"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppinsmedium"
                     android:text="Basic Informations"/>
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/image_icon"
+                    android:id="@+id/student_image"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -93,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dp"
-
+                    android:visibility="gone"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"

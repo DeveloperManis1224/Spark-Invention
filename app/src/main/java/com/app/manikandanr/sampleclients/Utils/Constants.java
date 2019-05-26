@@ -4,8 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.util.ArrayList;
+
 public class Constants {
     public static final String BASE_URL = "http://api.spark-invention.com/";
+    public static final String IMAGE_BASE_URL = "http://api.spark-invention.com/students/";
     //variable keys
     public static final String USER_ROLE = "role";
     public static final String USER_ROLE_ID= "role_id";
@@ -63,6 +66,15 @@ public class Constants {
     public static  final  String USER_BRANCH_ID = "branch_id";
     public static final String STAFF_ROLE = "4";
 
+    public static final String ATTENDANCE_PRESENT = "1";
+    public static final String ATTENDANCE_ABSENT = "0";
+
+
+    public static final String STATUS_ADMISSION = "1";
+    public static final String STATUS_WAITING = "2";
+    public static final String STATUS_CANCEL = "3";
+    public static final String PAGE_FROM_GROUP = "group";
+
 
     public static boolean isNetworkAvailable(Context cntx) {
         ConnectivityManager connectivityManager
@@ -71,14 +83,32 @@ public class Constants {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static String[] getSections()
+    public static ArrayList<String> getSections()
     {
-        String[] str = new String[]{"Select Section","A","B","C","D","E","F","G","H","I","J","K"};
+        ArrayList<String> str = new ArrayList<String>();
+        str.add("Select Section");
+        str.add("A");
+        str.add("B");
+        str.add("C");
+        str.add("D");
+        str.add("E");
+        str.add("F");
+        str.add("G");
+        str.add("H");
+        str.add("I");
+        str.add("J");
+        str.add("K");
         return str;
     }
-    public static String[] getYears()
+    public static ArrayList<String> getYears()
     {
-        String[] str = new String[]{"Select Year","1 Year","2 Year","3 Year","4 Year","5 Year"};
+        ArrayList<String> str = new ArrayList<String>();
+        str.add("Select Year");
+        str.add("1 Year");
+        str.add("2 Year");
+        str.add("3 Year");
+        str.add("4 Year");
+        str.add("5 Year");
         return str;
     }
 

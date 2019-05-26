@@ -1,5 +1,6 @@
 package com.app.manikandanr.sampleclients;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,38 +11,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.app.manikandanr.sampleclients.Utils.Constants;
+import com.app.manikandanr.sampleclients.Utils.SessionManager;
 import com.app.manikandanr.sampleclients.Utils.SingleShortLocationProvider;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.security.Permission;
-import java.security.Permissions;
 
 public class MenuActivity extends AppCompatActivity {
 
     private Button bAdmission,bMarketing,bAttendance,bRevenue,bMore;
+    private TextView txtLoggedInUserName;
     String[] perms = {"android.permission.FINE_LOCATION",
             "android.permission.CALL_PHONE",
             "android.permission.ACCESS_COARSE_LOCATION",
             "android.permission.CAMERA"};
     int permsRequestCode = 200;
+    SessionManager session = new SessionManager();
 
     private float distanceBetween(LatLng latLng1, LatLng latLng2) {
         Location loc1 = new Location(LocationManager.GPS_PROVIDER);
@@ -130,6 +121,10 @@ public class MenuActivity extends AppCompatActivity {
         bAttendance = findViewById(R.id.btn_attendance);
         bRevenue = findViewById(R.id.btn_revenue);
         bMore = findViewById(R.id.btn_store);
+        txtLoggedInUserName = findViewById(R.id.logged_in_by);
+            String styledText = "Logged in by <font color='red'> "+ session.getPreferences(MenuActivity.this,Constants.USER_NAME)+"</font>";
+            txtLoggedInUserName.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+
 
         SingleShortLocationProvider.requestSingleUpdate(MenuActivity.this,
                 new SingleShortLocationProvider.LocationCallback() {
@@ -270,7 +265,7 @@ public class MenuActivity extends AppCompatActivity {
 //                    @Override
 //                    public void onClick(View v) {
 //                        deleteDialog.dismiss();
-//                        Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+//                        Intent in = new Intent(MenuActivity.this, AttendanceMenuPage.class);
 //                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_SCHOOL);
 //                        startActivity(in);
 //                    }
@@ -279,7 +274,7 @@ public class MenuActivity extends AppCompatActivity {
 //                    @Override
 //                    public void onClick(View v) {
 //                        deleteDialog.dismiss();
-//                        Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+//                        Intent in = new Intent(MenuActivity.this, AttendanceMenuPage.class);
 //                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_COLLEGE);
 //                        startActivity(in);
 //                    }
@@ -288,13 +283,13 @@ public class MenuActivity extends AppCompatActivity {
 //                    @Override
 //                    public void onClick(View v) {
 //                        deleteDialog.dismiss();
-//                        Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+//                        Intent in = new Intent(MenuActivity.this, AttendanceMenuPage.class);
 //                        in.putExtra(Constants.USER_ROLE,Constants.USER_TYPE_PROJECT);
 //                        startActivity(in);
 //                    }
 //                });
 //                deleteDialog.show();
-                Intent in = new Intent(MenuActivity.this, AttendancePage.class);
+                Intent in = new Intent(MenuActivity.this, AttendanceMenuPage.class);
                 startActivity(in);
             }
         });
@@ -316,6 +311,32 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void onCLickLogout(View v)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                session.setPreferences(MenuActivity.this,Constants.LAST_LOGIN_DATE,"2019/02/24");
+                session.setPreferences(MenuActivity.this,Constants.USER_ID,"");
+                session.setPreferences(MenuActivity.this,Constants.USER_NAME,"");
+                startActivity(new Intent(MenuActivity.this,SplashScreen.class));
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.setMessage("Are you sure want to logout?");
+        dialog.setTitle("Logout");
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     @Override

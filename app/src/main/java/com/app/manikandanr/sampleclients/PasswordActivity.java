@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,6 +81,22 @@ public class PasswordActivity extends AppCompatActivity {
     }
 });
 
+        branchRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!branchRole.getSelectedItem().toString().equalsIgnoreCase("Select Branch"))
+                {
+                    branch_pos = i;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         branchRole.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item,new String[]{"Select Branch"}));
 
@@ -99,6 +116,7 @@ public class PasswordActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.v("TTTTTTTTTTT",""+ response);
                             JSONObject jobj = new JSONObject(response);
                             JSONArray jary = jobj.getJSONArray("branches");
 
@@ -162,6 +180,7 @@ public class PasswordActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.v("TTTTTTTTTTT",""+response);
                             LoginResponseData data = new Gson().fromJson(response, LoginResponseData.class);
                             if(data.getStatus().toString().equalsIgnoreCase(Constants.RESPONSE_SUCCESS))
                             {
@@ -171,6 +190,7 @@ public class PasswordActivity extends AppCompatActivity {
                                 final String strDate = sdf.format(c.getTime());
                                 Log.v("TTTTTTTTTTT","jghj"+data.getUser().getId());
                                 session.setPreferences(PasswordActivity.this,Constants.USER_ID,""+data.getUser().getId());
+                                session.setPreferences(PasswordActivity.this,Constants.USER_NAME,data.getUser().getName());
                                 session.setPreferences(PasswordActivity.this,Constants.LAST_LOGIN_DATE, strDate);
                                 Toast.makeText(PasswordActivity.this, "Login Successfully...", Toast.LENGTH_SHORT).show();
                                 Intent in = new Intent(PasswordActivity.this,MenuActivity.class);
@@ -198,6 +218,7 @@ public class PasswordActivity extends AppCompatActivity {
                 params.put("user_name", usernameText.getText().toString().trim());
                 params.put("password", passwordTxt.getText().toString().trim());
                 params.put("branch_id", branchIdList.get(branch_pos));
+                Log.e("Data212",""+branchIdList.get(branch_pos));
                 params.put("role", Constants.STAFF_ROLE);
                 return params;
             }

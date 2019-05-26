@@ -131,10 +131,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
+                android:visibility="gone"
                 android:id="@+id/spin_standard"
                 android:background="@drawable/edt_border"/>
-
-
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
