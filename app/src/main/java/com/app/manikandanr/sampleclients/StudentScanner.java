@@ -50,8 +50,16 @@ public class StudentScanner extends AppCompatActivity {
 
     public void onClickStudentRegNumber(View v)
     {
-        regNumber = mRegNumber.getText().toString().trim();
-        getStudentInformation();
+        if(!mRegNumber.getText().toString().trim().isEmpty())
+        {
+            regNumber = mRegNumber.getText().toString().trim();
+            getStudentInformation();
+        }
+        else
+        {
+            mRegNumber.setError("Invalid Serial Number");
+        }
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

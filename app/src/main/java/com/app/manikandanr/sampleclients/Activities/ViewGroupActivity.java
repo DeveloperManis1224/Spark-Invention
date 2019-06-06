@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.manikandanr.sampleclients.Adapters.GroupListAdapter;
 import com.app.manikandanr.sampleclients.Adapters.StudentAttendanceAdapter;
 import com.app.manikandanr.sampleclients.Adapters.StudentGroupViewAdapter;
 import com.app.manikandanr.sampleclients.Data.AttendancePresentData;
@@ -34,6 +35,7 @@ import com.app.manikandanr.sampleclients.Data.GetStudentFilterClass;
 import com.app.manikandanr.sampleclients.Data.LoginResponseData;
 import com.app.manikandanr.sampleclients.Data.SyllabusClassList;
 import com.app.manikandanr.sampleclients.Data.SyllabusList;
+import com.app.manikandanr.sampleclients.DataModels.GroupsData;
 import com.app.manikandanr.sampleclients.MenuActivity;
 import com.app.manikandanr.sampleclients.R;
 import com.app.manikandanr.sampleclients.Utils.Constants;
@@ -83,15 +85,15 @@ public class ViewGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_group);
         initComponent();
-       // showFilterAlert();
-        getAllStudentList();
+        showFilterAlert();
+        //getAllStudentList();
     }
 
 
     private void showFilterAlert() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View layout11 = inflater.inflate(R.layout.dialog_create_group_filter_attendance, (ViewGroup) findViewById(R.id.layout_root));
-
+        final View layout11 = inflater.inflate(R.layout.dialog_create_group_filter_attendance,
+                (ViewGroup) findViewById(R.id.layout_root));
         spinCategory = layout11.findViewById(R.id.spinner_category);
         spinOrganization = layout11.findViewById(R.id.spinner_organization);
         spinDepartment = layout11.findViewById(R.id.spinner_department);
@@ -421,12 +423,12 @@ public class ViewGroupActivity extends AppCompatActivity {
         syallabusIdList.add("0");
         syallabusList.add("Select Syallabus");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.BASE_URL+"api/attendance-students";
+        String url = Constants.BASE_URL+"api/groups/filter";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("RESPONSE_DATA",""+response);
+                        Log.e("RESPONSE_DATA123",""+response);
                         GetStudentFilter studentFilter = new Gson().fromJson(response,GetStudentFilter.class);
                         if(studentFilter.getStudents().size() == 0) {
                             Toast.makeText(ViewGroupActivity.this, "No Students", Toast.LENGTH_SHORT).show();
@@ -442,7 +444,8 @@ public class ViewGroupActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(ViewGroupActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
-        }) {
+        })
+        {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -477,12 +480,12 @@ public class ViewGroupActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("RESPONSE_DATA",""+response);
-                        GetStudentFilter studentFilter = new Gson().fromJson(response,GetStudentFilter.class);
-                        if(studentFilter.getStudents().size() == 0) {
+                        GroupsData studentFilter = new Gson().fromJson(response,GroupsData.class);
+                        if(studentFilter.getGroups().getGroups().size() == 0) {
                             Toast.makeText(ViewGroupActivity.this, "No Students", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            StudentGroupViewAdapter adapter = new StudentGroupViewAdapter(studentFilter.getStudents(), Constants.PAGE_FROM_GROUP);
+                            GroupListAdapter adapter = new GroupListAdapter(studentFilter.getGroups().getGroups(), Constants.PAGE_FROM_GROUP);
                             listStudents.setAdapter(adapter);
                         }
                     }
