@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.manikandanr.sampleclients.Data.MarketingAlertData;
+import com.app.manikandanr.sampleclients.DataModels.Marketing;
 import com.app.manikandanr.sampleclients.R;
 
 import java.math.BigDecimal;
@@ -27,9 +30,9 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyViewHolder> {
 
-    public static ArrayList<MarketingAlertData> obj_arr = new ArrayList<>();
+    public static ArrayList<Marketing> obj_arr = new ArrayList<>();
 
-    public MarketingAdapter(ArrayList<MarketingAlertData> objs) {
+    public MarketingAdapter(ArrayList<Marketing> objs) {
         this.obj_arr = objs;
     }
 
@@ -48,8 +51,8 @@ public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         try {
-            MarketingAlertData data=obj_arr.get(position);
-            holder.studentName.setText(data.getInstituation_id());
+            Marketing data=obj_arr.get(position);
+            holder.studentName.setText(data.getOrganization().getName());
             holder.studentDate.setText(data.getDate());
             holder.studentEmail.setText(data.getEmail());
             holder.studentPhone.setText(data.getPhone());
@@ -62,6 +65,9 @@ public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyVi
                     holder.studentPhone.getContext().startActivity(intent);
                 }
             });
+            holder.btnAdmission.setVisibility(View.GONE);
+            holder.btnFeedback.setVisibility(View.GONE);
+            holder.btnCancel.setVisibility(View.GONE);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -70,16 +76,15 @@ public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyVi
                     final TextView txtStudentInfo = layout11.findViewById(R.id.student_info);
                     final TextView header = layout11.findViewById(R.id.header);
                     header.setText("Organization Details");
-                    String styledText = "Name :"+obj_arr.get(position).getInstituation_id()+",<br>"+
+                    String styledText = "Name :"+obj_arr.get(position).getOrganization().getName()+",<br>"+
                             "Date  :"+obj_arr.get(position).getDate()+",<br>"+
                             "Phone :"+obj_arr.get(position).getPhone()+",<br>"+
                             "Email :"+obj_arr.get(position).getEmail()+",<br>"+
                             "Website :"+obj_arr.get(position).getWebsite()+",<br>"+
-                            "Serial Number :"+obj_arr.get(position).getSerial_no()+",<br>"+
-                            "City Id :"+obj_arr.get(position).getCity_id()+",<br>"+
+                            "Serial Number :"+obj_arr.get(position).getSerialNo()+",<br>"+
                             "Distance :"+obj_arr.get(position).getDistance()+",<br>"+
                             "LandLine Number :"+obj_arr.get(position).getLandline()+",<br>"+
-                            "Organization Id :"+obj_arr.get(position).getOrganization_id()+",<br>"+
+                            "Organization :"+obj_arr.get(position).getOrganization().getName()+",<br>"+
                             "<font color='red'>Remarks :"+obj_arr.get(position).getDescription()+",<br></font>"+
                             "<font color='red'>Date :"+obj_arr.get(position).getDate()+",<br></font>"+
                             "Address :"+obj_arr.get(position).getAddress()+".";
@@ -110,8 +115,10 @@ public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView studentName, studentPhone, studentEmail, studentDate;
-        ImageView imgCall ;
+        TextView studentName, studentPhone, studentEmail, studentDate, statusStudent;
+        LinearLayout lyt_students;
+        ImageButton imgCall ;
+        Button btnFeedback, btnAdmission, btnCancel;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -119,7 +126,12 @@ public class MarketingAdapter extends RecyclerView.Adapter<MarketingAdapter.MyVi
             studentPhone = itemView.findViewById(R.id.lyt_txt_studentt_phone);
             studentEmail = itemView.findViewById(R.id.lyt_txt_student_email);
             studentDate = itemView.findViewById(R.id.lyt_txt_date);
+            lyt_students = itemView.findViewById(R.id.lyt_student_alert);
             imgCall = itemView.findViewById(R.id.lyt_img_phone);
+            btnFeedback = itemView.findViewById(R.id.btn_feedback);
+            btnAdmission = itemView.findViewById(R.id.btn_admission);
+            btnCancel = itemView.findViewById(R.id.btn_cancel);
+            statusStudent = itemView.findViewById(R.id.status_student);
         }
     }
 

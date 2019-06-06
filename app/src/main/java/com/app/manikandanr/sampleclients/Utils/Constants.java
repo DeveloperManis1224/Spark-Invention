@@ -69,7 +69,6 @@ public class Constants {
     public static final String ATTENDANCE_PRESENT = "1";
     public static final String ATTENDANCE_ABSENT = "0";
 
-
     public static final String STATUS_ADMISSION = "1";
     public static final String STATUS_FEEDBACK = "2";
     public static final String STATUS_CANCEL = "3";
@@ -82,7 +81,6 @@ public class Constants {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
     public static ArrayList<String> getSections()
     {
         ArrayList<String> str = new ArrayList<String>();

@@ -117,7 +117,7 @@ public class MarketingAdmission extends AppCompatActivity {
         double kmInDec = Double.parseDouble(newFormat.format(km));
         double meter = valueResult % 1000;
         int meterInDec = Integer.valueOf(newFormat.format(meter));
-        Toast.makeText(MarketingAdmission.this, "fhgfhfhg "+km, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(MarketingAdmission.this, "fhgfhfhg "+km, Toast.LENGTH_SHORT).show();
         Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
                 + " Meter   " + meterInDec);
         kmsFromBranch = String.valueOf(kmInDec);

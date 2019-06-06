@@ -8,7 +8,7 @@ public class StudentObjectALertData {
 
     private String message;
 
-    private String[] marketings;
+    private ArrayList<Marketing> marketings;
 
     private String status;
 
@@ -32,12 +32,12 @@ public class StudentObjectALertData {
         this.message = message;
     }
 
-    public String[] getMarketings ()
+    public ArrayList<Marketing> getMarketings ()
     {
         return marketings;
     }
 
-    public void setMarketings (String[] marketings)
+    public void setMarketings (ArrayList<Marketing> marketings)
     {
         this.marketings = marketings;
     }
