@@ -58,7 +58,8 @@
         <activity
             android:name=".AddItems"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MoreMenu" />
+        <activity android:name=".MoreMenu"
+            android:label="More"/>
         <activity
             android:name=".AccountsHome"
             android:label="Accounts"
@@ -83,10 +84,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AdmissionProjectActivity" />
         <activity android:name=".AttendanceMenuPage" />
-        <activity android:name=".Activities.AddStudentAttendance" />
-        <activity android:name=".Activities.CreateGroupPage" />
-        <activity android:name=".Activities.AttendancePage" />
-        <activity android:name=".Activities.ViewGroupActivity"></activity>
+        <activity android:name=".Activities.AddStudentAttendance"
+            android:label="Add student"/>
+        <activity android:name=".Activities.CreateGroupPage"
+            android:label="Create group"/>
+        <activity android:name=".Activities.AttendancePage"
+            android:label="Attendance"/>
+        <activity android:name=".Activities.ViewGroupActivity"
+            android:label="View Student"/>
     </application>
 
 </manifest>

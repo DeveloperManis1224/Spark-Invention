@@ -71,7 +71,7 @@ public class Constants {
 
 
     public static final String STATUS_ADMISSION = "1";
-    public static final String STATUS_WAITING = "2";
+    public static final String STATUS_FEEDBACK = "2";
     public static final String STATUS_CANCEL = "3";
     public static final String PAGE_FROM_GROUP = "group";
 

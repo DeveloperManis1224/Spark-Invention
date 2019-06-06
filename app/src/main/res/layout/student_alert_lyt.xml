@@ -136,6 +136,15 @@
             android:textColor="@android:color/white"
             android:background="@drawable/btn_clr_drawble"
             android:text="Cancel"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello"
+            android:visibility="gone"
+            android:fontFamily="@font/poppinsmedium"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/status_student"/>
 
     </LinearLayout>
 

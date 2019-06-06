@@ -30,6 +30,7 @@ import com.app.manikandanr.sampleclients.AddItems;
 import com.app.manikandanr.sampleclients.AttendanceActivity;
 import com.app.manikandanr.sampleclients.Data.Alert;
 import com.app.manikandanr.sampleclients.Data.StudentAlertData;
+import com.app.manikandanr.sampleclients.DataModels.Students;
 import com.app.manikandanr.sampleclients.R;
 import com.app.manikandanr.sampleclients.Utils.Constants;
 
@@ -50,10 +51,10 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapter.MyViewHolder> {
 
-    public static List<StudentAlertData> obj_arr = new ArrayList<>();
+    public static List<Students> obj_arr = new ArrayList<>();
     private String selectedDate = "";
 
-    public StudentAlertAdapter(List<StudentAlertData> objs) {
+    public StudentAlertAdapter(List<Students> objs) {
         this.obj_arr = objs;
     }
 
@@ -72,17 +73,28 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
     @Override
     public void onBindViewHolder(final StudentAlertAdapter.MyViewHolder holder, final int position) {
         try {
-                holder.studentName.setText(""+obj_arr.get(position).getStudentName());
-                holder.studentPhone.setText(obj_arr.get(position).getStudentPhone());
-                holder.studentEmail.setText(obj_arr.get(position).getStudentEmail());
-                holder.studentDate.setText("Alert Date : "+obj_arr.get(position).getStudentDate());
+                holder.studentName.setText(""+obj_arr.get(position).getStudent().getName());
+                holder.studentPhone.setText(obj_arr.get(position).getStudent().getPhone());
+                holder.studentEmail.setText(obj_arr.get(position).getStudent().getEmail());
+                holder.studentDate.setText("Alert Date : "+obj_arr.get(position).getDate());
+
+                if(!obj_arr.get(position).getStatus().equalsIgnoreCase("0"))
+                {
+                    holder.btnFeedback.setVisibility(View.GONE);
+                    holder.btnCancel.setVisibility(View.GONE);
+                    holder.btnAdmission.setVisibility(View.GONE);
+                    holder.statusStudent.setVisibility(View.VISIBLE);
+                    holder.statusStudent.setText(obj_arr.get(position).getStatus());
+                }
+
                 holder.imgCall.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String uri = "tel:" + obj_arr.get(position).getStudentPhone();
+                        String uri = "tel:" + obj_arr.get(position).getStudent().getPhone();
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         intent.setData(Uri.parse(uri));
                         holder.studentPhone.getContext().startActivity(intent);
+
                     }
                 });
 
@@ -95,20 +107,26 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
                        final EditText edtFeedBack = layout11.findViewById(R.id.edt_feedback);
                         final AlertDialog.Builder builder = new AlertDialog.Builder(holder.lyt_students.getContext());
                         builder.setView(layout11);
-                        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
                                 if(!edtFeedBack.getText().toString().isEmpty()){
-
+                                    addAction(view,obj_arr.get(position).getId(),"",Constants.STATUS_FEEDBACK,edtFeedBack.getText().toString().trim());
+                                    dialogInterface.dismiss();
                                 }
                                 else {
                                     Toast.makeText(view.getContext(), "Feedback is Empty!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
                         final AlertDialog dialog = builder.create();
-                        dialog.setCancelable(false);
+                        dialog.setCancelable(true);
                         dialog.show();
                     }
                 });
@@ -121,17 +139,29 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
                                 (ViewGroup) holder.lyt_students.findViewById(R.id.layout_root));
                         final TextView txtStudentInfo = layout11.findViewById(R.id.student_info);
                         final TextView header = layout11.findViewById(R.id.header);
+
+                        String typeUser = "";
+                        if(obj_arr.get(position).getStudent().getJoin_status().equalsIgnoreCase(Constants.ROLE_SCHOOL)) {
+                            typeUser = "School";
+                        }
+                        else if(obj_arr.get(position).getStudent().getJoin_status().equalsIgnoreCase(Constants.ROLE_COLLEGE)) {
+                            typeUser = "College";
+                        }
+                        else {
+                            typeUser = "Project / Program";
+                        }
+
                         header.setText("Student Details");
-                        String styledText ="Name :"+obj_arr.get(position).getStudentName()+",<br>"+
-                                "Date of Birth :"+obj_arr.get(position).getStudentDob()+",<br>"+
-                                "Phone :"+obj_arr.get(position).getStudentPhone()+",<br>"+
-                                "Email :"+obj_arr.get(position).getStudentEmail()+",<br>"+
-                                "Serial Number :"+obj_arr.get(position).getStudentSerialNumber()+",<br>"+
-                                "Category :"+obj_arr.get(position).getStudentCategory()+",<br>"+
-                                "Organization :"+obj_arr.get(position).getStudentOrganization()+",<br>"+
-                                "<font color='red'>Date :"+obj_arr.get(position).getStudentDate()+",<br></font>"+
-                                "<font color='red'>Type :"+obj_arr.get(position).getStudentInstitutionType()+",<br></font>"+
-                                "Address :"+obj_arr.get(position).getStudentAddress()+".";
+                        String styledText ="Name :"+obj_arr.get(position).getStudent().getName()+",<br>"+
+                                "Date of Birth :"+obj_arr.get(position).getStudent().getDob()+",<br>"+
+                                "Phone :"+obj_arr.get(position).getStudent().getPhone()+",<br>"+
+                                "Email :"+obj_arr.get(position).getStudent().getEmail()+",<br>"+
+                                "Serial Number :"+obj_arr.get(position).getStudent().getSerial_no()+",<br>"+
+                                "Category :"+obj_arr.get(position).getStudent().getCategory().getCategory()+",<br>"+
+                                "Organization :"+obj_arr.get(position).getStudent().getOrganization().getName()+",<br>"+
+                                "<font color='red'>Date :"+obj_arr.get(position).getDate()+",<br></font>"+
+                                "<font color='red'>Type :"+typeUser+",<br></font>"+
+                                "Address :"+obj_arr.get(position).getStudent().getAddress()+".";
                                 txtStudentInfo.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
                             final AlertDialog.Builder builder = new AlertDialog.Builder(holder.lyt_students.getContext());
                             builder.setView(layout11);
@@ -208,7 +238,7 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView studentName, studentPhone, studentEmail, studentDate;
+        TextView studentName, studentPhone, studentEmail, studentDate, statusStudent;
         LinearLayout lyt_students;
         ImageButton imgCall ;
         Button btnFeedback, btnAdmission, btnCancel;
@@ -224,6 +254,7 @@ public class StudentAlertAdapter extends RecyclerView.Adapter<StudentAlertAdapte
             btnFeedback = itemView.findViewById(R.id.btn_feedback);
             btnAdmission = itemView.findViewById(R.id.btn_admission);
             btnCancel = itemView.findViewById(R.id.btn_cancel);
+            statusStudent = itemView.findViewById(R.id.status_student);
         }
     }
 

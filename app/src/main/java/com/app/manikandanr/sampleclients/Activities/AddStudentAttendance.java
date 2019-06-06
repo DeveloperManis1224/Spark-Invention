@@ -57,7 +57,7 @@ public class AddStudentAttendance extends AppCompatActivity {
     private RadioButton school_radio, college_radio;
     String departmentId;
     String sectionId = "";
-    String departmentYear = "";
+    String departmentYear = "0";
     ArrayList<String> countryList = new ArrayList<>();
     ArrayList<String> countryIdList = new ArrayList<>();
     ArrayList<String> stateList = new ArrayList<>();
@@ -207,7 +207,7 @@ public class AddStudentAttendance extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         Toast.makeText(AddStudentAttendance.this, "year "+i, Toast.LENGTH_SHORT).show();
                         if(!aed_section.getSelectedItem().toString().equalsIgnoreCase(finalyearList.get(0))) {
-                            departmentYear = "";
+                            departmentYear = "0";
                             Log.e("DEPARTMENT_YEAR", "" + departmentYear);
                         }
                     }
